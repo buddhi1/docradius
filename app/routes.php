@@ -15,3 +15,6 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+//route to user controller
+Route::controller('admin/user', 'UserController');
