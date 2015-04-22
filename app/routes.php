@@ -16,8 +16,18 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+
+Route::Controller('admin/state', 'StateController');
+
+Route::Controller('admin/lga', 'LgaController');
+
+Route::Controller('admin/town', 'TownController');
+
 //route to user controller
 Route::controller('admin/user', 'UserController');
 
+
 //route to specilties controller
 Route::controller('admin/specialty', 'SpecialtyController');
+
+
