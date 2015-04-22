@@ -17,6 +17,8 @@ class CreateTables extends Migration {
 			$table->string('email');
 			$table->string('password');
 			$table->boolean('type')->nullable();
+			$table->string('code');
+			$table->boolean('active')->nullable();
 			$table->rememberToken();
 			$table->timestamps();
 		});
@@ -52,6 +54,7 @@ class CreateTables extends Migration {
 		Schema::create('doctors', function($table){
 			$table->increments('id');
 			$table->string('name');
+			$table->boolean('active');
 			$table->string('description')->nullable();
 			$table->string('experience')->nullable();
 			$table->string('tp')->nullable();
