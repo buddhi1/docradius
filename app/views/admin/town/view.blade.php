@@ -65,6 +65,25 @@
 		</ul>
 		<!--end form-errors-->
 	@endif
-<script type="text/javascript" src="{{ url() }}/admin/js/dropDowns.js"></script>
+<script type="text/javascript" src="{{ url() }}/js/admin/dropDowns.js"></script>
+
+<script type="text/javascript">
+	window.onload = function() {
+
+		var state_id = document.getElementById('state').value;
+
+		var xmlHttp = new XMLHttpRequest(); 
+	    xmlHttp.onreadystatechange = function(){
+
+	        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+
+	            lgaDropDown(xmlHttp.responseText);
+	        }
+	    };
+	    xmlHttp.open( "GET", 'town/dropdowns?state_id=' + state_id, true );
+	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	    xmlHttp.send();
+	}
+</script>
 <!--end of display -->
 @stop

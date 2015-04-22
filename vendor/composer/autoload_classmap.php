@@ -9,6 +9,7 @@ return array(
     'Advertisement' => $baseDir . '/app/models/Advertisement.php',
     'AdvertisementController' => $baseDir . '/app/controllers/AdvertisementController.php',
     'AlterAdvertisementsAndJobs' => $baseDir . '/app/database/migrations/2015_04_22_055332_alter_advertisements_and_jobs.php',
+    'AlterHealthJobTable' => $baseDir . '/app/database/migrations/2015_04_22_092234_alter_health_job_table.php',
     'AlterSpeciltiesTableNameToSpecialties' => $baseDir . '/app/database/migrations/2015_04_22_041800_alter_specilties_table_name_to_specialties.php',
     'AlterUserTable' => $baseDir . '/app/database/migrations/2015_04_21_094743_alter_user_table.php',
     'AlterUserTableType' => $baseDir . '/app/database/migrations/2015_04_22_070948_alter_user_table_type.php',

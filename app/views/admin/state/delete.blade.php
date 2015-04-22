@@ -3,13 +3,6 @@
 @section('content')
 
 <h2>Towns</h2>
-<table border = "1">
-	@foreach($all_towns as $town)
-		<tr>
-			<td>{{ $town }}</td>
-		</tr>
-	@endforeach
-</table>
 
 <h2>LGAs</h2>
 <table border = "1">
@@ -21,7 +14,7 @@
 </table>
 
 <p>
-	When you delete this state all these LGAs and Towns will be deleted. Are you sure you want to continue?
+	When you delete this state all these LGAs and Towns inside will be deleted. Are you sure you want to continue?
 </p>
 
 {{ Form::open(array('url'=>'admin/state/destroyall')) }}
