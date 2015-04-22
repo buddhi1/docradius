@@ -16,7 +16,11 @@
 @endif
 
 {{ Form::open(array('url'=>'admin/advert/create')) }}
-<div> {{ Form::label('lbldescription', 'Description') }}: {{ Form::textarea('description') }} </div>
+<div> {{ Form::label('lbllink', 'Advertisement link') }}: {{ Form::text('link') }} </div>
+<div>
+	{{ Form::file('Select Image') }}
+</div>
+<div></div>
 <div> {{ Form::submit('Add advertisement') }} </div>
 {{ Form::close() }}
 @stop
