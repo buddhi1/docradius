@@ -41,39 +41,6 @@ class SpecialtyController extends BaseController{
 				->with('specialties', Specialty::all());
 	}
 
-	//views the edit page
-	public function postEdit(){
-		$rec = Specialty::find(Input::get('id'));
-		if($rec){
-			return View::make('admin.specialty.edit')
-				->with('specialty', $rec);
-		}
-		
-		return Redirect::to('admin/specialty/index')
-				->with('message', 'Something went wrong. Please try again');
-	}
-
-	//edit function
-	public function postUpdate(){
-		$name = Input::get('name');
-		if($name){
-			$specialty = Specialty::find(Input::get('id'));
-			if($specialty){
-				$specialty->name = $name;
-				$specialty->save();
-
-				return Redirect::to('admin/specialty/index')
-						->with('message', 'Specialty has been edited successfully');
-			}
-
-			return Redirect::to('admin/specialty/index')
-					->with('message', 'Something went wrong. Please try again');
-		}
-
-		return Redirect::to('admin/specialty/index')
-				->with('message', 'Specialty name field is required');
-	}
-
 	//delete function
 	public function postDestroy(){
 		$rec = Specialty::find(Input::get('id'));
