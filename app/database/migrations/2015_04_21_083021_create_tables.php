@@ -16,6 +16,8 @@ class CreateTables extends Migration {
 			$table->increments('id');
 			$table->string('email');
 			$table->string('password');
+			$table->boolean('type')->nullable();
+			$table->rememberToken();
 			$table->timestamps();
 		});
 
@@ -41,7 +43,7 @@ class CreateTables extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::create('specilties', function($table){
+		Schema::create('specialties', function($table){
 			$table->increments('id');
 			$table->string('name');
 			$table->timestamps();
@@ -74,11 +76,10 @@ class CreateTables extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::create('advetisements', function($table){
+		Schema::create('advertisements', function($table){
 			$table->increments('id');
-			$table->text('description');
-			$table->integer('doctor_id')->unsigned();
-			$table->foreign('doctor_id')->references('id')->on('doctors');
+			$table->string('image')->nullable();
+			$table->string('link')->nullable();
 			$table->timestamps();
 		});
 
@@ -86,8 +87,9 @@ class CreateTables extends Migration {
 			$table->increments('id');
 			$table->string('title')->nullable();
 			$table->text('description')->nullable();
-			$table->integer('doctor_id')->unsigned();
-			$table->foreign('doctor_id')->references('id')->on('doctors');
+			$table->string('email');
+			$table->integer('user_id')->unsigned();
+			$table->foreign('user_id')->references('id')->on('users');
 			$table->timestamps();
 		});
 

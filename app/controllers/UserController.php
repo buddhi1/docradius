@@ -23,7 +23,8 @@ class UserController extends BaseController {
 			if(!$rec){
 				$user = new User;
 				$user->email = $email;
-				$user->password = Input::get('password');
+				$user->password = Hash::make(Input::get('password'));
+				$user->type = 1;
 				$user->save(); //saves the user record
 
 				return Redirect::to('admin/user/index')
