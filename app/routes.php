@@ -18,3 +18,6 @@ Route::get('/', function()
 
 //route to user controller
 Route::controller('admin/user', 'UserController');
+
+//route to specilties controller
+Route::controller('admin/specialty', 'SpecialtyController');
