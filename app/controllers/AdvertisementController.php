@@ -83,6 +83,6 @@ class AdvertisementController extends BaseController{
 
 	//views user own advertisements
 	public function allAdvertByUser(){
-		$advert = DB::table('advertisement')Auth::user();
+		//$advert = DB::table('advertisement')Auth::user();
 	}
 }
