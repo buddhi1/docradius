@@ -12,12 +12,18 @@ class AdvertisementController extends BaseController{
 
 	//create function
 	public function postCreate(){
-		$validator = Validator::make(Input::all(), Advertisement::$rules);
-		if($validator->passes()){
-			$advert = new Advertisement;
-			$advert->description = Input::get('description');
-			$advert->doctor_id = 1;
-			$advert->active = 0;
+		$image_data = Input::get('image_data');
+		$link = Input::get('link');
+		if($link != null || $image_data != null ){
+			$advert = new Advertisement;			
+			$advert->link = $link;
+			if($image_data){
+				$img_name = time().'.jpeg';
+				$im = imagecreatefromjpeg($image_data);
+				imagejpeg($im, 'uploads/adverts/'.$img_name, 70);
+				imagedestroy($im);
+				$advert->image = $img_name;
+			}
 			$advert->save();
 
 			return Redirect::to('admin/advert/index')
@@ -25,8 +31,7 @@ class AdvertisementController extends BaseController{
 		}
 
 		return Redirect::to('admin/advert/create')
-				->with('message', 'Following errors occured')
-				->withErrors($validator);
+				->with('message', 'Neither image nor link should be not null');
 	}
 
 	//views all avdertisements
@@ -36,32 +41,17 @@ class AdvertisementController extends BaseController{
 				->with('type', 1);
 	}
 
-	//update advertisement state
-	public function postUpdate(){
-		$advert = Advertisement::find(Input::get('id'));
-		if($advert){
-			$state = Input::get('state');
-			if($state == 0){
-				$advert->active = 1;
-			}else if($state == 1){
-				$advert->active = 0;
-			}
-			$advert->save();
-
-			return Redirect::to('admin/advert/index')
-					->with('message', 'Advertisement activated successfully');
-		}
-
-		return Redirect::to('admin/advert/index')
-				->with('message', 'Something went wrong. Please try again');
-	}
-
 	//delete advertisement
 	public function postDestroy(){
 		$advert = Advertisement::find(Input::get('id'));
-		if($advert){
-			$advert->delete();
+		
+		if($advert){			
+			$path = 'uploads/adverts/'.$advert->image;
+			if(file_exists($path) && $advert->image != null){
+				unlink($path);
+			}
 
+			$advert->delete();
 			return Redirect::to('admin/advert/index')
 					->with('message', 'Advertisement deleted successfully');
 		}
@@ -70,11 +60,11 @@ class AdvertisementController extends BaseController{
 				->with('message', 'Something went wrong. Please try again');
 	}
 
-	//viws the advertisement content
-	public function postShow(){
+	//viws the advertisement edit page
+	public function postEdit(){
 		$advert = Advertisement::find(Input::get('id'));
 		if($advert){
-			return View::make('admin.advertisement.show')
+			return View::make('admin.advertisement.edit')
 					->with('advert', $advert);
 		}
 
@@ -82,11 +72,33 @@ class AdvertisementController extends BaseController{
 				->with('message', 'Something went wrong. Please try again');
 	}
 
-	//views user own advertisements
-	public function allAdvertByUser(){
-		$advert = DB::table('advertisements')->where('doctor_id', '=', 1)->get();
+	//update advertisement 
+	public function postUpdate(){
+		$advert = Advertisement::find(Input::get('id'));		
+		if($advert){
+			$image_data = Input::get('image_data');
+			$path = 'uploads/adverts/'.$advert->image;			
+			if($image_data){
+				if(file_exists($path)){
+					unlink($path);
+				}
+				$img_name = time().'.jpeg';
+				$im = imagecreatefromjpeg($image_data);
+				imagejpeg($im, 'uploads/adverts/'.$img_name, 70);
+				imagedestroy($im);
+				$advert->image = $img_name;
+			}
+			$link = Input::get('link');
+			if($link){
+				$advert->link = $link;
+			}
+			$advert->save();
 
-		return View::make('admin.advertisement.index')
-				->with('advert', $advert);
+			return Redirect::to('admin/advert/index')
+					->with('message', 'Advertisement edited successfully');
+		}
+
+		return Redirect::to('admin/advert/index')
+				->with('message', 'Something went wrong. Please try again');
 	}
 }
