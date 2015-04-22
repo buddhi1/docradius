@@ -19,16 +19,12 @@
 	<tr>
 		<th>Specilty ID</th>
 		<th>Specialty Name</th>
-		<th colspan="2">Edit/Delete</th>
+		<th>Delete</th>
 	</tr>
 	@foreach($specialties as $specialty)
 		<tr>
 			<td> {{ $specialty->id }} </td>
-			<td> {{ $specialty->name }} </td>
-			{{ Form::open(array('url'=>'admin/specialty/edit')) }}
-			{{ Form::hidden('id', $specialty->id) }}
-			<td> {{ Form::submit('Edit') }} </td>
-			{{ Form::close() }}					
+			<td> {{ $specialty->name }} </td>							
 			{{ Form::open(array('url'=>'admin/specialty/destroy')) }}
 			{{ Form::hidden('id', $specialty->id) }}
 			<td> {{ Form::submit('Delete') }} </td>

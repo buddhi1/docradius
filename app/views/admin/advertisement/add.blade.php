@@ -15,9 +15,8 @@
 </div>	
 @endif
 
-{{ Form::open(array('url'=>'admin/specialty/update')) }}
-{{ Form::hidden('id', $specialty->id) }}
-<div> {{ Form::label('lblname', 'Specilty') }}: {{ Form::text('name', $specialty->name) }} </div>
-<div> {{ Form::submit('Save Changes') }} </div>
+{{ Form::open(array('url'=>'admin/advert/create')) }}
+<div> {{ Form::label('lbldescription', 'Description') }}: {{ Form::textarea('description') }} </div>
+<div> {{ Form::submit('Add advertisement') }} </div>
 {{ Form::close() }}
 @stop

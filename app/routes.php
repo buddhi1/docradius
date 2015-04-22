@@ -30,4 +30,5 @@ Route::controller('admin/user', 'UserController');
 //route to specilties controller
 Route::controller('admin/specialty', 'SpecialtyController');
 
-
+//rote to advertisement
+Route::controller('admin/advert', 'AdvertisementController');

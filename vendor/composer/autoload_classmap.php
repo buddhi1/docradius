@@ -6,6 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Advertisement' => $baseDir . '/app/models/Advertisement.php',
+    'AdvertisementController' => $baseDir . '/app/controllers/AdvertisementController.php',
+    'AlterAdvertisementsAndJobs' => $baseDir . '/app/database/migrations/2015_04_22_055332_alter_advertisements_and_jobs.php',
     'AlterSpeciltiesTableNameToSpecialties' => $baseDir . '/app/database/migrations/2015_04_22_041800_alter_specilties_table_name_to_specialties.php',
     'AlterUserTable' => $baseDir . '/app/database/migrations/2015_04_21_094743_alter_user_table.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
@@ -424,6 +427,8 @@ return array(
     'Jeremeamia\\SuperClosure\\SerializableClosure' => $vendorDir . '/jeremeamia/SuperClosure/src/Jeremeamia/SuperClosure/SerializableClosure.php',
     'Jeremeamia\\SuperClosure\\Visitor\\ClosureFinderVisitor' => $vendorDir . '/jeremeamia/SuperClosure/src/Jeremeamia/SuperClosure/Visitor/ClosureFinderVisitor.php',
     'Jeremeamia\\SuperClosure\\Visitor\\MagicConstantVisitor' => $vendorDir . '/jeremeamia/SuperClosure/src/Jeremeamia/SuperClosure/Visitor/MagicConstantVisitor.php',
+    'Lga' => $baseDir . '/app/models/Lga.php',
+    'LgaController' => $baseDir . '/app/controllers/LgaController.php',
     'Math_BigInteger' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Math/BigInteger.php',
     'Monolog\\ErrorHandler' => $vendorDir . '/monolog/monolog/src/Monolog/ErrorHandler.php',
     'Monolog\\Formatter\\ChromePHPFormatter' => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
@@ -973,6 +978,8 @@ return array(
     'SpecialtyController' => $baseDir . '/app/controllers/SpecialtyController.php',
     'Stack\\Builder' => $vendorDir . '/stack/builder/src/Stack/Builder.php',
     'Stack\\StackedHttpKernel' => $vendorDir . '/stack/builder/src/Stack/StackedHttpKernel.php',
+    'State' => $baseDir . '/app/models/State.php',
+    'StateController' => $baseDir . '/app/controllers/StateController.php',
     'Symfony\\Component\\BrowserKit\\Client' => $vendorDir . '/symfony/browser-kit/Symfony/Component/BrowserKit/Client.php',
     'Symfony\\Component\\BrowserKit\\Cookie' => $vendorDir . '/symfony/browser-kit/Symfony/Component/BrowserKit/Cookie.php',
     'Symfony\\Component\\BrowserKit\\CookieJar' => $vendorDir . '/symfony/browser-kit/Symfony/Component/BrowserKit/CookieJar.php',
@@ -1577,6 +1584,8 @@ return array(
     'System_SSH_Agent' => $vendorDir . '/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php',
     'System_SSH_Agent_Identity' => $vendorDir . '/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
+    'Town' => $baseDir . '/app/models/Town.php',
+    'TownController' => $baseDir . '/app/controllers/TownController.php',
     'User' => $baseDir . '/app/models/User.php',
     'UserController' => $baseDir . '/app/controllers/UserController.php',
     'UserTableSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
