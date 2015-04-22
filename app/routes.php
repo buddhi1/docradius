@@ -32,3 +32,5 @@ Route::controller('admin/specialty', 'SpecialtyController');
 
 //rote to advertisement
 Route::controller('admin/advert', 'AdvertisementController');
+
+Route::controller('admin/patient', 'PatientController');
