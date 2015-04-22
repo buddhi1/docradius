@@ -32,7 +32,8 @@ class AdvertisementController extends BaseController{
 	//views all avdertisements
 	public function getIndex(){		
 		return View::make('admin.advertisement.index')
-				->with('adverts', Advertisement::all());
+				->with('adverts', Advertisement::all())
+				->with('type', 1);
 	}
 
 	//update advertisement state
@@ -83,6 +84,9 @@ class AdvertisementController extends BaseController{
 
 	//views user own advertisements
 	public function allAdvertByUser(){
-		//$advert = DB::table('advertisement')Auth::user();
+		$advert = DB::table('advertisements')->where('doctor_id', '=', 1)->get();
+
+		return View::make('admin.advertisement.index')
+				->with('advert', $advert);
 	}
 }
