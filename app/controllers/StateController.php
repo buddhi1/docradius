@@ -69,13 +69,12 @@ class StateController extends BaseController{
 
 						foreach ($towns as $town) {
 
-							$all_towns[] = $town->name;
+							$all_towns[$lga->name][] = $town->name;
 						}
 					}
 				}
 
 				return View::make('admin.state.delete')
-					->with('all_towns', $all_towns)
 					->with('all_lgas', $all_lgas)
 					->with('state_id', $state->id);
 			}
