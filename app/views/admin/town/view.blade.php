@@ -2,38 +2,43 @@
 
 @section('content')
 
-	<h3>Add a New Lga</h3>
+	<h3>Add a New Town</h3>
 
-	{{ Form::open(array('url' => 'admin/lga/create')) }}
+	{{ Form::open(array('url' => 'admin/town/create')) }}
 
-		{{ Form::label('name', 'LGA Name') }}
+		{{ Form::label('name', 'Town Name') }}
 		{{ Form::text('name',null, array('required')) }}
 		<br>
 		{{ Form::label('state', 'State') }}
-		{{ Form::Select('state', $states) }}
+		{{ Form::Select('state', $states, array('id' => 'state')) }}
+		<br>
+		{{ Form::label('lga', 'LGA') }}
+		{{ Form::Select('lga', $lgas, array('id' => 'lga')) }}
 		<br>
 		{{ Form::submit('Submit') }}
 
 	{{ Form::close()}}
 
-<!-- Display all the states -->
+<!-- Display all the Towns -->
 
-	<h3>All LGAs</h3>
+	<h3>All Towns</h3>
 
 	<table border = "1">
+		<th>Town</th>
 		<th>LGA</th>
-		<th>State</th>
+		<!-- <th>State</th> -->
 		<th>Delete</th>
 
-		@foreach($lgas as $lga)
+		@foreach($towns as $town)
 
 			<tr>
-				<td>{{ $lga->name }}</td>
-				<td>{{ $lga->state_id }}</td>
+				<td>{{ $town->name }}</td>
+				<td>{{ $town->lga_id }}</td>
+				<!-- <td>{{ $town->state_id }}</td> -->
 				<td>
-					{{ Form::open(array('url' => 'admin/lga/destroy')) }}
+					{{ Form::open(array('url' => 'admin/town/destroy')) }}
 
-						{{ Form::hidden('id', $lga->id) }}
+						{{ Form::hidden('id', $town->id) }}
 						{{ Form::submit('Delete') }}
 
 					{{ Form::close() }}
@@ -60,6 +65,6 @@
 		</ul>
 		<!--end form-errors-->
 	@endif
-
+<script type="text/javascript" src="{{ url() }}/admin/js/dropDowns.js"></script>
 <!--end of display -->
 @stop
