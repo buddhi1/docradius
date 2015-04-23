@@ -21,11 +21,13 @@ class DoctorController extends BaseController{
 			$email = Input::get('email');
 			$rec = DB::table('users')->where('email', '=', $email)->get();
 			if(!$rec){
-				$validator = Validator::make(array('name'=> Input::get('name'), 'hospitals'=> Input::get('hospitals'), 'specilties'=> Input::get('specilties'), 'town_id'=> Input::get('town_id')), Doctor::$rules);
+				$validator = Validator::make(array('name'=> Input::get('name'), 'specialties'=> Input::get('specialties')), Doctor::$rules);
 				if($validator->passes()){
 					$user = new User;
 					$user->email = $email;
 					$user->password = Hash::make(Input::get('password'));
+					$user->type = 1;
+					$user->active = 0;
 					$user->save();
 
 					$doctor = new Doctor;
@@ -35,7 +37,7 @@ class DoctorController extends BaseController{
 					$doctor->tp = Input::get('tp');
 					$doctor->special_popup = json_encode(Input::get('special_popup'));	
 					$doctor->user_id = $user->id;	
-					$doctor->specialties = Input::get('special');			
+					$doctor->specialties = Input::get('specialties');			
 					$image_data = Input::get('image_data');
 		 			if($image_data){
 						$img_name = time().'.jpeg';
@@ -69,6 +71,12 @@ class DoctorController extends BaseController{
 					->with('message', 'Following errors ocurred')
 					->withErrors($validator_user)
 					->withInput();
+	}
+
+	//view all doctors
+	public function getIndex(){
+		return View::make('admin.doctor.index')
+				->with('doctors', Doctor::all());
 	}
 		
 }
