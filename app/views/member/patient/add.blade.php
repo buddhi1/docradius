@@ -34,21 +34,6 @@ window.onload = function() {
 	document.getElementById("town").value = ""
 }
 
-var sendRequestToServer = function(headers, parameter) {
-
-	var xmlHttp = new XMLHttpRequest(); 
-    xmlHttp.onreadystatechange = function(){
-
-        if (xmlHttp.readyState==4 && xmlHttp.status==200){
-
-            return xmlHttp.responseText;
-        }
-    };
-    xmlHttp.open( "GET", headers + parameter, true );
-    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlHttp.send();
-}
-
 document.getElementById('state').onchange = function(){
 
 	if(document.getElementById("state").value) {
@@ -58,8 +43,17 @@ document.getElementById('state').onchange = function(){
 		document.getElementById("town").value = "";
 	    var state_id = document.getElementById('state').value;
 
-	    lgaDropDown(sendRequestToServer('dropdowns?state_id=', state_id));
-	    
+	    var xmlHttp = new XMLHttpRequest(); 
+	    xmlHttp.onreadystatechange = function(){
+
+	        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+
+	            lgaDropDown(xmlHttp.responseText);
+	        }
+	    };
+	    xmlHttp.open( "GET", 'dropdowns?state_id=' + state_id, true );
+	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	    xmlHttp.send();
 	} else {
 
 		document.getElementById("lga").style.visibility = "hidden";
@@ -68,35 +62,6 @@ document.getElementById('state').onchange = function(){
 		document.getElementById("town").value = "";
 	}
 }
-
-// document.getElementById('state').onchange = function(){
-
-// 	if(document.getElementById("state").value) {
-
-// 		document.getElementById("lga").style.visibility = "visible";
-// 		document.getElementById("town").style.visibility = "hidden";
-// 		document.getElementById("town").value = "";
-// 	    var state_id = document.getElementById('state').value;
-
-// 	    var xmlHttp = new XMLHttpRequest(); 
-// 	    xmlHttp.onreadystatechange = function(){
-
-// 	        if (xmlHttp.readyState==4 && xmlHttp.status==200){
-
-// 	            lgaDropDown(xmlHttp.responseText);
-// 	        }
-// 	    };
-// 	    xmlHttp.open( "GET", 'dropdowns?state_id=' + state_id, true );
-// 	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-// 	    xmlHttp.send();
-// 	} else {
-
-// 		document.getElementById("lga").style.visibility = "hidden";
-// 		document.getElementById("town").style.visibility = "hidden";
-// 		document.getElementById("lga").value = "";
-// 		document.getElementById("town").value = "";
-// 	}
-// }
 
 document.getElementById('lga').onchange = function(){
 
@@ -151,5 +116,39 @@ var townDropDown = function(town) {
 
 	DropDowns(town, 'town', 'Select a Town');
 }
+
+// var sendRequestToServer = function(headers, parameter) {
+
+// 	var xmlHttp = new XMLHttpRequest(); 
+//     xmlHttp.onreadystatechange = function(){
+
+//         if (xmlHttp.readyState==4 && xmlHttp.status==200){
+
+//             console.log(xmlHttp.responseText);
+//         }
+//     };
+//     xmlHttp.open( "GET", headers + parameter, true );
+//     xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+//     xmlHttp.send();
+// }
+
+// document.getElementById('state').onchange = function(){
+
+// 	if(document.getElementById("state").value) {
+
+// 		document.getElementById("lga").style.visibility = "visible";
+// 		document.getElementById("town").style.visibility = "hidden";
+// 		document.getElementById("town").value = "";
+// 	    var state_id = document.getElementById('state').value;
+
+// 	    sendRequestToServer('dropdowns?state_id=', state_id);
+// 	} else {
+
+// 		document.getElementById("lga").style.visibility = "hidden";
+// 		document.getElementById("town").style.visibility = "hidden";
+// 		document.getElementById("lga").value = "";
+// 		document.getElementById("town").value = "";
+// 	}
+// }
 </script>
 @stop

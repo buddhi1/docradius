@@ -10,8 +10,9 @@ class PatientController extends BaseController {
 	public function getIndex() {
 	// display all the Patients
 
-		// return View::make('admin.patient.view')
-		// 	->with('patients', Patient::all());
+		return View::make('admin.patient.index')
+			->with('patients', Patient::all())
+			->with('users', User::all());
 	}
 
 	public function getCreate() {
@@ -111,9 +112,9 @@ class PatientController extends BaseController {
 				// then entering the record to the patient table
 
 				$patient->save();
-				Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) {
+				Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
 
-					$message->to('buddhiashan8@gmail.com', 'Buddhi')->subject('Activate Your Account');
+					$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
 				});
 
 
@@ -129,6 +130,24 @@ class PatientController extends BaseController {
 
 	public function getActivate($code) {
 
-		return $code;
+		$user = User::where('code','=',$code)->where('active','=',0);
+
+		if($user->count()) {
+
+			$user = $user->first();
+
+			//update the active user
+			$user->active = 1;
+			$user->code = ' ';
+
+			if($user->save()) {
+
+				return Redirect::To('member/patient/create')
+					->with('message', 'Successfully Activated the Account');
+			}
+		}
+
+		return Redirect::To('member/patient/create')
+			->with('message', 'Could not Activate the Account. Please Try Again Later');
 	}
 }
