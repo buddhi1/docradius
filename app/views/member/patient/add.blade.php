@@ -34,6 +34,21 @@ window.onload = function() {
 	document.getElementById("town").value = ""
 }
 
+var sendRequestToServer = function(headers, parameter) {
+
+	var xmlHttp = new XMLHttpRequest(); 
+    xmlHttp.onreadystatechange = function(){
+
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+
+            return xmlHttp.responseText;
+        }
+    };
+    xmlHttp.open( "GET", headers + parameter, true );
+    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlHttp.send();
+}
+
 document.getElementById('state').onchange = function(){
 
 	if(document.getElementById("state").value) {
@@ -43,17 +58,8 @@ document.getElementById('state').onchange = function(){
 		document.getElementById("town").value = "";
 	    var state_id = document.getElementById('state').value;
 
-	    var xmlHttp = new XMLHttpRequest(); 
-	    xmlHttp.onreadystatechange = function(){
-
-	        if (xmlHttp.readyState==4 && xmlHttp.status==200){
-
-	            lgaDropDown(xmlHttp.responseText);
-	        }
-	    };
-	    xmlHttp.open( "GET", 'dropdowns?state_id=' + state_id, true );
-	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	    xmlHttp.send();
+	    lgaDropDown(sendRequestToServer('dropdowns?state_id=', state_id));
+	    
 	} else {
 
 		document.getElementById("lga").style.visibility = "hidden";
@@ -62,6 +68,35 @@ document.getElementById('state').onchange = function(){
 		document.getElementById("town").value = "";
 	}
 }
+
+// document.getElementById('state').onchange = function(){
+
+// 	if(document.getElementById("state").value) {
+
+// 		document.getElementById("lga").style.visibility = "visible";
+// 		document.getElementById("town").style.visibility = "hidden";
+// 		document.getElementById("town").value = "";
+// 	    var state_id = document.getElementById('state').value;
+
+// 	    var xmlHttp = new XMLHttpRequest(); 
+// 	    xmlHttp.onreadystatechange = function(){
+
+// 	        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+
+// 	            lgaDropDown(xmlHttp.responseText);
+// 	        }
+// 	    };
+// 	    xmlHttp.open( "GET", 'dropdowns?state_id=' + state_id, true );
+// 	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+// 	    xmlHttp.send();
+// 	} else {
+
+// 		document.getElementById("lga").style.visibility = "hidden";
+// 		document.getElementById("town").style.visibility = "hidden";
+// 		document.getElementById("lga").value = "";
+// 		document.getElementById("town").value = "";
+// 	}
+// }
 
 document.getElementById('lga').onchange = function(){
 
@@ -87,44 +122,34 @@ document.getElementById('lga').onchange = function(){
 	}
 }
 
-var lgaDropDown = function(lga) {
+var DropDowns = function(para, name, des) {
 
-	var lgas = JSON.parse(lga);
+	var drop = JSON.parse(para);
 		
-	document.getElementById("lga").options.length=0;
+	document.getElementById(name).options.length=0;
 	var option = document.createElement("option");
-    option.text = 'Select a LGA';
+    option.text = des;
     option.value = '';
-    var select = document.getElementById("lga");
+    var select = document.getElementById(name);
     select.appendChild(option);
-	for(var i=0; lgas.length;++i){
-		
+	for(var i=0; i<drop.length;i++){
+			
 		var option = document.createElement("option");
-		option.text = lgas[i]['name'];
-		option.value = lgas[i]['id'];
-		var select = document.getElementById("lga");
+		option.text = drop[i]['name'];
+		option.value = drop[i]['id'];
+		var select = document.getElementById(name);
 		select.appendChild(option);
 	}
 }
 
+var lgaDropDown = function(lga) {
+
+	DropDowns(lga, 'lga', 'Select a LGA');
+}
+
 var townDropDown = function(town) {
 
-	var towns = JSON.parse(town);
-		
-	document.getElementById("town").options.length=0;
-	var option = document.createElement("option");
-    option.text = 'Select a Town';
-    option.value = '';
-    var select = document.getElementById("town");
-    select.appendChild(option);
-	for(var i=0; towns.length;++i){
-		
-		var option = document.createElement("option");
-		option.text = towns[i]['name'];
-		option.value = towns[i]['id'];
-		var select = document.getElementById("town");
-		select.appendChild(option);
-	}
+	DropDowns(town, 'town', 'Select a Town');
 }
 </script>
 @stop
