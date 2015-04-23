@@ -15,9 +15,12 @@
 </div>	
 @endif
 
-{{ Form::open(array('url'=>'admin/doctor/create', 'files'=>true)) }}
+{{ Form::open(array('url'=>'member/doctor/create', 'files'=>true)) }}
 
 <div>{{ Form::label('lblname', 'Doctor name') }}: {{ Form::text('name') }}</div>
+<div>
+	{{ Form::select('') }}
+</div>
 <div>{{ Form::label('lblname', 'Description') }}: {{ Form::textarea('description') }}</div>
 <div>{{ Form::label('lblname', 'Experience') }}: {{ Form::textarea('experience') }}</div>
 <div>{{ Form::label('lblname', 'Contact No.') }}: {{ Form::text('tp') }}</div>
