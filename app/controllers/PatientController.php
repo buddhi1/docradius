@@ -17,7 +17,7 @@ class PatientController extends BaseController {
 	public function getCreate() {
 	// Create a new Patient
 
-		return View::make('admin.patient.add')
+		return View::make('member.patient.add')
 			->with('states', State::lists('name', 'id'));
 	}
 

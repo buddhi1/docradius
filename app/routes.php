@@ -30,7 +30,10 @@ Route::controller('admin/user', 'UserController');
 //route to specilties controller
 Route::controller('admin/specialty', 'SpecialtyController');
 
-//rote to advertisement
+//route to advertisement
 Route::controller('admin/advert', 'AdvertisementController');
 
-Route::controller('admin/patient', 'PatientController');
+Route::controller('member/patient', 'PatientController');
+
+//route to doctor controller
+Route::controller('member/doctor', 'DoctorController');
