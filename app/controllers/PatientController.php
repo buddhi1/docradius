@@ -52,6 +52,7 @@ class PatientController extends BaseController {
 			$validator_user = Validator::make(array('email' => $email), User::$rules_patient);
 
 			if($validator_user->passes()) {
+
 				Session::put('name', $name);
 				Session::put('email', $email);
 				Session::put('town_id', $town_id);
