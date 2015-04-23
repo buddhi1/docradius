@@ -1,4 +1,4 @@
-@extends('admin.layouts.main')
+@extends('member.layouts.main')
 
 @section('content')
 
@@ -21,10 +21,10 @@
 <div>{{ Form::label('', 'Specialty') }}:</div>
 <div id="selected_sp"></div>
 <div>
-	{{ Form::select('specialties', $specialties, null, array('id'=>'specialties')) }}
-	{{ Form::button('Add another specialty', array('id'=>'add_sp')) }}
+	{{ Form::select('specialties_all', $specialties, null, array('id'=>'specialties_all')) }}
+	{{ Form::button('Add specialty', array('id'=>'add_sp')) }}
 </div>
-{{ Form::hidden('special','', array('id'=>'special')) }}
+{{ Form::hidden('specialties','', array('id'=>'specialties')) }}
 <div>{{ Form::label('lbldesc', 'Description') }}: {{ Form::textarea('description') }}</div>
 <div>{{ Form::label('lblex', 'Experience') }}: {{ Form::textarea('experience') }}</div>
 <div>{{ Form::label('lblcno', 'Contact No.') }}: {{ Form::text('tp') }}</div>
@@ -45,18 +45,18 @@ var sp	= [];
 
 	document.getElementById('add_sp').onclick = function(){
 		addSpecialty();
-		document.getElementById('specialties').disabled = false;
+		document.getElementById('specialties_all').disabled = false;
 		document.getElementById('add_sp').disabled = true;
 	}
-	document.getElementById('specialties').onchange = function(){	
-		document.getElementById('specialties').disabled = true;
+	document.getElementById('specialties_all').onchange = function(){	
+		document.getElementById('specialties_all').disabled = true;
 		document.getElementById('add_sp').disabled = false;
 	}
 
 	
 	var addSpecialty = function(){			
 					
-		sp[sp.length] = document.getElementById('specialties').options[document.getElementById('specialties').selectedIndex].text;			
+		sp[sp.length] = document.getElementById('specialties_all').options[document.getElementById('specialties_all').selectedIndex].text;			
 		document.getElementById("selected_sp").innerHTML = "";
 		for (var i = sp.length - 1; i >= 0; i--) {
 			var spDiv = document.createElement("DIV");
@@ -76,9 +76,7 @@ var sp	= [];
 			element.appendChild(spDiv);
 		};		
 
-		document.getElementById('special').value = sp;
-
-		alert(sp);		
+		document.getElementById('specialties').value = sp;	
 	}
 
 	var removeSp = function(x){
