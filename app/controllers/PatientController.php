@@ -81,11 +81,15 @@ class PatientController extends BaseController {
 		$tp = Session::get('tp');
 		$password = Hash::make(Input::get('password'));
 		$type = 2;
+		$code = str_random(60);
 
 		$user = new User;
 		$user->email = $email;
 		$user->password = $password;
 		$user->type = $type;
+		$user->code = $code;
+		$user->active = 0;
+
 
 		if($user) {
 			// first, inserting the record to the user table
@@ -106,6 +110,12 @@ class PatientController extends BaseController {
 				// then entering the record to the patient table
 
 				$patient->save();
+				Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) {
+
+					$message->to('buddhiashan8@gmail.com', 'Buddhi')->subject('Activate Your Account');
+				});
+
+
 				Session::flush();
 				return Redirect::To('member/patient/create');
 			}
@@ -114,5 +124,10 @@ class PatientController extends BaseController {
 				->withErrors($validator)
 				->withInput();
 		}
+	}
+
+	public function getActivate($code) {
+
+		return $code;
 	}
 }

@@ -33,6 +33,11 @@ Route::controller('admin/specialty', 'SpecialtyController');
 //route to advertisement
 Route::controller('admin/advert', 'AdvertisementController');
 
+Route::get('member/patient/activate/{code}', array(
+	'as' => 'account-activate',
+	'uses' => 'PatientController@getActivate'
+	));
+
 Route::controller('member/patient', 'PatientController');
 
 //route to doctor controller

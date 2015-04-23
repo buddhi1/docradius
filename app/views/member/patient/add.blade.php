@@ -39,6 +39,8 @@ document.getElementById('state').onchange = function(){
 	if(document.getElementById("state").value) {
 
 		document.getElementById("lga").style.visibility = "visible";
+		document.getElementById("town").style.visibility = "hidden";
+		document.getElementById("town").value = "";
 	    var state_id = document.getElementById('state').value;
 
 	    var xmlHttp = new XMLHttpRequest(); 
