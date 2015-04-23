@@ -59,7 +59,7 @@ class CreateTables extends Migration {
 			$table->string('experience')->nullable();
 			$table->string('tp')->nullable();
 			$table->text('hospitals');
-			$table->text('specilties');
+			$table->text('specialties');
 			$table->text('town_id');
 			$table->string('profile_picture')->nullable();
 			$table->integer('user_id')->unsigned();
