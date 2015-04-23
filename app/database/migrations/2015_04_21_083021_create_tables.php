@@ -58,9 +58,7 @@ class CreateTables extends Migration {
 			$table->string('description')->nullable();
 			$table->string('experience')->nullable();
 			$table->string('tp')->nullable();
-			$table->text('hospitals');
 			$table->text('specialties');
-			$table->text('town_id');
 			$table->string('profile_picture')->nullable();
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users');
@@ -72,6 +70,7 @@ class CreateTables extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('tp')->nullable();
+			$table->boolean('sex');
 			$table->integer('town_id')->unsigned();
 			$table->foreign('town_id')->references('id')->on('towns');
 			$table->integer('user_id')->unsigned();
