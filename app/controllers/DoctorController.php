@@ -8,7 +8,8 @@ class DoctorController extends BaseController{
 
 	//views create page
 	public function getCreate(){
-		return View::make('member.doctor.add');
+		return View::make('member.doctor.add')
+				->with('specialties', Specialty::lists('name', 'id'));
 	}
 
 	//create function
@@ -32,8 +33,9 @@ class DoctorController extends BaseController{
 					$doctor->description = Input::get('description');
 					$doctor->experience = Input::get('experience');
 					$doctor->tp = Input::get('tp');
-					$doctor->special_popup = Input::get('special');	
-					$doctor->user_id = $user->id;				
+					$doctor->special_popup = json_encode(Input::get('special_popup'));	
+					$doctor->user_id = $user->id;	
+					$doctor->specialties = Input::get('special');			
 					$image_data = Input::get('image_data');
 		 			if($image_data){
 						$img_name = time().'.jpeg';

@@ -18,15 +18,19 @@
 {{ Form::open(array('url'=>'member/doctor/create', 'files'=>true)) }}
 
 <div>{{ Form::label('lblname', 'Doctor name') }}: {{ Form::text('name') }}</div>
+<div>{{ Form::label('', 'Specialty') }}:</div>
+<div id="selected_sp"></div>
 <div>
-	{{ Form::select('') }}
+	{{ Form::select('specialties', $specialties, null, array('id'=>'specialties')) }}
+	{{ Form::button('Add another specialty', array('id'=>'add_sp')) }}
 </div>
-<div>{{ Form::label('lblname', 'Description') }}: {{ Form::textarea('description') }}</div>
-<div>{{ Form::label('lblname', 'Experience') }}: {{ Form::textarea('experience') }}</div>
-<div>{{ Form::label('lblname', 'Contact No.') }}: {{ Form::text('tp') }}</div>
-<div>{{ Form::label('lblname', 'Special message') }}: {{ Form::textarea('special') }}</div>
-<div>{{ Form::label('lblname', 'Email') }}: {{ Form::email('email') }}</div>
-<div>{{ Form::label('lblname', 'Passowrd') }}: {{ Form::password('password') }}</div>
+{{ Form::hidden('special','', array('id'=>'special')) }}
+<div>{{ Form::label('lbldesc', 'Description') }}: {{ Form::textarea('description') }}</div>
+<div>{{ Form::label('lblex', 'Experience') }}: {{ Form::textarea('experience') }}</div>
+<div>{{ Form::label('lblcno', 'Contact No.') }}: {{ Form::text('tp') }}</div>
+<div>{{ Form::label('lblspmessage', 'Special message') }}: {{ Form::textarea('special_popup') }}</div>
+<div>{{ Form::label('lblemail', 'Email') }}: {{ Form::email('email') }}</div>
+<div>{{ Form::label('lblpass', 'Passowrd') }}: {{ Form::password('password') }}</div>
 <div>
 {{ Form::label('lblimage', 'Profile picture') }}: {{ Form::file('files', array('id'=>'advert_img', 'accept'=>'image/jpeg')) }}
 </div>
@@ -36,6 +40,72 @@
 
 {{ Form::close() }}
 
+<script type="text/javascript">
+var sp	= [];
+
+	document.getElementById('add_sp').onclick = function(){
+		addSpecialty();
+		document.getElementById('specialties').disabled = false;
+		document.getElementById('add_sp').disabled = true;
+	}
+	document.getElementById('specialties').onchange = function(){	
+		document.getElementById('specialties').disabled = true;
+		document.getElementById('add_sp').disabled = false;
+	}
+
+	
+	var addSpecialty = function(){			
+					
+		sp[sp.length] = document.getElementById('specialties').options[document.getElementById('specialties').selectedIndex].text;			
+		document.getElementById("selected_sp").innerHTML = "";
+		for (var i = sp.length - 1; i >= 0; i--) {
+			var spDiv = document.createElement("DIV");
+			spDiv.id = "div"+i;
+			var spClose = document.createElement("DIV");
+			spClose.id = i;
+			var click = document.createAttribute("onclick");
+			click.value = "removeSp("+i+")";
+			spClose.setAttributeNode(click);
+			
+			var remove = document.createTextNode("Remove");
+			var node = document.createTextNode(sp[i])
+			spClose.appendChild(remove);
+			spDiv.appendChild(spClose);
+			spDiv.appendChild(node);
+			var element = document.getElementById("selected_sp");
+			element.appendChild(spDiv);
+		};		
+
+		document.getElementById('special').value = sp;
+
+		alert(sp);		
+	}
+
+	var removeSp = function(x){
+		document.getElementById("selected_sp").innerHTML = "";
+		sp.splice(x, 1);
+
+		for (var i = sp.length - 1; i >= 0; i--) {
+			var spDiv = document.createElement("DIV");
+			spDiv.id = "div"+i;
+			var spClose = document.createElement("DIV");
+			spClose.id = i;
+			var click = document.createAttribute("onclick");
+			click.value = "removeSp("+i+")";
+			spClose.setAttributeNode(click);
+			
+			var remove = document.createTextNode("Remove");
+			var node = document.createTextNode(sp[i])
+			spClose.appendChild(remove);
+			spDiv.appendChild(spClose);
+			spDiv.appendChild(node);
+			var element = document.getElementById("selected_sp");
+			element.appendChild(spDiv);
+		};	
+
+		return sp;
+	}
+</script>
 <script type="text/javascript" src="{{ url() }}/js/admin/photos.js"></script>
 <script type="text/javascript" src="{{ url() }}/js/admin/image.js"></script>
 @stop

@@ -400,7 +400,7 @@ function Redirect()
     window.location="../../admin/news/index";
 }
 
-var img_id = document.getElementById('album_data').value;
+//var img_id = document.getElementById('album_data').value;
 function uploadAlbum() {
 
 	uploadProjectImages(img_id, 0);
