@@ -19,7 +19,12 @@ var lgaDropDown = function(lga) {
 	var lgas = JSON.parse(lga);
 		
 	document.getElementById("lga").options.length=0;
-	for(var i=0; lgas.length;++i){
+    var option = document.createElement("option");
+    option.text = 'Select a LGA';
+    option.value = '';
+    var select = document.getElementById("lga");
+    select.appendChild(option);
+	for(var i=1; lgas.length;++i){
 		
 		var option = document.createElement("option");
 		option.text = lgas[i]['name'];
