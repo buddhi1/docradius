@@ -22,7 +22,8 @@
 		<th>Contact No.</th>
 		<th>Account state</th>
 		<th>Specialties</th>
-		<th colspan="2">Edit/Delete</th>
+		<th colspan="2">Edit Profile/Edit Account</th>
+		<th>Delete</th>
 	</tr>
 	@foreach($doctors as $doctor)
 	<tr>
@@ -34,10 +35,16 @@
 		@elseif($doctor->state == 0)
 		<td> Deactive </td>
 		@endif
-		<td> {{ json_decode($doctor->specialties }} </td>
+		@if(json_decode($doctor->specialties) !== null)
+		<td> {{implode(',', json_decode($doctor->specialties))}} </td>
+		@endif
 		{{ Form::open(array('url'=>'admin/doctor/edit')) }}
 		{{ Form::hidden('id', $doctor->id) }}
-		<td> {{ Form::submit('Edit') }} </td>
+		<td> {{ Form::submit('Edit Profile') }} </td>
+		{{ Form::close() }}
+		{{ Form::open(array('url'=>'admin/doctor/editaccount')) }}
+		{{ Form::hidden('id', $doctor->id) }}
+		<td> {{ Form::submit('Edit Account') }} </td>
 		{{ Form::close() }}
 		{{ Form::open(array('url'=>'admin/doctor/destroy')) }}
 		{{ Form::hidden('id', $doctor->id) }}
