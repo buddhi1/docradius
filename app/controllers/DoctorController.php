@@ -1,5 +1,9 @@
 <?php
+/*  
 
+********************** USE FILTERS APPROPRIATELY :-)
+
+*/
 class DoctorController extends BaseController{
 
 	public function __construct(){
@@ -21,6 +25,7 @@ class DoctorController extends BaseController{
 			$email = Input::get('email');
 			$rec = DB::table('users')->where('email', '=', $email)->get();
 			if(!$rec){
+
 				$validator = Validator::make(array('name'=> Input::get('name'), 'specialties'=> Input::get('specialties')), Doctor::$rules);
 				if($validator->passes()){
 					$user = new User;
@@ -35,9 +40,9 @@ class DoctorController extends BaseController{
 					$doctor->description = Input::get('description');
 					$doctor->experience = Input::get('experience');
 					$doctor->tp = Input::get('tp');
-					$doctor->special_popup = json_encode(Input::get('special_popup'));	
+					$doctor->special_popup = Input::get('special_popup');	
 					$doctor->user_id = $user->id;	
-					$doctor->specialties = Input::get('specialties');			
+					$doctor->specialties = json_encode(explode(',', Input::get('specialties')));			
 					$image_data = Input::get('image_data');
 		 			if($image_data){
 						$img_name = time().'.jpeg';
@@ -77,6 +82,102 @@ class DoctorController extends BaseController{
 	public function getIndex(){
 		return View::make('admin.doctor.index')
 				->with('doctors', Doctor::all());
+	}
+
+	//view edit page
+	public function postEdit(){
+		$doctor = Doctor::find(Input::get('id'));
+		if($doctor){
+			return View::make('member.doctor.edit')
+					->with('doctor', $doctor)
+					->with('specialties', Specialty::lists('name', 'id'));
+		}
+
+		return Redirect::to('admin/doctor/index')
+				->with('message', 'Something went wrong. Please try again');
+		
+	}
+
+	//update function
+	public function postUpdate(){
+		$validator = Validator::make(Input::all(), Doctor::$rules);
+		if($validator->passes()){
+			$doctor = Doctor::find(Input::get('id'));
+			if($doctor){
+				$doctor->active = 0;
+				if(Input::get('active') == 1){
+					$doctor->active = 1;
+				}
+				$doctor->name = Input::get('name');
+				$doctor->description = Input::get('description');
+				$doctor->experience = Input::get('experience');
+				$doctor->tp = Input::get('tp');
+				$doctor->special_popup = Input::get('special_popup');	
+				$doctor->specialties = json_encode(explode(',', Input::get('specialties')));			
+				$image_data = Input::get('image_data');
+	 			if($image_data){
+	 				$path = 'uploads/profile_pictures/'.$doctor->profile_picture;
+	 				if(file_exists($path)){
+						unlink($path);
+					}
+					$img_name = time().'.jpeg';
+					$im = imagecreatefromjpeg($image_data);
+					imagejpeg($im, 'uploads/profile_pictures/'.$img_name, 70);
+					imagedestroy($im);
+					$doctor->profile_picture = $img_name;
+				}
+				$doctor->save();
+
+				return Redirect::to('admin/doctor/index')
+								->with('message', 'Doctor has been updated sucessfully');
+			}
+
+			return Redirect::to('admin/doctor/index')
+					->with('message', 'Something went wrong. Please try again');
+		}
+
+		return Redirect::to('admin/doctor/index')
+						->with('message', 'Following errors ocurred')
+						->withErrors($validator)
+						->withInput();
+	}	
+
+	//delete doctor fucntion
+	public function postDestroy(){
+		$doctor = Doctor::find(Input::get('id'));
+		if($doctor){
+			$doctor->delete();
+			$user = User::find($doctor->user_id);
+			if($user){
+				$user->delete();
+			}
+			$path = 'uploads/profile_pictures/'.$doctor->profile_picture;
+			if(file_exists($path)){
+				unlink($path);
+			}
+			return Redirect::to('admin/doctor/index')
+						->with('message', 'Doctor has been deleted sucessfully');
+		}
+
+		return Redirect::to('admin/doctor/index')
+					->with('message', 'Something went wrong. Please try again');
+	}	
+
+	//views account edit page
+	public function postEditaccount(){
+		$doctor = Doctor::find(Input::get('id'));
+		if($doctor){
+			$user = User::find($doctor->user_id);
+			
+			if($user){
+				return View::make('member.editAccount')
+					->with('user', $user)
+					->with('type', 1);
+			}			
+		}
+
+		return Redirect::to('admin/doctor/index')
+				->with('message', 'Something went wrong. Please try again');
 	}
 		
 }
