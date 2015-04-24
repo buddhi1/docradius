@@ -69,6 +69,7 @@ class CreateTables extends Migration {
 		Schema::create('patients', function($table){
 			$table->increments('id');
 			$table->string('name');
+			$table->boolean('active');
 			$table->string('tp')->nullable();
 			$table->boolean('sex');
 			$table->integer('town_id')->unsigned();
@@ -97,7 +98,8 @@ class CreateTables extends Migration {
 
 		Schema::create('schedules', function($table){
 			$table->increments('id');
-			$table->time('time');
+			$table->time('start_time');
+			$table->time('end_time');
 			$table->integer('no_of_patients');
 			$table->string('hospital');
 			$table->string('day');
@@ -111,7 +113,11 @@ class CreateTables extends Migration {
 		Schema::create('channels', function($table){
 			$table->increments('id');
 			$table->boolean('state')->nullable();
+			$table->time('time');
 			$table->date('chanelling_date');
+			$table->string('town_id');
+			$table->string('hospital');
+			$table->string('patient_tp');
 			$table->integer('doctor_id')->unsigned();
 			$table->foreign('doctor_id')->references('id')->on('doctors');
 			$table->integer('patient_id')->unsigned();
