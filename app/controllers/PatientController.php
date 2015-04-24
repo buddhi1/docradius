@@ -10,9 +10,12 @@ class PatientController extends BaseController {
 	public function getIndex() {
 	// display all the Patients
 
-		return View::make('admin.patient.index')
-			->with('patients', Patient::all())
-			->with('users', User::all());
+		$patients = DB::table('patients')
+						->join('users', 'users.id', '=', 'patients.user_id')
+						->get();
+
+		return View::make('member.patient.index')
+			->with('patients', $patients);
 	}
 
 	public function getCreate() {
@@ -45,9 +48,10 @@ class PatientController extends BaseController {
 		$name = Input::get('name');
 		$email = Input::get('email');
 		$town_id = Input::get('town_id');
+		$sex = Input::get('sex');
 		$tp = Input::get('tp');
 
-		$validator_patient = Validator::make(array('name' => $name, 'town_id' => $town_id), Patient::$rules);
+		$validator_patient = Validator::make(array('name' => $name, 'town_id' => $town_id, 'sex' => $sex), Patient::$rules);
 		if($validator_patient->passes()) {
 
 			$validator_user = Validator::make(array('email' => $email), User::$rules_patient);
@@ -57,6 +61,7 @@ class PatientController extends BaseController {
 				Session::put('name', $name);
 				Session::put('email', $email);
 				Session::put('town_id', $town_id);
+				Session::put('sex', $sex);
 				Session::put('tp', $tp);
 
 				return Redirect::To('member/patient/makeaccount');
@@ -80,6 +85,7 @@ class PatientController extends BaseController {
 		$name = Session::get('name');
 		$email = Session::get('email');
 		$town_id = Session::get('town_id');
+		$sex = Session::get('sex');
 		$tp = Session::get('tp');
 		$password = Hash::make(Input::get('password'));
 		$type = 2;
@@ -96,7 +102,7 @@ class PatientController extends BaseController {
 		if($user) {
 			// first, inserting the record to the user table
 
-			$validator = Validator::make(array('name' => $name, 'town_id' => $town_id), Patient::$rules);
+			$validator = Validator::make(array('name' => $name, 'town_id' => $town_id, 'sex' => $sex), Patient::$rules);
 			if($validator->passes()) {
 
 				$user->save();
@@ -107,6 +113,7 @@ class PatientController extends BaseController {
 				$patient->name = $name;
 				$patient->tp = $tp;
 				$patient->town_id = $town_id;
+				$patient->sex = $sex;
 				$patient->user_id = $user_id;
 
 				// then entering the record to the patient table
@@ -149,5 +156,60 @@ class PatientController extends BaseController {
 
 		return Redirect::To('member/patient/create')
 			->with('message', 'Could not Activate the Account. Please Try Again Later');
+	}
+
+	public function postEditprofile() {
+
+		$id = Input::get('p_id');
+		$patient = Patient::find($id);
+		$town_id = $patient->town_id;
+		$towns = Town::find($town_id);
+		$lga_id = Town::find($town_id)->lga_id;
+		$lgas = Lga::find($lga_id);
+		$towns_selected = Town::where('lga_id', '=', $lga_id)->lists('name', 'id');
+		$state_id = Lga::find($lga_id)->state_id;
+		$lgas_selected = Lga::where('state_id', '=', $state_id)->lists('name', 'id');
+
+		if($patient) {
+
+			return View::make('member.patient.editprofile')
+				->with('patient',$patient)
+				->with('town_id', $town_id)
+				->with('lga_id', $lga_id)
+				->with('state_id', $state_id)
+				->with('states',['' => 'Select a State'] + State::lists('name', 'id'))
+				->with('towns',$towns_selected)
+				->with('lgas',$lgas_selected);
+		}
+
+		return Redirect::To('member/patient')
+			->with('message', 'Error Occured');
+	}
+
+	public function postUpdateprofile() {
+
+		$id = Input::get('id');
+		$name = Input::get('name');
+		$town_id = Input::get('town_id');
+		$sex = Input::get('sex');
+		$tp = Input::get('tp');
+
+		$patient = Patient::find($id);
+
+		if($patient) {
+
+			$patient->name = $name;
+			$patient->tp = $tp;
+			$patient->town_id = $town_id;
+			$patient->sex = $sex;
+
+			$patient->save();
+
+			return Redirect::To('member/patient')
+				->with('message', 'Profile Has Been Updated');
+		}
+
+		return Redirect::To('member/patient')
+			->with('message', 'Error Occured');
 	}
 }

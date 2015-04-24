@@ -15,25 +15,23 @@
 </div>
 @endif
 
-{{ Form::open(array('url'=>'member/patient/create')) }}
+{{ Form::open(array('url'=>'member/patient/updateprofile')) }}
 
-<div>{{ Form::label('lblName', 'Name') }}: {{ Form::text('name') }}</div>
-<div>{{ Form::label('lblemail', 'Email') }}: {{ Form::email('email') }}</div>
-<div>{{ Form::label('lblGender', 'Gender') }}: {{ Form::radio('sex', '0') }}Male {{ Form::radio('sex', '1') }}Female</div>
-<div>{{ Form::label('lbltp', 'Telephone No.') }}: {{ Form::text('tp') }}</div>
-<div>{{ Form::label('lbltown', 'Town') }}: {{ Form::select('state', $states, null, array('id' => 'state')) }}{{ Form::select('lga', array('default'=>'Select'), null, array('id' => 'lga')) }}{{ Form::select('town_id', array('default'=>'Select'), null, array('id' => 'town')) }}</div>
-<div> {{ Form::submit('Create') }} </div>
+	{{ Form::hidden('id', $patient->id)}}
+<div>{{ Form::label('lblName', 'Name') }}: {{ Form::text('name' ,$patient->name) }}</div>
+<div>{{ Form::label('lblGender', 'Gender') }}:
+@if ($patient->sex == 0)
+	{{ Form::radio('sex', '0', true) }} Male {{ Form::radio('sex', '1') }} Female
+@elseif ($patient->sex == 1)
+	{{ Form::radio('sex', '0') }} Male {{ Form::radio('sex', '1', true) }} Female
+@endif
+<div>{{ Form::label('lbltp', 'Telephone No.') }}: {{ Form::text('tp' ,$patient->tp) }}</div>
+<div>{{ Form::label('lbltown', 'Town') }}: {{ Form::select('state', $states, $state_id, array('id' => 'state')) }}{{ Form::select('lga', $lgas, $lga_id, array('id' => 'lga')) }}{{ Form::select('town_id', $towns, $town_id, array('id' => 'town')) }}</div>
+<div> {{ Form::submit('Edit') }} </div>
 
 {{ Form::close() }}
 
 <script type="text/javascript">
-
-window.onload = function() {
-
-	document.getElementById("lga").style.visibility = "hidden";
-	document.getElementById("town").style.visibility = "hidden";
-	document.getElementById("town").value = ""
-}
 
 document.getElementById('state').onchange = function(){
 
@@ -111,45 +109,14 @@ var DropDowns = function(para, name, des) {
 var lgaDropDown = function(lga) {
 
 	DropDowns(lga, 'lga', 'Select a LGA');
+	var e = document.getElementById("lga").selected.value = <?php
+		echo $lga_id;
+	?>;
 }
 
 var townDropDown = function(town) {
 
 	DropDowns(town, 'town', 'Select a Town');
 }
-
-// var sendRequestToServer = function(headers, parameter) {
-
-// 	var xmlHttp = new XMLHttpRequest(); 
-//     xmlHttp.onreadystatechange = function(){
-
-//         if (xmlHttp.readyState==4 && xmlHttp.status==200){
-
-//             console.log(xmlHttp.responseText);
-//         }
-//     };
-//     xmlHttp.open( "GET", headers + parameter, true );
-//     xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-//     xmlHttp.send();
-// }
-
-// document.getElementById('state').onchange = function(){
-
-// 	if(document.getElementById("state").value) {
-
-// 		document.getElementById("lga").style.visibility = "visible";
-// 		document.getElementById("town").style.visibility = "hidden";
-// 		document.getElementById("town").value = "";
-// 	    var state_id = document.getElementById('state').value;
-
-// 	    sendRequestToServer('dropdowns?state_id=', state_id);
-// 	} else {
-
-// 		document.getElementById("lga").style.visibility = "hidden";
-// 		document.getElementById("town").style.visibility = "hidden";
-// 		document.getElementById("lga").value = "";
-// 		document.getElementById("town").value = "";
-// 	}
-// }
 </script>
 @stop
