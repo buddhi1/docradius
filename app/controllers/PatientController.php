@@ -51,7 +51,7 @@ class PatientController extends BaseController {
 		$sex = Input::get('sex');
 		$tp = Input::get('tp');
 
-		$validator_patient = Validator::make(array('name' => $name, 'town_id' => $town_id, 'sex' => $sex), Patient::$rules);
+		$validator_patient = Validator::make(array('name' => $name, 'town_id' => $town_id, 'sex' => $sex, 'tp' => $tp), Patient::$rules);
 		if($validator_patient->passes()) {
 
 			$validator_user = Validator::make(array('email' => $email), User::$rules_patient);
@@ -102,7 +102,7 @@ class PatientController extends BaseController {
 		if($user) {
 			// first, inserting the record to the user table
 
-			$validator = Validator::make(array('name' => $name, 'town_id' => $town_id, 'sex' => $sex), Patient::$rules);
+			$validator = Validator::make(array('name' => $name, 'town_id' => $town_id, 'sex' => $sex, 'tp' => $tp), Patient::$rules);
 			if($validator->passes()) {
 
 				$user->save();
@@ -211,5 +211,26 @@ class PatientController extends BaseController {
 
 		return Redirect::To('member/patient')
 			->with('message', 'Error Occured');
+	}
+
+	public function postDestroy() {
+
+		$id = Input::get('id');
+
+		$patient = Patient::find($id);
+		$user = User::find($patient->user_id);
+
+		if($patient) {
+
+			$patient->delete();
+
+			if($user) {
+
+				$user->delete();
+
+				return Redirect::To('member/patient')
+					->with('message', 'Patient has been Deleted');
+			}
+		}
 	}
 }

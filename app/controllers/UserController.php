@@ -98,4 +98,104 @@ class UserController extends BaseController {
 		return Redirect::to('admin/user/index')
 				->with('message', 'Something went wrong. Please try again');	
 	}
+
+	//views account edit page
+	public function postEditaccount(){
+		$doctor = Doctor::find(Input::get('id'));
+		if($doctor){
+			$user = User::find($doctor->user_id);
+			
+			if($user){
+				return View::make('member.editAccount')
+					->with('user', $user)
+					->with('type', 1);
+			}			
+		}
+
+		return Redirect::to('admin/doctor/index')
+				->with('message', 'Something went wrong. Please try again');
+	}
+
+	public function postEditaccountsettings(){
+		//display the account edit page for a patient
+
+		$patient = Patient::find(Input::get('a_id'));
+		if($patient){
+			$user = User::find($patient->user_id);
+			
+			if($user){
+				return View::make('member.editaccount')
+					->with('user', $user)
+					->with('type', 0);
+			}			
+		}
+
+		return Redirect::to('member/patient/index')
+				->with('message', 'Something went wrong. Please try again');
+	}
+
+	public function postUpdateaccountsettings() {
+		// save the account chages made
+
+		$id = Input::get('id');
+		$curr_pass = Input::get('password');
+		$new_pass = Input::get('np');
+		$confirm_pass = Input::get('cp');
+		$email = Input::get('email');
+
+		$user = User::find($id);
+
+		if($user) {
+
+			if($curr_pass || $email!==$user->email) {
+
+				if($curr_pass) {
+
+					if(Hash::check($curr_pass, $user->password )){
+
+						if(($new_pass === $confirm_pass) && $new_pass) {
+
+							$user->password = Hash::make($new_pass);
+						} else {
+
+							return Redirect::to('member/patient/index')
+								->with('message', 'Password mismatched');
+						}
+					} else {
+
+						return Redirect::to('member/patient/index')
+							->with('message', 'Current Password is Incorrect');
+					}
+				}
+			
+				if($email !== $user->email) {	//Auth::user()->email
+
+					$validator_user = Validator::make(array('email' => $email), User::$rules_patient);
+					if($validator_user->passes()) {
+
+						$user->email = $email;
+						$code = str_random(60);
+						$user->code = $code;
+						$user->active = 0;
+						Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
+
+							$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
+						});
+					} else {
+						return Redirect::To('member/patient/index')
+							->withErrors($validator_user)
+							->withInput();
+					}	
+				}
+
+				if($user->save()) {
+
+					return Redirect::to('member/patient/index')
+						->with('message', 'Account Settings has been Updated');
+				}
+			}
+			return Redirect::to('member/patient/index')
+				->with('message', 'Nothing has been Changed');
+		}
+	}
 }
