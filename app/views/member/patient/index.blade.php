@@ -8,6 +8,16 @@
 
 @endif
 
+@if($errors->has())
+	<div class="alert alert-danger">
+	<ul>
+		@foreach($errors->all() as $error)			
+				<li> {{ $error }} </li>			
+		@endforeach
+	</ul>
+</div>
+@endif
+
 <table border = "1">
 	<tr>
 		<th>Name</th>
@@ -41,7 +51,7 @@
 			{{ Form::close() }}
 		</td>
 		<td>
-			{{ Form::open(array('url'=>'member/patient/editaccount')) }}
+			{{ Form::open(array('url'=>'admin/user/editaccountsettings')) }}
 
 				{{ Form::hidden('a_id', $patient->id) }}
 				{{ Form::submit('Edit Account', array('class'=>'btn btn-info')) }}

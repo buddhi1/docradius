@@ -45,3 +45,5 @@ Route::controller('member/doctor', 'DoctorController');
 
 //route to doctor controller to admin panel
 Route::controller('admin/doctor', 'DoctorController');
+
+Route::controller('admin/job', 'JobController');
