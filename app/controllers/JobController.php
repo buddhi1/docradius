@@ -26,9 +26,9 @@ class JobController extends BaseController {
 		$title = Input::get('title');
 		$des = Input::get('des');
 		$email_admin = Input::get('email');
-		$email = 'pulasthilakshan@gmail.com';	//Auth::user('email');
-		$user_id = '4';		//Auth::user('id');
-
+		$email = Auth::user()->email;
+		$user_id = Auth::user()->id;
+		
 		$job = new Job;
 
 		if($job) {
@@ -41,6 +41,10 @@ class JobController extends BaseController {
 				$job->email = $email_admin;
 			}
 			$job->user_id = $user_id;
+			if(Auth::user()->type === 1) {
+
+				$job->active = 1;
+			}
 
 			if($job->save()) {
 
@@ -66,5 +70,32 @@ class JobController extends BaseController {
 
 		return Redirect::To('member/job')
 			->with('message', 'Error Occured');
+	}
+
+	public function postMakejobactive() {
+
+		$id = Input::get('id');
+
+		if(Auth::user()->type === 1) {
+
+			$job = Job::find($id);
+
+			if($job->active === 0) {
+
+				$job->active = 1;
+			} else {
+				$job->active = 0;
+			}
+			
+
+			if($job->save()) {
+
+				return Redirect::To('member/job');
+			}
+			return Redirect::To('member/job')
+				->with('message', 'Error Occured');
+		}
+		return Redirect::To('member/job')
+			->with('message', 'You are not authorized to perform this action');
 	}
 }
