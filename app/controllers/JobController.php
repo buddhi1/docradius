@@ -7,6 +7,13 @@ class JobController extends BaseController {
 		$this->beforeFilter('csrf', array('on' => 'post'));
 	}
 
+	public function getIndex() {
+		// display all the jobs available
+
+		return View::make('member.job.index')
+			->with('jobs', Job::all());
+	}
+
 	public function getCreate() {
 		// display the create form for a Job
 
@@ -41,5 +48,23 @@ class JobController extends BaseController {
 					->with('message', 'Health Job is Created');
 			}
 		}
+	}
+
+	public function postDestroy() {
+		// delete a job from the database //admin
+
+		$id = Input::get('id');
+
+		$job = Job::find($id);
+
+		if($job) {
+
+			$job->delete();
+			return Redirect::To('member/job')
+			->with('message', 'Job Deleted Successfully');
+		}
+
+		return Redirect::To('member/job')
+			->with('message', 'Error Occured');
 	}
 }
