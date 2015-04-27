@@ -52,3 +52,6 @@ Route::controller('member/schedule', 'ScheduleController');
 
 Route::controller('member/job', 'JobController');
 
+
+//route to member login
+Route::controller('member', 'AuthController');
