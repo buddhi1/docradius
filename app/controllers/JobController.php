@@ -73,6 +73,7 @@ class JobController extends BaseController {
 	}
 
 	public function postMakejobactive() {
+		// make a health job active //admin
 
 		$id = Input::get('id');
 
