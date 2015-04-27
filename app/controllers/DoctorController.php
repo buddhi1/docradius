@@ -170,22 +170,5 @@ class DoctorController extends BaseController{
 
 		return Redirect::to('admin/doctor/index')
 					->with('message', 'Something went wrong. Please try again');
-	}	
-
-	//views account edit page
-	public function postEditaccount(){
-		$doctor = Doctor::find(Input::get('id'));
-		if($doctor){
-			$user = User::find($doctor->user_id);
-			
-			if($user){
-				return View::make('member.editAccount')
-					->with('user', $user)
-					->with('type', 1);
-			}			
-		}
-
-		return Redirect::to('admin/doctor/index')
-				->with('message', 'Something went wrong. Please try again');
 	}
 }

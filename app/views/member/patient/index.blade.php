@@ -8,43 +8,60 @@
 
 @endif
 
-<table>
+@if($errors->has())
+	<div class="alert alert-danger">
+	<ul>
+		@foreach($errors->all() as $error)			
+				<li> {{ $error }} </li>			
+		@endforeach
+	</ul>
+</div>
+@endif
+
+<table border = "1">
 	<tr>
-		<th>User ID</th>
 		<th>Name</th>
+		<th>Email</th>
+		<th>Contact No.</th>
 		<th>Gender</th>
-		<th>NIC</th>
-		<th>Council Registration No.</th>
-		<th>District</th>
-		<th>Edit</th>
+		<th>Town</th>
+		<th>Edit Profile</th>
+		<th>Edit Account Settings</th>
 		<th>Delete</th>
 	</tr>
 
-@foreach($members as $member)
+@foreach($patients as $patient)
 	<tr>
-		<td>{{ $member->id }}</td>
-		<td>{{ $member->name }}</td>
+		<td>{{ $patient->name }}</td>
+		<td>{{ $patient->email }}</td>
+		<td>{{ $patient->tp }}</td>
 
-		@if($member->sex == '0')
+		@if($patient->sex == '0')
 			<td>Male</td>
-		@elseif($member->sex == '1')
+		@elseif($patient->sex == '1')
 			<td>Female</td>
 		@endif
-		<td>{{ $member->nic }}</td>
-		<td>{{ $member->concil_registration_no }}</td>
-		<td>{{ $member->district }}</td>
+		<td>{{ $patient->town_id }}</td>
 		<td>
-			{{ Form::open(array('url'=>'admin/member/edit')) }}
+			{{ Form::open(array('url'=>'member/patient/editprofile')) }}
 
-				{{ Form::hidden('id', $member->id) }}
-				{{ Form::submit('Edit', array('class'=>'btn btn-info')) }}
+				{{ Form::hidden('p_id', $patient->id) }}
+				{{ Form::submit('Edit Profile', array('class'=>'btn btn-info')) }}
 
 			{{ Form::close() }}
 		</td>
 		<td>
-			{{ Form::open(array('url'=>'admin/member/destroy')) }}
+			{{ Form::open(array('url'=>'admin/user/editaccountsettings')) }}
 
-				{{ Form::hidden('id', $member->id) }}
+				{{ Form::hidden('a_id', $patient->id) }}
+				{{ Form::submit('Edit Account', array('class'=>'btn btn-info')) }}
+
+			{{ Form::close() }}
+		</td>
+		<td>
+			{{ Form::open(array('url'=>'member/patient/destroy')) }}
+
+				{{ Form::hidden('id', $patient->id) }}
 				{{ Form::submit('Delete', array('class'=>'btn btn-danger')) }}
 
 			{{ Form::close() }}
@@ -53,9 +70,5 @@
 @endforeach
 	
 </table>
-
-<div>
-	{{ $members->links() }}
-</div>
 
 @stop
