@@ -30,10 +30,10 @@
 		<td> {{ $doctor->id }} </td>
 		<td> {{ $doctor->name }} </td>
 		<td> {{ $doctor->tp }} </td>
-		@if($doctor->state == 1)
-		<td> Active </td>
-		@elseif($doctor->state == 0)
-		<td> Deactive </td>
+		@if($doctor->active == 1)
+		<td> Verified </td>
+		@elseif($doctor->active == 0)
+		<td> Not verified </td>
 		@endif
 		@if(json_decode($doctor->specialties) !== null)
 		<td> {{implode(',', json_decode($doctor->specialties))}} </td>

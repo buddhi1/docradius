@@ -103,10 +103,19 @@ class DoctorController extends BaseController{
 		$validator = Validator::make(Input::all(), Doctor::$rules);
 		if($validator->passes()){
 			$doctor = Doctor::find(Input::get('id'));
-			if($doctor){
-				$doctor->active = 0;
+			$user = User::find($doctor->user_id);
+			if($doctor){				
 				if(Input::get('active') == 1){
+					if($doctor->active != 1 ){
+						$name = substr($user->email, 0, stripos($user->email, "@"));
+						Mail::send('emails.auth.verify', array('name'=>$name), function($message) use ($user, $name) {
+							$message->to($user->email, $name)->subject('Vefication notice');
+						});
+					}				
+
 					$doctor->active = 1;
+				}else{
+					$doctor->active = 0;
 				}
 				$doctor->name = Input::get('name');
 				$doctor->description = Input::get('description');

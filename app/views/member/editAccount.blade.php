@@ -7,15 +7,19 @@
 <h1>Docradius - Account</h1>
 
 <div>
+
 	{{ Form::open(array('url'=>'admin/user/updateaccountsettings'))}}
+
 	{{ Form::hidden('id', $user->id) }}
 	@if($type != 1)
 	<div> {{ Form::label('', 'Current password') }}: {{ Form::password('password') }} </div>
 	@endif
+
 	<div>{{ Form::label('', 'Email') }}: {{ Form::text('email', $user->email) }}</div>
 	<div> {{ Form::label('', 'New password') }}: {{ Form::password('np', array('id' => 'pw')) }} </div>
 	@if($type != 1)
 	<div> {{ Form::label('', 'Confirm password') }}: {{ Form::password('cp', array('id'=>'confirm')) }} </div>
+
 	@endif
 	<div> {{ Form::submit('Save changes', array('id' => 'submit')) }} </div>
 	{{ Form::close() }}
