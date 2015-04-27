@@ -119,7 +119,7 @@ class UserController extends BaseController {
 	public function postEditaccountsettings(){
 		//display the account edit page for a patient
 
-		$patient = Patient::find(Input::get('a_id'));
+		$patient = Patient::find(Auth::user()->id);
 		if($patient){
 			$user = User::find($patient->user_id);
 			
@@ -137,21 +137,21 @@ class UserController extends BaseController {
 	public function postUpdateaccountsettings() {
 		// save the account chages made
 
-		$id = Input::get('id');
+		//$id = Input::get('id');
 		$curr_pass = Input::get('password');
 		$new_pass = Input::get('np');
 		$confirm_pass = Input::get('cp');
 		$email = Input::get('email');
 
-		$user = User::find($id);
+		$user = User::find(Auth::user()->id);
 
 		if($user) {
 
-			if($curr_pass || $email!==$user->email) {
+			if($curr_pass || Auth::user()->email) {
 
 				if($curr_pass) {
 
-					if(Hash::check($curr_pass, $user->password )){
+					if(Hash::check($curr_pass, Auth::user()->password )){
 
 						if(($new_pass === $confirm_pass) && $new_pass) {
 
@@ -168,7 +168,7 @@ class UserController extends BaseController {
 					}
 				}
 			
-				if($email !== $user->email) {	//Auth::user()->email
+				if($email !== Auth::user()->email) {
 
 					$validator_user = Validator::make(array('email' => $email), User::$rules_patient);
 					if($validator_user->passes()) {

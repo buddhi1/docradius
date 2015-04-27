@@ -9,6 +9,7 @@
 	<tr>
 		<th>Title</th>
 		<th>Description</th>
+		<th>Active</th>
 		<th>Delete</th>
 	</tr>
 
@@ -16,6 +17,22 @@
 	<tr>
 		<td>{{ $job->title }}</td>
 		<td>{{ $job->description }}</td>
+		<td>
+			{{ Form::open(array('url'=>'member/job/makejobactive')) }}
+
+				{{ Form::hidden('id', $job->id) }}
+
+				@if($job->active === 0)
+
+					{{ Form::label('Not Active', null, array('id' => 'active'))}}
+					{{ Form::submit('Activate', array('class'=>'btn btn-danger')) }}
+				@else
+					{{ Form::label('Active', null, array('id' => 'active'))}}
+					{{ Form::submit('Deactivate', array('class'=>'btn btn-danger')) }}
+				@endif
+
+			{{ Form::close() }}
+		</td>
 		<td>
 			{{ Form::open(array('url'=>'member/job/destroy')) }}
 

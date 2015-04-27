@@ -9,7 +9,9 @@ class UserTableSeeder extends Seeder
 	    //DB::table('users')->delete();
 	    User::create(array(
 	        'email' => 'admin@docradius.dev',	       
-	        'password' => Hash::make('pass')
+	        'password' => Hash::make('pass'),
+	        'type' => 1,
+	        'active' => 1
 	    ));
 
 	}
