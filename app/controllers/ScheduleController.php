@@ -217,8 +217,8 @@ class ScheduleController extends BaseController{
 				return Redirect::to('member/schedule/index')
 					->with('message', 'Schedule deleted successfully');
 			}
-
-			$channel = DB::table('channels')->where('schedule_id', '=', $schedule->id)->where('state', '=', 0)->count()
+			
+			$channel = DB::table('channels')->where('schedule_id', '=', $schedule->id)->where('state', '=', 0)->count();
 			return View::make('member.schedule.forcedelete')
 							->with('schedule', $schedule)
 							->with('channels', $channel);
@@ -236,7 +236,7 @@ class ScheduleController extends BaseController{
 		$schedule = Schedule::find($schedule->id);
 						
 		if($schedule){
-			while ( $channel = DB::table('channels')->where('schedule_id', '=', $schedule->id)->first()) {
+			while ( $channel = DB::table('channels')->where('schedule_id', '=', $schedule->id)->where('state', '=', 0)->first()) {
 				$channel = Channel::find($channel->id);
 				$patient  = Patient::find($channel->patient_id);
 				$user = User::find($patient->user_id);
@@ -249,7 +249,12 @@ class ScheduleController extends BaseController{
 				$channel->state = 5;
 				$channel->save(); 
 			}
+			//delete form inactives--------------------------------------------
+			/*
+	
+			DELEEEEEETEEEEEEEEEEEEEEEEEE inactives
 
+			********************************************************/
 			$schedule->delete();
 
 			return Redirect::to('member/schedule/index')

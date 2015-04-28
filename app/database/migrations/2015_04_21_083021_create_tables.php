@@ -119,12 +119,9 @@ class CreateTables extends Migration {
 			$table->string('town_id');
 			$table->string('hospital');
 			$table->string('patient_tp');
-			$table->integer('doctor_id')->unsigned();
-			$table->foreign('doctor_id')->references('id')->on('doctors');
-			$table->integer('patient_id')->unsigned();
-			$table->foreign('patient_id')->references('id')->on('patients');
-			$table->integer('schedule_id')->unsigned();
-			$table->foreign('schedule_id')->references('id')->on('schedules');
+			$table->integer('doctor_id')->nullable();
+			$table->integer('patient_id')->nullable();
+			$table->integer('schedule_id')->nullable();
 			$table->timestamps();
 		});
 
@@ -133,10 +130,8 @@ class CreateTables extends Migration {
 			$table->increments('id');
 			$table->dateTime('date_time');
 			$table->boolean('visit_state');
-			$table->integer('doctor_id')->unsigned();
-			$table->foreign('doctor_id')->references('id')->on('doctors');
-			$table->integer('patient_id')->unsigned();
-			$table->foreign('patient_id')->references('id')->on('patients');
+			$table->integer('doctor_id')->nullable();
+			$table->integer('patient_id')->nullable();
 			$table->timestamps();
 		});
 
@@ -148,7 +143,7 @@ class CreateTables extends Migration {
 			$table->integer('schedule_id')->unsigned();
 			$table->foreign('schedule_id')->references('id')->on('schedules');
 			$table->timestamps();
-		});
+		});		
 	}
 
 	/**
