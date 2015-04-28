@@ -17,13 +17,41 @@ class ChannelController extends BaseController {
 	public function getSearch() {
 		// Search the database for the practitioner and the location
 
-		$doc = Input::get('practitioner');
-		$location = Input::get('location');
+		$town_arr = array();
 
-		$doctors = DB::table('practitioners')
-			->select('id')
-			->where($specialties, 'LIKE', '%'.$doc.'%')
-			->where(DB::raw('LOWER(name)'))
+		$doc = Input::get('practitioner');
+		$special = Specialty::find($doc)->pluck('name');
+		$location = Input::get('location');
+		$towns = DB::table('towns')
+						->select('id')
+						->where('name', 'LIKE', '%'.$location.'%')
+						->get();
+
+		foreach ($towns as $town) {
+			$town_arr[] = $town->id;
+		}
+
+		$doctors = DB::table('doctors')
+			->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+			->where('specialties', 'LIKE', '%'.$special.'%')
+			->whereIn('schedules.town_id',$town_arr)
 			->get();
+
+		if($doctors) {
+
+			return View::make('channel.doctor')
+				->with('doctors', $doctors);
+		}
+		return Redirect::to('channel')
+			->with('message', 'Could not find any doctors');
+		
+	}
+
+	public function schedule($id) {
+		// show the of a specific doctor
+		$schedule = Schedule::where('doctor_id', '=', $id)->get();
+		
+		return View::make('channel.schedule')
+			->with('schedules', $schedule);
 	}
 }
