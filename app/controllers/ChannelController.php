@@ -49,9 +49,37 @@ class ChannelController extends BaseController {
 
 	public function schedule($id) {
 		// show the of a specific doctor
-		$schedule = Schedule::where('doctor_id', '=', $id)->get();
+		$week_arr = array(
+			'0',
+			'1',
+			'2',
+			'3',
+			'4',
+			'5',
+			'6');
+		$days = array();
+
+		foreach ($week_arr as $week) {
+			$days[] = DB::table('schedules')
+							->select('id','start_time', 'end_time')
+							->where('doctor_id', $id)
+							->where('day', $week)
+							->get();
+			
+		}
 		
 		return View::make('channel.schedule')
-			->with('schedules', $schedule);
+			->with('days', $days);
+	}
+
+	public function patient($id) {
+
+		$schedule = Schedule::find($id);
+
+		Session::put('schedule', $schedule);
+
+		return View::make('member.patient.add')
+			->with('states',['' => 'Select a State'] + State::lists('name', 'id'))
+			->with('schedule_msg', 'You have booked from '.$schedule->start_time.' to '.$schedule->end_time);
 	}
 }
