@@ -212,6 +212,8 @@ class ScheduleController extends BaseController{
 
 			if($channels == null){
 				$schedule = Schedule::find($schedule->id);
+				DB::table('inactives')->where('schedule_id', '=', $schedule->id)->delete();
+				
 				$schedule->delete();
 
 				return Redirect::to('member/schedule/index')
@@ -249,12 +251,8 @@ class ScheduleController extends BaseController{
 				$channel->state = 5;
 				$channel->save(); 
 			}
-			//delete form inactives--------------------------------------------
-			/*
-	
-			DELEEEEEETEEEEEEEEEEEEEEEEEE inactives
-
-			********************************************************/
+			DB::table('inactives')->where('schedule_id', '=', $schedule->id)->delete();
+			
 			$schedule->delete();
 
 			return Redirect::to('member/schedule/index')

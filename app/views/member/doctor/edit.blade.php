@@ -116,7 +116,8 @@ var sp	= {{ $doctor->specialties }};
 			spDiv.appendChild(node);
 			var element = document.getElementById("selected_sp");
 			element.appendChild(spDiv);
-		};	
+		};
+		document.getElementById('add_sp').disabled = false;		
 
 		return sp;
 	}

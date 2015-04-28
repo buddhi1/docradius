@@ -137,7 +137,8 @@ class CreateTables extends Migration {
 
 
 		Schema::create('inactives', function($table){
-			$table->increments('id');			
+			$table->increments('id');	
+			$table->date('date');		
 			$table->integer('doctor_id')->unsigned();
 			$table->foreign('doctor_id')->references('id')->on('doctors');
 			$table->integer('schedule_id')->unsigned();

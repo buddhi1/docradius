@@ -114,8 +114,10 @@ class DoctorController extends BaseController{
 					}				
 
 					$doctor->active = 1;
+					$user->active = 1;
 				}else{
 					$doctor->active = 0;
+					$user->active = 0;
 				}
 				$doctor->name = Input::get('name');
 				$doctor->description = Input::get('description');
@@ -136,7 +138,7 @@ class DoctorController extends BaseController{
 					$doctor->profile_picture = $img_name;
 				}
 				$doctor->save();
-
+				$user->save();
 				return Redirect::to('admin/doctor/index')
 								->with('message', 'Doctor has been updated sucessfully');
 			}
