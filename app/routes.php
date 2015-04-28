@@ -40,6 +40,9 @@ Route::controller('member/schedule', 'ScheduleController');
 
 Route::controller('member/job', 'JobController');
 
+// get the schedule of a doctor
+Route::get('channel/schedule/{id}', 'ChannelController@schedule');
+
 Route::controller('channel', 'ChannelController');
 
 //route to member login
