@@ -50,7 +50,7 @@ document.getElementById('state').onchange = function(){
 	            lgaDropDown(xmlHttp.responseText);
 	        }
 	    };
-	    xmlHttp.open( "GET", 'dropdowns?state_id=' + state_id, true );
+	    xmlHttp.open( "GET", '{{url()}}/member/patient/dropdowns?state_id=' + state_id, true );
 	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlHttp.send();
 	} else {
@@ -76,7 +76,7 @@ document.getElementById('lga').onchange = function(){
 	            townDropDown(xmlHttp.responseText);
 	        }
 	    };
-	    xmlHttp.open( "GET", 'towndrop?lga_id=' + lga_id, true );
+	    xmlHttp.open( "GET", '{{url()}}/member/patient/towndrop?lga_id=' + lga_id, true );
 	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlHttp.send();
 	} else {

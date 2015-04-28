@@ -2,6 +2,10 @@
 
 @section('content')
 
+@if(isset($schedule_msg))
+	{{ $schedule_msg }}
+@endif
+
 @if(Session::has('message'))
 	<div>{{ Session::get('message') }}</div>
 @endif
@@ -52,7 +56,7 @@ document.getElementById('state').onchange = function(){
 	            lgaDropDown(xmlHttp.responseText);
 	        }
 	    };
-	    xmlHttp.open( "GET", 'dropdowns?state_id=' + state_id, true );
+	    xmlHttp.open( "GET", '{{url()}}/member/patient/dropdowns?state_id=' + state_id, true );
 	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlHttp.send();
 	} else {
@@ -78,7 +82,7 @@ document.getElementById('lga').onchange = function(){
 	            townDropDown(xmlHttp.responseText);
 	        }
 	    };
-	    xmlHttp.open( "GET", 'towndrop?lga_id=' + lga_id, true );
+	    xmlHttp.open( "GET", '{{url()}}/member/patient/towndrop?lga_id=' + lga_id, true );
 	    xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlHttp.send();
 	} else {
@@ -117,39 +121,5 @@ var townDropDown = function(town) {
 
 	DropDowns(town, 'town', 'Select a Town');
 }
-
-// var sendRequestToServer = function(headers, parameter) {
-
-// 	var xmlHttp = new XMLHttpRequest(); 
-//     xmlHttp.onreadystatechange = function(){
-
-//         if (xmlHttp.readyState==4 && xmlHttp.status==200){
-
-//             console.log(xmlHttp.responseText);
-//         }
-//     };
-//     xmlHttp.open( "GET", headers + parameter, true );
-//     xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-//     xmlHttp.send();
-// }
-
-// document.getElementById('state').onchange = function(){
-
-// 	if(document.getElementById("state").value) {
-
-// 		document.getElementById("lga").style.visibility = "visible";
-// 		document.getElementById("town").style.visibility = "hidden";
-// 		document.getElementById("town").value = "";
-// 	    var state_id = document.getElementById('state').value;
-
-// 	    sendRequestToServer('dropdowns?state_id=', state_id);
-// 	} else {
-
-// 		document.getElementById("lga").style.visibility = "hidden";
-// 		document.getElementById("town").style.visibility = "hidden";
-// 		document.getElementById("lga").value = "";
-// 		document.getElementById("town").value = "";
-// 	}
-// }
 </script>
 @stop
