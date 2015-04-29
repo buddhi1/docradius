@@ -89,7 +89,7 @@ class PatientController extends BaseController {
 		$sex = Session::get('sex');
 		$tp = Session::get('tp');
 		$password = Hash::make(Input::get('password'));
-		$type = 2;
+		$type = 3;
 		$code = str_random(60);
 
 		$user = new User;
