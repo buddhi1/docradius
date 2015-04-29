@@ -12,6 +12,7 @@ class PatientController extends BaseController {
 
 		$patients = DB::table('patients')
 						->join('users', 'users.id', '=', 'patients.user_id')
+						->select('patients.id as id', 'name', 'email', 'tp', 'sex', 'town_id')
 						->get();
 
 		return View::make('member.patient.index')
