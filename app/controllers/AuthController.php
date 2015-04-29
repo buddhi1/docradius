@@ -17,7 +17,7 @@ class AuthController extends BaseController{
 			$email = Input::get('email');
 			$password = Input::get('password');
 			
- 			if (Auth::attempt(['email' => $email, 'password' => $password]))
+ 			if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1]))
 			{
 			    return Redirect::to('/');
 			}
@@ -35,5 +35,10 @@ class AuthController extends BaseController{
 	public function getLogout(){
 		Auth::logout();
 		return Redirect::to('member/login');
+	}
+
+	//member home page
+	public function getIndex(){
+		return View::make('member.layouts.main');
 	}
 }

@@ -57,3 +57,8 @@ Route::controller('member/calendar', 'InactiveController');
 //route to member login
 Route::controller('member', 'AuthController');
 
+//route to admin controller for edit account
+Route::get('admin/editaccountsettings', 'UserController@editaccountsettings');
+
+//route to admin home
+Route::get('admin', 'UserController@index');
