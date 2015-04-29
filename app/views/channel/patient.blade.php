@@ -2,6 +2,10 @@
 
 @section('content')
 
+@if(isset($schedule_msg))
+	{{ $schedule_msg }}
+@endif
+
 @if(Session::has('message'))
 	<div>{{ Session::get('message') }}</div>
 @endif
@@ -15,7 +19,7 @@
 </div>
 @endif
 
-{{ Form::open(array('url'=>'member/patient/create')) }}
+{{ Form::open(array('url'=>'channel/create')) }}
 
 <div>{{ Form::label('lblName', 'Name') }}: {{ Form::text('name') }}</div>
 <div>{{ Form::label('lblemail', 'Email') }}: {{ Form::email('email') }}</div>
