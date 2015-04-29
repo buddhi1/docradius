@@ -4,7 +4,7 @@ class UserController extends BaseController {
 
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('admin');
+		$this->beforeFilter('admin', array('except'=>array('getEditaccountsettings', 'postUpdateaccountsettings')));
 	}
 
 	//views the create user blade
@@ -48,7 +48,7 @@ class UserController extends BaseController {
 	public function getIndex(){
 		//views the index page with availabale user details
 		return View::make('admin.user.index')
-					->with('users', User::all());		
+					->with('users', User::where('type', '=', 1)->get());		
 	}
 
 	//user edit page
@@ -66,7 +66,7 @@ class UserController extends BaseController {
 			if($email){			
 				$password = Input::get('password');
 				if($user->password != $password){
-					$user->password = $password;
+					$user->password = Hash::make($password);
 				}
 				$user->email = $email;
 				$user->save();
@@ -117,23 +117,6 @@ class UserController extends BaseController {
 				->with('message', 'Something went wrong. Please try again');
 	}
 
-	public function postEditaccountsettings(){
-		//display the account edit page for a patient
-
-		$patient = Patient::find(Auth::user()->id);
-		if($patient){
-			$user = User::find($patient->user_id);
-			
-			if($user){
-				return View::make('member.editaccount')
-					->with('user', $user)
-					->with('type', 0);
-			}			
-		}
-
-		return Redirect::to('member/patient/index')
-				->with('message', 'Something went wrong. Please try again');
-	}
 
 	public function postUpdateaccountsettings() {
 		// save the account chages made
@@ -148,7 +131,7 @@ class UserController extends BaseController {
 
 		if($user) {
 
-			if($curr_pass || Auth::user()->email) {
+			if($curr_pass && Auth::user()->email === $email) {
 
 				if($curr_pass) {
 
@@ -159,12 +142,22 @@ class UserController extends BaseController {
 							$user->password = Hash::make($new_pass);
 						} else {
 
-							return Redirect::to('member/patient/index')
+							if(Auth::user()->type == 1){
+								return Redirect::to('admin')
+								->with('message', 'Password mismatched');
+							}
+
+							return Redirect::to('member/index')
 								->with('message', 'Password mismatched');
 						}
 					} else {
 
-						return Redirect::to('member/patient/index')
+						if(Auth::user()->type == 1){
+								return Redirect::to('admin')
+								->with('message', 'Current Password is Incorrect');
+						}
+
+						return Redirect::to('member/index')
 							->with('message', 'Current Password is Incorrect');
 					}
 				}
@@ -183,20 +176,56 @@ class UserController extends BaseController {
 							$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
 						});
 					} else {
-						return Redirect::To('member/patient/index')
+						if(Auth::user()->type == 1){
+							return Redirect::to('admin')
+									->withErrors($validator_user)
+									->withInput();
+						}
+
+						return Redirect::To('member/index')
 							->withErrors($validator_user)
 							->withInput();
 					}	
 				}
 
 				if($user->save()) {
+					if(Auth::user()->type == 1){
+						return Redirect::to('admin')
+								->with('message', 'Account Settings has been Updated');
+					}
 
-					return Redirect::to('member/patient/index')
+					return Redirect::to('member/index')
 						->with('message', 'Account Settings has been Updated');
 				}
 			}
-			return Redirect::to('member/patient/index')
+
+			if(Auth::user()->type == 1){
+				return Redirect::to('admin')
+						->with('message', 'Nothing has been Changed');
+			}
+
+			return Redirect::to('member/index')
 				->with('message', 'Nothing has been Changed');
+		}	
+	}
+
+	//display the account edit page for a admin
+	public function editaccountsettings(){
+	
+		$admin = User::find(Auth::user()->id);
+		
+		if($admin){			
+			return View::make('member.editaccount')
+				->with('user', $admin)
+				->with('type', 0);				
 		}
+
+		return Redirect::to('admin/index')
+				->with('message', 'Something went wrong. Please try again');
+	}
+
+	//
+	public function index(){
+		return View::make('admin.layouts.main');
 	}
 }
