@@ -34,7 +34,7 @@ class ChannelController extends BaseController {
 		$doctors = DB::table('doctors')
 			->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
 			->where('specialties', 'LIKE', '%'.$special.'%')
-			->where('active', 0)
+			->where('active', 1)
 			->whereIn('schedules.town_id',$town_arr)
 			->get();
 
@@ -178,5 +178,11 @@ class ChannelController extends BaseController {
 				->withErrors($validator)
 				->withInput();
 		}
+	}
+
+	public function booking() {
+
+		var_dump(Session::put('schedule_id'));
+		die();
 	}
 }

@@ -30,6 +30,10 @@
 
 {{ Form::close() }}
 
+{{ Form::open(array('url'=>'channel/booking')) }}
+
+{{ Form::close() }}
+
 <script type="text/javascript">
 
 window.onload = function() {
