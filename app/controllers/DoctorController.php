@@ -1,13 +1,11 @@
 <?php
-/*  
 
-********************** USE FILTERS APPROPRIATELY :-)
-
-*/
 class DoctorController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('adm_doc', array('only'=>array('postUpdate', 'getEdit', 'getEditaccountsettings')));	
+		$this->beforeFilter('admin', array('only'=>array('getIndex', 'postDestroy')));
 	}
 
 	//views create page

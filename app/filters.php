@@ -89,22 +89,36 @@ Route::filter('csrf', function()
 	}
 });
 
-//patient filter to protect member areas
+//patient filter to protect patient areas
 Route::filter('patient', function(){
-	if(!Auth::check()){
+	if(!Auth::check() || Auth::user()->type != 3){
 		return Redirect::to('/');
 	}
 });
 
-//doctor filter to protect admin areas
+//doctor filter to protect doctor areas
 Route::filter('doctor', function(){
 	if(!Auth::check() ||  Auth::user()->type != 2){
 		return Redirect::to('/');
 	}
 });
 
-//admin filter to protect super_admin areas
+//admin filter to protect admin areas
 Route::filter('admin', function(){
+	if(!Auth::check() ||  Auth::user()->type != 1){
+		return Redirect::to('/');
+	}
+});
+
+//adm_pat filter to protect admin patient shared areas
+Route::filter('adm_pat', function(){
+	if(!Auth::check() ||  Auth::user()->type != 1){
+		return Redirect::to('/');
+	}
+});
+
+//adm_doc filter to protect admin doctor shared areas
+Route::filter('adm_doc', function(){
 	if(!Auth::check() ||  Auth::user()->type != 1){
 		return Redirect::to('/');
 	}

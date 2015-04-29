@@ -4,7 +4,10 @@ class PatientController extends BaseController {
 
 	public function __construct() {
 
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('csrf', array('on' => 'post'));	
+		$this->beforeFilter('adm_pat', array('only'=>array('getEditaccountsettings')));	
+		$this->beforeFilter('admin', array('only'=>array('getIndex', 'postDestroy')));
+		$this->beforeFilter('patient', array('only'=>array('postEditprofile', 'postUpdateprofile')));
 	}
 
 	public function getIndex() {

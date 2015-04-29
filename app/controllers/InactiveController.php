@@ -3,6 +3,7 @@
 class InactiveController extends BaseController{
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('doctor');
 	}
 
 	//views inactive page
