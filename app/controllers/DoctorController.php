@@ -31,7 +31,7 @@ class DoctorController extends BaseController{
 					$user = new User;
 					$user->email = $email;
 					$user->password = Hash::make(Input::get('password'));
-					$user->type = 1;
+					$user->type = 2;
 					$user->active = 0;
 					$user->save();
 
@@ -84,7 +84,7 @@ class DoctorController extends BaseController{
 				->with('doctors', Doctor::all());
 	}
 
-	//view edit page
+	//view edit page for admin
 	public function postEdit(){
 		$doctor = Doctor::find(Input::get('id'));
 		if($doctor){
@@ -96,6 +96,19 @@ class DoctorController extends BaseController{
 		return Redirect::to('admin/doctor/index')
 				->with('message', 'Something went wrong. Please try again');
 		
+	}
+
+	//view edit page for doctor
+	public function getEdit(){
+		$doc = Doctor::where('user_id', '=', Auth::id())->first();
+		if($doc){
+			return View::make('member.doctor.edit')
+					->with('doctor', $doc)
+					->with('specialties', Specialty::lists('name', 'id'));
+		}
+
+		return Redirect::to('/') //Set the redirect to member home
+				->with('message', 'Something went wrong. Please try again.'); 
 	}
 
 	//update function

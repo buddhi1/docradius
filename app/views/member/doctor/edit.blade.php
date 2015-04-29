@@ -16,14 +16,16 @@
 @endif
 
 {{ Form::open(array('url'=>'member/doctor/update', 'files'=>true)) }}
-<div>
-{{ Form::label('lblname', 'Verify Account') }}: 
-@if($doctor->active == 1)
-{{ Form::checkbox('active','1', array('checked')) }}
-@else
-{{Form::checkbox('active')}}
+@if(Auth::user()->type == 1)
+	<div>
+	{{ Form::label('lblname', 'Verify Account') }}: 
+	@if($doctor->active == 1)
+	{{ Form::checkbox('active','1', array('checked')) }}
+	@else
+	{{Form::checkbox('active')}}
+	@endif
+	</div>
 @endif
-</div>
 
 {{ Form::hidden('id', $doctor->id) }}
 <div>{{ Form::label('lblname', 'Doctor name') }}: {{ Form::text('name', $doctor->name) }}</div>
