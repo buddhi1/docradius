@@ -28,6 +28,9 @@ Route::get('member/patient/activate/{code}', array(
 
 Route::controller('member/patient', 'PatientController');
 
+//route to patient controller by admin
+Route::controller('admin/patient', 'PatientController'); 
+
 //route to doctor controller
 Route::controller('member/doctor', 'DoctorController');
 
