@@ -44,7 +44,6 @@ class ChannelController extends BaseController {
 		}
 		return Redirect::to('channel')
 			->with('message', 'Could not find any doctors');
-		
 	}
 
 	public function schedule($id) {
@@ -173,7 +172,7 @@ class ChannelController extends BaseController {
 				Session::flush();
 				return Redirect::To('channel');
 			}
-			
+
 			return Redirect::To('channel/schedule/create/'.$id)
 				->withErrors($validator)
 				->withInput();
