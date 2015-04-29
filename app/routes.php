@@ -48,5 +48,9 @@ Route::get('channel/schedule/{id}', 'ChannelController@schedule');
 
 Route::controller('channel', 'ChannelController');
 
+//route to inactve controler
+Route::controller('member/calendar', 'InactiveController');
+
 //route to member login
 Route::controller('member', 'AuthController');
+
