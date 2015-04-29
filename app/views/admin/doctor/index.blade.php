@@ -42,7 +42,7 @@
 		{{ Form::hidden('id', $doctor->id) }}
 		<td> {{ Form::submit('Edit Profile') }} </td>
 		{{ Form::close() }}
-		{{ Form::open(array('url'=>'admin/doctor/editaccount')) }}
+		{{ Form::open(array('url'=>'member/doctor/editaccountsettings', 'method'=>'GET')) }}
 		{{ Form::hidden('id', $doctor->id) }}
 		<td> {{ Form::submit('Edit Account') }} </td>
 		{{ Form::close() }}

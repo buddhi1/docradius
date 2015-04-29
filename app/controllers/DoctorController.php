@@ -1,13 +1,11 @@
 <?php
-/*  
 
-********************** USE FILTERS APPROPRIATELY :-)
-
-*/
 class DoctorController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('adm_doc', array('only'=>array('postUpdate', 'getEdit', 'getEditaccountsettings')));	
+		$this->beforeFilter('admin', array('only'=>array('getIndex', 'postDestroy')));
 	}
 
 	//views create page
@@ -170,6 +168,14 @@ class DoctorController extends BaseController{
 	public function postDestroy(){
 		$doctor = Doctor::find(Input::get('id'));
 		if($doctor){
+			$inactive = Inactive::where('doctor_id', '=', $doctor->id)->first();
+			if($inactive){
+				DB::table('inactives')->where('doctor_id', '=', $doctor->id)->delete();
+			}
+			$schedule = Schedule::where('doctor_id', '=', $doctor->id)->first();
+			if($schedule){
+				DB::table('schedules')->where('doctor_id', '=', $doctor->id)->delete();
+			}
 			$doctor->delete();
 			$user = User::find($doctor->user_id);
 			if($user){
@@ -185,5 +191,32 @@ class DoctorController extends BaseController{
 
 		return Redirect::to('admin/doctor/index')
 					->with('message', 'Something went wrong. Please try again');
+	}
+
+	public function getEditaccountsettings(){
+		//display the account edit page for a doctor
+		if(Auth::user()->type == 1){
+			$doctor = Doctor::find(Input::get('id'));
+		}else{
+			$doctor = Doctor::where('user_id', '=', Auth::user()->id)->first();
+		}
+		
+		
+		if($doctor){
+			$user = User::find($doctor->user_id);
+			
+			if($user){
+				return View::make('member.editaccount')
+					->with('user', $user)
+					->with('type', 0);
+			}			
+		}
+
+		if(Auth::user()->type == 1){
+			return Redirect::to('admin')
+				->with('message', 'Something went wrong. Please try again');
+		}
+		return Redirect::to('member/index')
+				->with('message', 'Something went wrong. Please try again');
 	}
 }

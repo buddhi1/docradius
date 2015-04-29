@@ -28,6 +28,9 @@ Route::get('member/patient/activate/{code}', array(
 
 Route::controller('member/patient', 'PatientController');
 
+//route to patient controller by admin
+Route::controller('admin/patient', 'PatientController'); 
+
 //route to doctor controller
 Route::controller('member/doctor', 'DoctorController');
 
@@ -54,3 +57,8 @@ Route::controller('member/calendar', 'InactiveController');
 //route to member login
 Route::controller('member', 'AuthController');
 
+//route to admin controller for edit account
+Route::get('admin/editaccountsettings', 'UserController@editaccountsettings');
+
+//route to admin home
+Route::get('admin', 'UserController@index');

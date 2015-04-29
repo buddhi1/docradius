@@ -4,7 +4,10 @@ class PatientController extends BaseController {
 
 	public function __construct() {
 
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('csrf', array('on' => 'post'));	
+		$this->beforeFilter('adm_pat', array('only'=>array('getEditaccountsettings')));	
+		$this->beforeFilter('admin', array('only'=>array('getIndex', 'postDestroy')));
+		$this->beforeFilter('patient', array('only'=>array('postEditprofile', 'postUpdateprofile')));
 	}
 
 	public function getIndex() {
@@ -15,7 +18,7 @@ class PatientController extends BaseController {
 						->select('patients.id as id', 'name', 'email', 'tp', 'sex', 'town_id')
 						->get();
 
-		return View::make('member.patient.index')
+		return View::make('admin.patient.index')
 			->with('patients', $patients);
 	}
 
@@ -233,5 +236,30 @@ class PatientController extends BaseController {
 					->with('message', 'Patient has been Deleted');
 			}
 		}
+	}
+
+	public function getEditaccountsettings(){
+		//display the account edit page for a patient
+		if(Auth::user()->type == 1){
+			$patient = Patient::find(Input::get('id'));
+		}else{
+			$patient = Patient::where('user_id', '=', Auth::user()->id)->first();
+		}
+		if($patient){
+			$user = User::find($patient->user_id);
+			
+			if($user){
+				return View::make('member.editaccount')
+					->with('user', $user)
+					->with('type', 0);
+			}			
+		}
+
+		if(Auth::user()->type == 1){
+			return Redirect::to('admin')
+				->with('message', 'Something went wrong. Please try again');
+		}
+		return Redirect::to('member/index')
+				->with('message', 'Something went wrong. Please try again');
 	}
 }

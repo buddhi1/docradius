@@ -3,6 +3,7 @@
 class AdvertisementController extends BaseController{
 	public function __consturct(){
 		$this->beforeFilter('csfr', array('on'=>'post'));
+		$this->beforeFilter('adm_doc');
 	}
 
 	//views the create page

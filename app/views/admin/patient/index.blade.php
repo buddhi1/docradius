@@ -25,6 +25,7 @@
 		<th>Contact No.</th>
 		<th>Gender</th>
 		<th>Town</th>
+		<th>Edit account</th>
 		<th>Delete</th>
 	</tr>
 
@@ -40,6 +41,10 @@
 			<td>Female</td>
 		@endif
 		<td>{{ $patient->town_id }}</td>
+		{{ Form::open(array('url'=>'member/patient/editaccountsettings', 'method'=>'GET')) }}
+			{{ Form::hidden('id', $patient->id) }}
+			<td>{{ Form::submit('Edit account', array('class'=>'btn btn-danger')) }}</td>
+		{{ Form::close() }}
 		<td>
 			{{ Form::open(array('url'=>'member/patient/destroy')) }}
 

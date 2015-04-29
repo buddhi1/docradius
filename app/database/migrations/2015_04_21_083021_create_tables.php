@@ -72,8 +72,7 @@ class CreateTables extends Migration {
 			$table->boolean('active');
 			$table->string('tp')->nullable();
 			$table->boolean('sex');
-			$table->integer('town_id')->unsigned();
-			$table->foreign('town_id')->references('id')->on('towns');
+			$table->integer('town_id')->nullable();			
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->timestamps();
@@ -106,8 +105,7 @@ class CreateTables extends Migration {
 			$table->string('day');
 			$table->integer('doctor_id')->unsigned();
 			$table->foreign('doctor_id')->references('id')->on('doctors');
-			$table->integer('town_id')->unsigned();
-			$table->foreign('town_id')->references('id')->on('towns');
+			$table->integer('town_id')->nullable();
 			$table->timestamps();
 		});
 
