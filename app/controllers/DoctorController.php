@@ -170,6 +170,14 @@ class DoctorController extends BaseController{
 	public function postDestroy(){
 		$doctor = Doctor::find(Input::get('id'));
 		if($doctor){
+			$inactive = Inactive::where('doctor_id', '=', $doctor->id)->first();
+			if($inactive){
+				DB::table('inactives')->where('doctor_id', '=', $doctor->id)->delete();
+			}
+			$schedule = Schedule::where('doctor_id', '=', $doctor->id)->first();
+			if($schedule){
+				DB::table('schedules')->where('doctor_id', '=', $doctor->id)->delete();
+			}
 			$doctor->delete();
 			$user = User::find($doctor->user_id);
 			if($user){
