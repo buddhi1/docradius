@@ -4,6 +4,7 @@ class UserController extends BaseController {
 
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('admin');
 	}
 
 	//views the create user blade

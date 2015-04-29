@@ -88,3 +88,24 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+//patient filter to protect member areas
+Route::filter('patient', function(){
+	if(!Auth::check()){
+		return Redirect::to('/');
+	}
+});
+
+//doctor filter to protect admin areas
+Route::filter('doctor', function(){
+	if(!Auth::check() ||  Auth::user()->type != 2){
+		return Redirect::to('/');
+	}
+});
+
+//admin filter to protect super_admin areas
+Route::filter('admin', function(){
+	if(!Auth::check() ||  Auth::user()->type != 1){
+		return Redirect::to('/');
+	}
+});
