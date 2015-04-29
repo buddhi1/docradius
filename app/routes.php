@@ -41,7 +41,7 @@ Route::controller('member/schedule', 'ScheduleController');
 Route::controller('member/job', 'JobController');
 
 // action after a time slot is selected
-Route::get('channel/schedule/patient/{id}', 'ChannelController@patient');
+Route::get('channel/schedule/create/{id}', 'ChannelController@create');
 
 // get the schedule of a doctor
 Route::get('channel/schedule/{id}', 'ChannelController@schedule');
