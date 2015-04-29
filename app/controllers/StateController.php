@@ -4,6 +4,7 @@ class StateController extends BaseController{
 
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('admin');
 	}
 
 	public function getIndex() {

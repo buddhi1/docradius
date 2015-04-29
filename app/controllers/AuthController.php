@@ -3,6 +3,7 @@
 class AuthController extends BaseController{
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('guest', array('only'=>array('getLogin', 'postLogin')));
 	}
 
 	//views login page

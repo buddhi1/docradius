@@ -4,6 +4,7 @@ class SpecialtyController extends BaseController{
 	
 	public function __construct(){
 		$this->beforeFilter('csfr', array('on'=>'post'));
+		$this->beforeFilter('admin');
 	}
 
 	//views the create page
