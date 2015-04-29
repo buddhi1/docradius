@@ -26,7 +26,11 @@
 <div>{{ Form::label('lblGender', 'Gender') }}: {{ Form::radio('sex', '0') }}Male {{ Form::radio('sex', '1') }}Female</div>
 <div>{{ Form::label('lbltp', 'Telephone No.') }}: {{ Form::text('tp') }}</div>
 <div>{{ Form::label('lbltown', 'Town') }}: {{ Form::select('state', $states, null, array('id' => 'state')) }}{{ Form::select('lga', array('default'=>'Select'), null, array('id' => 'lga')) }}{{ Form::select('town_id', array('default'=>'Select'), null, array('id' => 'town')) }}</div>
-<div> {{ Form::submit('Create') }} </div>
+<div> {{ Form::submit('Book') }} </div>
+
+{{ Form::close() }}
+
+{{ Form::open(array('url'=>'channel/booking')) }}
 
 {{ Form::close() }}
 
