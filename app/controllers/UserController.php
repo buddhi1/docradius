@@ -131,8 +131,8 @@ class UserController extends BaseController {
 		$user = User::find(Auth::user()->id);
 
 		if($user) {
-
-			if($curr_pass || Auth::user()->email === $email) {
+			
+			if($curr_pass || Auth::user()->email !== $email) {
 
 				if($curr_pass) {
 
