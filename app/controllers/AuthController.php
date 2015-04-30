@@ -40,6 +40,9 @@ class AuthController extends BaseController{
 
 	//member home page
 	public function getIndex(){
+		if(!Auth::check()){
+			return Redirect::to('member/login');
+		}
 		return View::make('member.layouts.main');
 	}
 }

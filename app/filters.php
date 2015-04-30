@@ -123,3 +123,10 @@ Route::filter('adm_doc', function(){
 		return Redirect::to('/');
 	}
 });
+
+////user filter to protect admin doctor shared areas
+Route::filter('user', function(){
+	if(!Auth::check()){
+		return Redirect::to('/');
+	}
+});
