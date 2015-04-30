@@ -112,14 +112,14 @@ Route::filter('admin', function(){
 
 //adm_pat filter to protect admin patient shared areas
 Route::filter('adm_pat', function(){
-	if(!Auth::check() ||  Auth::user()->type != 1){
+	if(!Auth::check() ||  (Auth::user()->type != 1 && Auth::user()->type != 3)){
 		return Redirect::to('/');
 	}
 });
 
 //adm_doc filter to protect admin doctor shared areas
 Route::filter('adm_doc', function(){
-	if(!Auth::check() ||  Auth::user()->type != 1){
+	if(!Auth::check() ||  (Auth::user()->type != 1 && Auth::user()->type != 2)){
 		return Redirect::to('/');
 	}
 });

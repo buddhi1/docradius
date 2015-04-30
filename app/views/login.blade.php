@@ -20,7 +20,7 @@
 @endif
 
 <div>
-	{{ Form::open(array('url'=>'member/login')) }}
+	{{ Form::open(array('url'=>Request::url())) }}
 	<div> {{ Form::text('email', '', array('placeholder'=> 'Email here')) }} </div>
 	<div> {{ Form::password('password', array('placeholder'=>'Password here')) }} </div>
 	<div> {{ Form::submit('Login') }} </div>
