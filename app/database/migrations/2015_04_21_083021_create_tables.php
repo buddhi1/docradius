@@ -123,20 +123,9 @@ class CreateTables extends Migration {
 			$table->timestamps();
 		});
 
-
-		Schema::create('histories', function($table){
-			$table->increments('id');
-			$table->dateTime('date_time');
-			$table->boolean('visit_state');
-			$table->integer('doctor_id')->nullable();
-			$table->integer('patient_id')->nullable();
-			$table->timestamps();
-		});
-
-
 		Schema::create('inactives', function($table){
 			$table->increments('id');	
-			$table->date('date');		
+			$table->date('date');
 			$table->integer('doctor_id')->unsigned();
 			$table->foreign('doctor_id')->references('id')->on('doctors');
 			$table->integer('schedule_id')->unsigned();

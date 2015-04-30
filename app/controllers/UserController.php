@@ -122,21 +122,21 @@ class UserController extends BaseController {
 	public function postUpdateaccountsettings() {
 		// save the account chages made
 		
-		//$id = Input::get('id');
+		$id = Input::get('id');
 		$curr_pass = Input::get('password');
 		$new_pass = Input::get('np');
 		$confirm_pass = Input::get('cp');
 		$email = Input::get('email');
 
-		$user = User::find(Auth::user()->id);
+		$user = User::find($id);
 
 		if($user) {
 			
-			if($curr_pass || Auth::user()->email !== $email) {
+			if($curr_pass || $user->email !== $email) {
 
 				if($curr_pass) {
 
-					if(Hash::check($curr_pass, Auth::user()->password )){
+					if(Hash::check($curr_pass, $user->password )){
 
 						if(($new_pass === $confirm_pass) && $new_pass) {
 
@@ -144,8 +144,9 @@ class UserController extends BaseController {
 						} else {
 
 							if(Auth::user()->type == 1){
+
 								return Redirect::to('admin')
-								->with('message', 'Password mismatched');
+									->with('message', 'Password mismatched');
 							}
 
 							return Redirect::to('member/index')
@@ -154,8 +155,9 @@ class UserController extends BaseController {
 					} else {
 
 						if(Auth::user()->type == 1){
-								return Redirect::to('admin')
-									->with('message', 'Current Password is Incorrect');
+
+							return Redirect::to('admin')
+								->with('message', 'Current Password is Incorrect');
 						}
 
 						return Redirect::to('member/index')
@@ -163,7 +165,7 @@ class UserController extends BaseController {
 					}
 				}
 			
-				if($email !== Auth::user()->email) {
+				if($email !== $user->email) {
 
 					$validator_user = Validator::make(array('email' => $email), User::$rules_patient);
 					if($validator_user->passes()) {
@@ -172,15 +174,26 @@ class UserController extends BaseController {
 						$code = str_random(60);
 						$user->code = $code;
 						$user->active = 0;
+
+						if($user->type == 1) {
+							$name = substr($email, 0, strpos($email, '@'));
+						} else if($user->type == 2) {
+							$name = Doctor::where('user_id', '=', $id)->pluck('name');
+						} else if($user->type == 3) {
+							$name = Patient::where('user_id', '=', $id)->pluck('name');
+						}
+
 						Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
 
 							$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
 						});
 					} else {
+
 						if(Auth::user()->type == 1){
+
 							return Redirect::to('admin')
-									->withErrors($validator_user)
-									->withInput();
+								->withErrors($validator_user)
+								->withInput();
 						}
 
 						return Redirect::To('member/index')
