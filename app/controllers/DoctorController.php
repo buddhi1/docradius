@@ -176,9 +176,14 @@ class DoctorController extends BaseController{
 			if($schedule){
 				DB::table('schedules')->where('doctor_id', '=', $doctor->id)->delete();
 			}
+			
 			$doctor->delete();
 			$user = User::find($doctor->user_id);
 			if($user){
+				$job = Job::where('user_id', '=', $user->id)->first();
+				if($job){
+					DB::table('job')->where('user_id', '=', $user->id)->delete();
+				}
 				$user->delete();
 			}
 			$path = 'uploads/profile_pictures/'.$doctor->profile_picture;
