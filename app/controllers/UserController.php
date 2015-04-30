@@ -48,8 +48,12 @@ class UserController extends BaseController {
 	//all user page
 	public function getIndex(){
 		//views the index page with availabale user details
+		$users = DB::table('users')
+					->where('type', '=', 1)
+					->where('id', '<>', Auth::id())
+					->get();
 		return View::make('admin.user.index')
-					->with('users', User::where('type', '=', 1)->get());		
+					->with('users', $users);		
 	}
 
 	//user edit page
