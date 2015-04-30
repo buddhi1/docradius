@@ -8,6 +8,7 @@ class AuthController extends BaseController{
 
 	//views login page
 	public function getLogin(){
+		
 		return View::make('login');
 	}
 
@@ -17,17 +18,35 @@ class AuthController extends BaseController{
 		if($validator->passes()){
 			$email = Input::get('email');
 			$password = Input::get('password');
+			$segment = Request::segment(1);
 			
- 			if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1]))
-			{
-			    return Redirect::to('/');
-			}
+			if($segment == 'admin'){
+				if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('1')]))
+				{
+				    return Redirect::to('/');
+				}
 
-			return Redirect::to('member/login')
+				return Redirect::to('admin/login')
 					->with('message', 'Invalid credentials. Please try again');
+			}elseif ($segment == 'login') {
+				if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('2')]))
+				{
+				    return Redirect::to('/');
+				}else if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('3')]))
+				{
+				    return Redirect::to('/');
+				}
+
+				return Redirect::to('login')
+					->with('message', 'Invalid credentials. Please try again');
+			}
+ 			
+
+			return Redirect::to('login')
+					->with('message', 'Something went wrong. Please try again');
 		}
 
-		return Redirect::to('member/login')
+		return Redirect::to('login')
 			->with('message', 'Following errors occurred.')
 			->withErrors($validator);
 	}
@@ -35,14 +54,11 @@ class AuthController extends BaseController{
 	//logout 
 	public function getLogout(){
 		Auth::logout();
-		return Redirect::to('member/login');
+		return Redirect::to('/');
 	}
 
 	//member home page
-	public function getIndex(){
-		if(!Auth::check()){
-			return Redirect::to('member/login');
-		}
-		return View::make('member.layouts.main');
+	public function getIndex(){		
+		 return View::make('hello');	
 	}
 }

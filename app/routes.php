@@ -1,9 +1,6 @@
 <?php
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+
 
 Route::Controller('admin/state', 'StateController');
 
@@ -54,11 +51,13 @@ Route::controller('channel', 'ChannelController');
 //route to inactve controler
 Route::controller('member/calendar', 'InactiveController');
 
-//route to member login
-Route::controller('member', 'AuthController');
+//route to admin login
+//Route::controller('admin', 'UserController');
 
 //route to admin controller for edit account
 Route::get('admin/editaccountsettings', 'UserController@editaccountsettings');
 
 //route to admin home
-Route::get('admin', 'UserController@index');
+Route::controller('admin', 'AuthController');
+
+Route::controller('/', 'AuthController');
