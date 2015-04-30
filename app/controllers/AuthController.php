@@ -28,7 +28,7 @@ class AuthController extends BaseController{
 
 				return Redirect::to('admin/login')
 					->with('message', 'Invalid credentials. Please try again');
-			}elseif ($segment == 'login') {
+			}elseif ($segment == 'login' || $segment == 'member') {
 				if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('2')]))
 				{
 				    return Redirect::to('/');
@@ -53,12 +53,38 @@ class AuthController extends BaseController{
 
 	//logout 
 	public function getLogout(){
+	
 		Auth::logout();
+		return Redirect::to('/');
+
+	}
+
+
+	//member home page
+	public function getIndex(){	
+		$segment = Request::segment(1);
+
+		if($segment == ''){			
+			 return View::make('hello');
+		}else if($segment != '' && Auth::check()){
+			if($segment == 'admin'){	
+				if(Auth::user()->type == 1){
+					return View::make('admin.layouts.main');
+				}
+
+				return Redirect::to('/');
+				
+			}else if($segment == 'member'){
+				if(Auth::user()->type == 2 || Auth::user()->type == 3){
+					return View::make('member.layouts.main');
+				}
+				
+				return Redirect::to('/');
+			}
+		}
+
 		return Redirect::to('/');
 	}
 
-	//member home page
-	public function getIndex(){		
-		 return View::make('hello');	
-	}
+	
 }
