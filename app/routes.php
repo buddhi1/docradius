@@ -1,7 +1,5 @@
 <?php
 
-
-
 Route::Controller('admin/state', 'StateController');
 
 Route::Controller('admin/lga', 'LgaController');
@@ -50,6 +48,11 @@ Route::controller('channel', 'ChannelController');
 
 //route to inactve controler
 Route::controller('member/calendar', 'InactiveController');
+
+Route::get('member/index', function() {
+	
+	return View::make('member.layouts.main');
+});
 
 //route to admin login
 //Route::controller('admin', 'UserController');

@@ -252,7 +252,7 @@ class PatientController extends BaseController {
 				return View::make('member.editaccount')
 					->with('user', $user)
 					->with('type', 0);
-			}			
+			}
 		}
 
 		if(Auth::user()->type == 1){

@@ -59,6 +59,6 @@ class AuthController extends BaseController{
 
 	//member home page
 	public function getIndex(){		
-		 return View::make('hello');	
+		 return View::make('hello');
 	}
 }
