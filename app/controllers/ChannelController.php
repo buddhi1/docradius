@@ -14,7 +14,7 @@ class ChannelController extends BaseController {
 			->with('specialty', Specialty::all()->lists('name', 'id'));
 	}
 
-	public function getSearch() {
+	public function getSearchbyspeciality() {
 		// Search the database for the practitioner and the location
 
 		$town_arr = array();
@@ -34,6 +34,7 @@ class ChannelController extends BaseController {
 		$doctors = DB::table('doctors')
 			->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
 			->where('specialties', 'LIKE', '%'.$special.'%')
+			->where('active', 1)
 			->whereIn('schedules.town_id',$town_arr)
 			->get();
 
@@ -132,7 +133,7 @@ class ChannelController extends BaseController {
 		$sex = Session::get('sex');
 		$tp = Session::get('tp');
 		$password = Hash::make(Input::get('password'));
-		$type = 2;
+		$type = 3;
 		$code = str_random(60);
 
 		$user = new User;
@@ -163,14 +164,45 @@ class ChannelController extends BaseController {
 				// then entering the record to the patient table
 
 				$patient->save();
-				Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
+				$patient_id = DB::table('patients')
+								->join('users', 'users.id', '=', 'patients.user_id')
+								->where('users.email', $email)
+								->pluck('patients.id');
+				$channelling_date = '2015-04-29';	//find the channelling date
+				$book_count = DB::table('channels')
+								->having('chanelling_date', '=', $channelling_date)
+								->having('schedule_id', '=', $id)
+								->groupBy('chanelling_date','schedule_id')
+								->count('id');
 
-					$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
-				});
+				$max_patients = Session::get('schedule_no_of_patients');
+				$time_diff = strtotime(Session::get('schedule_end_time'))-strtotime(Session::get('schedule_start_time'));
+				$time_per_patient = $time_diff/$max_patients;
+				$booked_time = $time_per_patient*$book_count;
+				$time_addition = strtotime(Session::get('schedule_start_time'))+$booked_time;
+				$time = gmdate("H:i:s", $time_addition);
 
+				$channel = new Channel;
+				$channel->state = 0;
+				$channel->time = $time;
+				$channel->chanelling_date = $channelling_date;	//find the channelling date
+				$channel->town_id = $town_id;
+				$channel->hospital = Session::get('schedule_hospital');
+				$channel->patient_tp = $tp;
+				$channel->doctor_id = Session::get('schedule_doctor_id');
+				$channel->patient_id = $patient_id;
+				$channel->schedule_id = $id;
+
+				$channel->save();
+
+				// Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
+
+				// 	$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
+				// });
 
 				Session::flush();
-				return Redirect::To('channel');
+				return Redirect::To('channel')
+					->with('Your booking is completed');
 			}
 
 			return Redirect::To('channel/schedule/create/'.$id)
