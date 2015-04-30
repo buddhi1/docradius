@@ -34,6 +34,7 @@ class ScheduleController extends BaseController{
 	//create function
 	public function postCreate(){
 		$validator = Validator::make(Input::all(), Schedule::$rules);
+		
 		if($validator->passes()){
 			$start_time = Input::get('start_time');
 			$end_time = Input::get('end_time');
@@ -87,6 +88,11 @@ class ScheduleController extends BaseController{
 			return Redirect::to('member/schedule/create')
 					->with('message', 'There are overlapping time slots. To enter required schedule please edit or delete the existing schedules');
 		}
+
+		return Redirect::to('member/schedule/create')
+				->with('message', 'Following erros occurred')
+				->withErrors($validator)
+				->withInput();
 	}
 
 	//view schedule
@@ -190,7 +196,8 @@ class ScheduleController extends BaseController{
 
 			return Redirect::to('member/schedule/index')
 				->with('message', 'Following erros occurred')
-				->withErrors($validator);
+				->withErrors($validator)
+				->withInput();
 		}
 
 		return Redirect::to('member/schedule/index')

@@ -8,6 +8,6 @@ class Schedule extends Eloquent{
 			'no_of_patients'=>'required',
 			'hospital'=>'required',
 			'day'=>'required',
-			'town_id'=>'required'
+			'town_id'=>'required',
 		);
 }
