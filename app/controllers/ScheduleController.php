@@ -64,7 +64,7 @@ class ScheduleController extends BaseController{
 				->where('day', '=', $day)
 				->first();
 			$rec4 = DB::table('schedules')
-				->where('end_time', '>=', $start_time)
+				->where('start_time', '>=', $start_time)
 				->where('end_time', '<=', $end_time)
 				->where('doctor_id', '=', $doctor_id)
 				->where('day', '=', $day)
@@ -171,13 +171,13 @@ class ScheduleController extends BaseController{
 					->where('day', '=', $day)
 					->first();
 				$rec4 = DB::table('schedules')
-					->where('end_time', '>=', $start_time)
+					->where('start_time', '>=', $start_time)
 					->where('end_time', '<=', $end_time)
 					->where('doctor_id', '=', $doctor_id)
 					->where('id', '<>', $schedule->id)
 					->where('day', '=', $day)
 					->first();
-			
+
 				if(!$rec1 && !$rec2 && !$rec3 && !$rec4){
 					
 					$schedule->start_time = $start_time;
