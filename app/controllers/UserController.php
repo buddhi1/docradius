@@ -121,7 +121,7 @@ class UserController extends BaseController {
 
 	public function postUpdateaccountsettings() {
 		// save the account chages made
-
+		
 		//$id = Input::get('id');
 		$curr_pass = Input::get('password');
 		$new_pass = Input::get('np');
@@ -132,8 +132,7 @@ class UserController extends BaseController {
 
 		if($user) {
 
-
-			if($curr_pass && Auth::user()->email === $email) {
+			if($curr_pass || Auth::user()->email === $email) {
 
 				if($curr_pass) {
 
@@ -156,7 +155,7 @@ class UserController extends BaseController {
 
 						if(Auth::user()->type == 1){
 								return Redirect::to('admin')
-								->with('message', 'Current Password is Incorrect');
+									->with('message', 'Current Password is Incorrect');
 						}
 
 						return Redirect::to('member/index')
@@ -213,7 +212,7 @@ class UserController extends BaseController {
 
 	//display the account edit page for a admin
 	public function editaccountsettings(){
-	
+
 		$admin = User::find(Auth::user()->id);
 		
 		if($admin){			
