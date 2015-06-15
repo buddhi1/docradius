@@ -5,13 +5,20 @@ class JobController extends BaseController {
 	public function __construct() {
 
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('adm_doc', array('except'=>array('postMakejobactive')));
+		$this->beforeFilter('admin', array('only'=>'postMakejobactive'));
 	}
 
 	public function getIndex() {
 		// display all the jobs available
-
-		return View::make('member.job.index')
-			->with('jobs', Job::all());
+		if(Auth::user()->type == 2){
+			return View::make('member.job.index')
+						->with('jobs', Job::where('user_id', '=', Auth::id())->get());
+		}else if(Auth::user()->type == 1){
+			return View::make('member.job.index')
+						->with('jobs', Job::all());
+		}
+		
 	}
 
 	public function getCreate() {

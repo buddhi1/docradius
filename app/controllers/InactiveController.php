@@ -9,20 +9,30 @@ class InactiveController extends BaseController{
 	//views inactive page
 	public function getIndex(){
 		
-		$doc = Doctor::where('user_id', '=', Auth::id())->first();		
-		$inactives = DB::table('inactives')
-						->leftJoin('schedules', 'inactives.schedule_id', '=', 'schedules.id')
-						->where('inactives.doctor_id', '=', $doc->id)
-						->select('inactives.id as id','end_time', 'start_time','date', 'hospital', 'schedules.id as schedule_id')						
-		        		->paginate(10);
-		return View::make('member.inactive.index')
-					->with('inactives', $inactives); 
+		$doc = Doctor::where('user_id', '=', Auth::id())->first();	
+		if($doc){
+			$inactives = DB::table('inactives')
+							->leftJoin('schedules', 'inactives.schedule_id', '=', 'schedules.id')
+							->where('inactives.doctor_id', '=', $doc->id)
+							->select('inactives.id as id','end_time', 'start_time','date', 'hospital', 'schedules.id as schedule_id')						
+			        		->paginate(10);
+			return View::make('member.inactive.index')
+						->with('inactives', $inactives); 
+		}
+
+		return Redirect::to('/');
+		
 	}
 
 	//create function
 	public function postCreate(){
 		$date = Input::get('date');
 		$schedule_id = Input::get('schedule');
+		
+		if(!$date || $schedule_id === 'default'){
+			return Redirect::to('member/calendar')
+						->with('message', 'Pick a date of a schedule');
+		}
 		$doc = Doctor::where('user_id', '=', Auth::id())->first();	
 		$rec = DB::table('inactives')
 					->where('doctor_id', '=', $doc->id)

@@ -17,7 +17,7 @@
 	<tr>
 		<td>{{ $job->title }}</td>
 		<td>{{ $job->description }}</td>
-		<td>
+		<td>			
 			{{ Form::open(array('url'=>'member/job/makejobactive')) }}
 
 				{{ Form::hidden('id', $job->id) }}
@@ -25,10 +25,14 @@
 				@if($job->active === 0)
 
 					{{ Form::label('Not Active', null, array('id' => 'active'))}}
-					{{ Form::submit('Activate', array('class'=>'btn btn-danger')) }}
+					@if(Auth::user()->type == 1)
+						{{ Form::submit('Activate', array('class'=>'btn btn-danger')) }}
+					@endif
 				@else
 					{{ Form::label('Active', null, array('id' => 'active'))}}
-					{{ Form::submit('Deactivate', array('class'=>'btn btn-danger')) }}
+					@if(Auth::user()->type == 1)
+						{{ Form::submit('Deactivate', array('class'=>'btn btn-danger')) }}
+					@endif
 				@endif
 
 			{{ Form::close() }}

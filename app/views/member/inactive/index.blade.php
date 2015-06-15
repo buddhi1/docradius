@@ -44,7 +44,7 @@
 {{ Form::close() }}
 
 <script type="text/javascript">
-document.getElementById('date').onkeyup = function(){
+document.getElementById('date').onclick = function(){
 	loadTimeSlot();
 }
 
