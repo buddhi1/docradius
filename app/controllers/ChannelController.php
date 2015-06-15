@@ -74,6 +74,31 @@ class ChannelController extends BaseController {
 			$special = null;
 		}
 	}
+/////////////////////////////////////////////////  not completed
+	//clinic search by  area
+	public function getSearchclinicbyname(){
+
+		$text = Input::get('clinic_name');	//searching name
+
+		if($text){
+			$clinic = DB::table('schedules')
+						->join('doctors', 'doctors.id', 'schedules.doctor_id')
+						->join('towns', 'towns.id', 'schedules.schedule_id')
+						->where('hospital', 'LIKE', '%'.$text.'%')
+						->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
+						->get();
+
+			$clinic = DB::table('schedules')
+						->join('doctors', 'doctors.id', 'schedules.doctor_id')
+						->join('towns', 'towns.id', 'schedules.schedule_id')
+						->where('hospital', 'LIKE', '%'.$text.'%')
+						->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
+						->get();
+			if($text){
+
+			}
+		}
+	}
 
 	public function schedule($id) {
 		// show the schedule of a specific doctor
