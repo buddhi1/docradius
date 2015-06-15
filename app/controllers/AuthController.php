@@ -61,6 +61,7 @@ class AuthController extends BaseController{
 
 
 	//member home page
+
 	public function getIndex(){	
 		$segment = Request::segment(1);
 
@@ -85,6 +86,4 @@ class AuthController extends BaseController{
 
 		return Redirect::to('/');
 	}
-
-	
 }

@@ -20,22 +20,34 @@ class ChannelController extends BaseController {
 		$town_arr = array();
 
 		$doc = Input::get('practitioner');
-		$special = Specialty::find($doc)->pluck('name');
+		if($doc) {
+			$special = Specialty::find($doc);
+			if($special) {
+				$special = $special->name;
+			}
+		} else {
+			$special = null;
+		}
+		
 		$location = Input::get('location');
+
 		$towns = DB::table('towns')
 						->select('id')
 						->where('name', 'LIKE', '%'.$location.'%')
 						->get();
 
+
+
 		foreach ($towns as $town) {
 			$town_arr[] = $town->id;
 		}
-
+		
 		$doctors = DB::table('doctors')
 			->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
-			->where('specialties', 'LIKE', '%'.$special.'%')
+			->where('doctors.specialties', 'LIKE', '%'.$special.'%')
 			->where('active', 1)
 			->whereIn('schedules.town_id',$town_arr)
+			->groupBy('schedules.town_id', 'schedules.doctor_id')
 			->get();
 
 		if($doctors) {
@@ -47,8 +59,24 @@ class ChannelController extends BaseController {
 			->with('message', 'Could not find any doctors');
 	}
 
+	public function getSearchbydoctor() {
+		// Search the database for the doctor and the location
+
+		$doc = Input::get('doc');
+
+		if($doc) {
+
+			$towns = DB::table('doctors')
+						->where('name', 'LIKE', '%'.$doc.'%')
+						->get();
+			$doc = Doctor::find($doc);
+		} else {
+			$special = null;
+		}
+	}
+
 	public function schedule($id) {
-		// show the of a specific doctor
+		// show the schedule of a specific doctor
 		$week_arr = array('0', '1', '2', '3', '4', '5', '6');
 
 		$days = array();
@@ -67,6 +95,7 @@ class ChannelController extends BaseController {
 	}
 
 	public function create($id) {
+		// put the schedule details into session variables
 
 		$schedule = Schedule::find($id);
 
@@ -85,6 +114,7 @@ class ChannelController extends BaseController {
 	}
 
 	public function postCreate() {
+		// put patient's channeling details in session varibales
 
 		$name = Input::get('name');
 		$email = Input::get('email');
@@ -120,11 +150,13 @@ class ChannelController extends BaseController {
 	}
 
 	public function getMakeaccount() {
+		//display the make account view
 
 		return View::make('channel.account');
 	}
 
 	public function postMakeaccount() {
+		// save user details
 
 		$id = Session::get('schedule_id');
 		$name = Session::get('name');
@@ -195,10 +227,10 @@ class ChannelController extends BaseController {
 
 				$channel->save();
 
-				// Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
+				Mail::send('emails.auth.activate', array('name'=>$name, 'link'=>URL::route('account-activate',$code)), function($message) use ($user) {
 
-				// 	$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
-				// });
+					$message->to($user->email, 'Pulasthi')->subject('Activate Your Account');
+				});
 
 				Session::flush();
 				return Redirect::To('channel')
@@ -209,5 +241,42 @@ class ChannelController extends BaseController {
 				->withErrors($validator)
 				->withInput();
 		}
+	}
+
+	public function getInactivedays() {
+		// return the inactive days to the schedule
+
+		$schedule_id = Input::get('schedule_id');
+		$inactives = Inactive::where('schedule_id', '=', $schedule_id)->first();
+
+		return $inactives->date;
+	}
+
+	public function getNumberexceed() {
+		// check whether there is a slot available for a channeling
+
+		$schedule_id = Input::get('schedule_id');
+		$channelling_date = Input::get('channelling_date');
+
+		$chk_active = Inactive::where('date', '=', $channelling_date)->first();
+		if(!$chk_active) {
+
+			//how many are alreay in the channels table in that schedule time on that date.
+			$book_count = DB::table('channels')
+							->having('chanelling_date', '=', $channelling_date)
+							->having('schedule_id', '=', $schedule_id)
+							->groupBy('chanelling_date','schedule_id')
+							->count('id');
+
+			$max_patients = Schedule::find($schedule_id)->no_of_patients;
+
+			if($book_count + 1 < $max_patients) {
+
+				return 'success';
+			}
+
+			return 'Max limit exceeded';
+		}
+		return 'This is an inactive date';
 	}
 }

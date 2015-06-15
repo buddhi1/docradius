@@ -22,6 +22,7 @@ class InactiveController extends BaseController{
 	//create function
 	public function postCreate(){
 		$date = Input::get('date');
+
 		$schedule_id = Input::get('schedule');
 		$doc = Doctor::where('user_id', '=', Auth::id())->first();	
 		$rec = DB::table('inactives')
