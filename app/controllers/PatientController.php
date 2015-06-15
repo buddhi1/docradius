@@ -140,6 +140,7 @@ class PatientController extends BaseController {
 	}
 
 	public function getActivate($code) {
+		// activates the user account
 
 		$user = User::where('code','=',$code)->where('active','=',0);
 
@@ -252,7 +253,7 @@ class PatientController extends BaseController {
 				return View::make('member.editaccount')
 					->with('user', $user)
 					->with('type', 0);
-			}			
+			}
 		}
 
 		if(Auth::user()->type == 1){

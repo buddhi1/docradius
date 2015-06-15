@@ -27,6 +27,7 @@ class InactiveController extends BaseController{
 	//create function
 	public function postCreate(){
 		$date = Input::get('date');
+
 		$schedule_id = Input::get('schedule');
 		
 		if(!$date || $schedule_id === 'default'){

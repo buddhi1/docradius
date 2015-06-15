@@ -76,7 +76,7 @@ class LgaController extends BaseController{
 	}
 
 	public function postDestroyall() {
-	// delete a LGA
+	// delete a LGA along with the towns inside that LGA
 
 		$id = Input::get('id');
 
