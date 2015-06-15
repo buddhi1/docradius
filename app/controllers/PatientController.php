@@ -140,6 +140,7 @@ class PatientController extends BaseController {
 	}
 
 	public function getActivate($code) {
+		// activates the user account
 
 		$user = User::where('code','=',$code)->where('active','=',0);
 

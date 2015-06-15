@@ -59,8 +59,24 @@ class ChannelController extends BaseController {
 			->with('message', 'Could not find any doctors');
 	}
 
+	public function getSearchbydoctor() {
+		// Search the database for the doctor and the location
+
+		$doc = Input::get('doc');
+
+		if($doc) {
+
+			$towns = DB::table('doctors')
+						->where('name', 'LIKE', '%'.$doc.'%')
+						->get();
+			$doc = Doctor::find($doc);
+		} else {
+			$special = null;
+		}
+	}
+
 	public function schedule($id) {
-		// show the of a specific doctor
+		// show the schedule of a specific doctor
 		$week_arr = array('0', '1', '2', '3', '4', '5', '6');
 
 		$days = array();
@@ -79,6 +95,7 @@ class ChannelController extends BaseController {
 	}
 
 	public function create($id) {
+		// put the schedule details into session variables
 
 		$schedule = Schedule::find($id);
 
@@ -97,6 +114,7 @@ class ChannelController extends BaseController {
 	}
 
 	public function postCreate() {
+		// put patient's channeling details in session varibales
 
 		$name = Input::get('name');
 		$email = Input::get('email');
@@ -132,11 +150,13 @@ class ChannelController extends BaseController {
 	}
 
 	public function getMakeaccount() {
+		//display the make account view
 
 		return View::make('channel.account');
 	}
 
 	public function postMakeaccount() {
+		// save user details
 
 		$id = Session::get('schedule_id');
 		$name = Session::get('name');
@@ -233,7 +253,7 @@ class ChannelController extends BaseController {
 	}
 
 	public function getNumberexceed() {
-		// return the inactive days to the schedule
+		// check whether there is a slot available for a channeling
 
 		$schedule_id = Input::get('schedule_id');
 		$channelling_date = Input::get('channelling_date');
