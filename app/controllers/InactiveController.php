@@ -74,17 +74,19 @@ class InactiveController extends BaseController{
 	// populate schedule dropdown
 	public function getScheduledropdown() {	
 		$timestamp = strtotime(Input::get('date'));
+
 		$day = date('D', $timestamp);
+
 		$days = array('Sun'=>'0',
 						'Mon'=>'1',
-						'Thu'=>'2',
+						'Tue'=>'2',
 						'Wed'=>'3',
 						'Thu'=>'4',
 						'Fri'=>'5',
 						'Sat'=>'6',);
 		
 		$schedules = Schedule::where('day','=',$days[$day])->get();
-	
+		
 		return Response::json($schedules);
 	}
 
