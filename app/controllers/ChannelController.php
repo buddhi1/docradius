@@ -74,14 +74,14 @@ class ChannelController extends BaseController {
 			$special = null;
 		}
 	}
-/////////////////////////////////////////////////  not completed
+
 	//clinic search by  area
 	public function getSearchclinicbyname(){
 
-		$text = 'd';	//searching clinic name
-		//$text = Input::get('clinic_name');	//searching clinic name
-		$town = 'q';	//searching town name
-		//$town = Input::get('town_name');	//searching town name
+		
+		$text = Input::get('clinic_name');	//searching clinic name
+		
+		$town = Input::get('town_name');	//searching town name
 
 		if($text){		
 
