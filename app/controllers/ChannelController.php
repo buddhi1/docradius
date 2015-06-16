@@ -60,18 +60,24 @@ class ChannelController extends BaseController {
 	}
 
 	public function getSearchbydoctor() {
-		// Search the database for the doctor and the location
+		// Search the database for the doctor
 
 		$doc = Input::get('doc');
 
 		if($doc) {
 
-			$towns = DB::table('doctors')
+			$doctors = DB::table('doctors')
 						->where('name', 'LIKE', '%'.$doc.'%')
 						->get();
-			$doc = Doctor::find($doc);
+
+			if($doctors) {
+
+				return $doctors;
+			}
+
+			return 'No doctors found';
 		} else {
-			$special = null;
+			return null;
 		}
 	}
 /////////////////////////////////////////////////  not completed
