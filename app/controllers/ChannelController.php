@@ -43,12 +43,12 @@ class ChannelController extends BaseController {
 		}
 		
 		$doctors = DB::table('doctors')
-			->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
-			->where('doctors.specialties', 'LIKE', '%'.$special.'%')
-			->where('active', 1)
-			->whereIn('schedules.town_id',$town_arr)
-			->groupBy('schedules.town_id', 'schedules.doctor_id')
-			->get();
+						->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+						->where('doctors.specialties', 'LIKE', '%'.$special.'%')
+						->where('active', 1)
+						->whereIn('schedules.town_id',$town_arr)
+						->groupBy('schedules.town_id', 'schedules.doctor_id')
+						->get();
 
 		if($doctors) {
 
@@ -62,49 +62,115 @@ class ChannelController extends BaseController {
 	public function getSearchbydoctor() {
 		// Search the database for the doctor
 
-		$doc = Input::get('doc');
+		$doc = Input::get('doc');	//doctor name
+		$location = Input::get('location'); // town name
+
+		$town_arr = array();
+		$schedules = array();
 
 		if($doc) {
 
-			$doctors = DB::table('doctors')
-						->where('name', 'LIKE', '%'.$doc.'%')
+			$towns = DB::table('towns')
+						->select('id')
+						->where('name', 'LIKE', '%'.$location.'%')
 						->get();
+
+			foreach ($towns as $town) {
+
+				$town_arr[] = $town->id;
+			}
+			
+			// $doctors = DB::table('schedules')
+			// 				->leftJoin('doctors', 'schedules.doctor_id', '=', 'doctors.id')
+			// 				->leftJoin('towns', 'schedules.town_id', '=', 'towns.id')
+			// 				->leftJoin('inactives', 'inactives.schedule_id', '=', 'schedules.id')
+			// 				->where('doctors.name', 'LIKE', '%'.$doc.'%')
+			// 				->where('towns.name', 'LIKE', '%'.$location.'%')
+			// 				->select('start_time', 'end_time', 'schedules.doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name', 'date', 'hospital')
+			// 				->get();
+
+			// var_dump($doctors);
+			// die();
+			$doctors = DB::table('doctors')
+							->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+							->where('doctors.name', 'LIKE', '%'.$doc.'%')
+							->where('active', 1)
+							->whereIn('schedules.town_id',$town_arr)
+							->groupBy('schedules.town_id', 'schedules.doctor_id')
+							->get();
+
+			// $doctors = DB::table('doctors')
+			// 			->where('name', 'LIKE', '%'.$doc.'%')
+			// 			->where('active', 1)
+			// 			->get();
+
+			//getting the schedules of the doctors
+			foreach ($doctors as $key => $value) {
+				
+				$schedules[] = $this->schedule($value->doctor_id);
+			}
 
 			if($doctors) {
 
-				return $doctors;
+				return $schedules;
 			}
 
 			return 'No doctors found';
 		} else {
+
 			return null;
 		}
 	}
+
+	// public function getSearchclinicbyname(){
+
+	// 	$text = 'd';	//searching clinic name
+	// 	//$text = Input::get('clinic_name'); //searching clinic name
+	// 	$town = 'q';	//searching town name
+	// 	//$town = Input::get('town_name'); //searching town name
+
+	// 	if($text){	
+
+		// $inactives = DB::table('schedules')
+		// ->leftJoin('doctors', 'schedules.doctor_id', '=', 'doctors.id')
+		// ->leftJoin('towns', 'schedules.town_id', '=', 'towns.id')
+		// ->leftJoin('inactives', 'inactives.schedule_id', '=', 'schedules.id')
+		// ->where('hospital', 'LIKE', '%'.$text.'%')
+		// ->where('towns.name', 'LIKE', '%'.$town.'%')
+		// ->select('start_time', 'end_time', 'schedules.doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name', 'date', 'hospital')
+		// ->get();
+
+	// 	if(sizeOf($inactives) > 0){
+	// 	return $inactives;
+	// 	}
+	// 	return 'No match';
+	// 	}
+	// }
 /////////////////////////////////////////////////  not completed
 	//clinic search by  area
-	public function getSearchclinicbyname(){
+	// public function getSearchclinicbyname(){
 
-		$text = Input::get('clinic_name');	//searching name
+	// 	$text = Input::get('clinic_name');	//searching name
 
-		if($text){
-			$clinic = DB::table('schedules')
-						->join('doctors', 'doctors.id', 'schedules.doctor_id')
-						->join('towns', 'towns.id', 'schedules.schedule_id')
-						->where('hospital', 'LIKE', '%'.$text.'%')
-						->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
-						->get();
+	// 	if($text){
+	// 		$clinic = DB::table('schedules')
+	// 					->join('doctors', 'doctors.id', 'schedules.doctor_id')
+	// 					->join('towns', 'towns.id', 'schedules.schedule_id')
+	// 					->where('hospital', 'LIKE', '%'.$text.'%')
+	// 					->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
+	// 					->get();
 
-			$clinic = DB::table('schedules')
-						->join('doctors', 'doctors.id', 'schedules.doctor_id')
-						->join('towns', 'towns.id', 'schedules.schedule_id')
-						->where('hospital', 'LIKE', '%'.$text.'%')
-						->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
-						->get();
-			if($text){
+	// 		$clinic = DB::table('schedules')
+	// 					->join('doctors', 'doctors.id', 'schedules.doctor_id')
+	// 					->join('towns', 'towns.id', 'schedules.schedule_id')
+	// 					->where('hospital', 'LIKE', '%'.$text.'%')
+	// 					->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
+	// 					->get();
+	// 		if($text){
 
-			}
-		}
-	}
+	// 		}
+	// 	}
+	// }
 
 	public function schedule($id) {
 		// show the schedule of a specific doctor
@@ -115,14 +181,17 @@ class ChannelController extends BaseController {
 		foreach ($week_arr as $week) {
 
 			$days[] = DB::table('schedules')
-						->select('id','start_time', 'end_time')
-						->where('doctor_id', $id)
-						->where('day', $week)
+						->leftJoin('inactives', 'inactives.schedule_id', '=', 'schedules.id')
+						->select('schedules.id','schedules.start_time', 'schedules.end_time', 'date')
+						->where('schedules.doctor_id', $id)
+						->where('schedules.day', $week)
 						->get();
+
 		}
+		return $days;
 		
-		return View::make('channel.schedule')
-			->with('days', $days);
+		// return View::make('channel.schedule')
+		// 	->with('days', $days);
 	}
 
 	public function create($id) {
