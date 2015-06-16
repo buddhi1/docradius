@@ -44,7 +44,7 @@
 {{ Form::close() }}
 
 <script type="text/javascript">
-document.getElementById('date').onclick = function(){
+document.getElementById('date').onchange = function(){
 	loadTimeSlot();
 }
 

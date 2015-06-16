@@ -78,25 +78,26 @@ class ChannelController extends BaseController {
 	//clinic search by  area
 	public function getSearchclinicbyname(){
 
-		$text = Input::get('clinic_name');	//searching name
+		$text = 'd';	//searching clinic name
+		//$text = Input::get('clinic_name');	//searching clinic name
+		$town = 'q';	//searching town name
+		//$town = Input::get('town_name');	//searching town name
 
-		if($text){
-			$clinic = DB::table('schedules')
-						->join('doctors', 'doctors.id', 'schedules.doctor_id')
-						->join('towns', 'towns.id', 'schedules.schedule_id')
+		if($text){		
+
+			$inactives = DB::table('schedules')
+						->leftJoin('doctors', 'schedules.doctor_id', '=', 'doctors.id')
+						->leftJoin('towns', 'schedules.town_id', '=', 'towns.id')
+						->leftJoin('inactives', 'inactives.schedule_id', '=', 'schedules.id')
 						->where('hospital', 'LIKE', '%'.$text.'%')
-						->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
+						->where('towns.name', 'LIKE', '%'.$town.'%')
+						->select('start_time', 'end_time', 'schedules.doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name', 'date', 'hospital')
 						->get();
 
-			$clinic = DB::table('schedules')
-						->join('doctors', 'doctors.id', 'schedules.doctor_id')
-						->join('towns', 'towns.id', 'schedules.schedule_id')
-						->where('hospital', 'LIKE', '%'.$text.'%')
-						->select('start_time', 'end_time', 'doctor_id', 'town_id', 'day', 'doctors.name', 'towns.name')
-						->get();
-			if($text){
-
+			if(sizeOf($inactives) > 0){
+				return $inactives;
 			}
+			return 'No match';
 		}
 	}
 
