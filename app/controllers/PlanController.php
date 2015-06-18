@@ -22,12 +22,13 @@ class PlanController extends BaseController{
 			$ins_plan->insurance_id = Input::get('insurance_id');
 			$ins_plan->save();
 
-			return Redirect::to('admin/insurancePlan/create')
+			return Redirect::to('admin/insurancePlan')
 						->with('message', 'The insurance plan added successfully');
 		}
 		return Redirect::to('admin/insurancePlan/create')
 					->with('message', 'Following errors occurred')
-					->withErrors($validator);
+					->withErrors($validator)
+					->withInput();
 	}
 
 	//display index page
@@ -54,5 +55,39 @@ class PlanController extends BaseController{
 					->with('message', 'Something went wrong. Please try again.');
 	}
 
-	//
+	//update function
+	public function postUpdate(){
+		$ins_plan = Plan::find(Input::get('id'));
+		if($ins_plan){
+			$validator = Validator::make(Input::all(), Plan::$rules);
+
+			if($validator->passes()){
+				$ins_plan->name = Input::get('name');
+				$ins_plan->insurance_id = Input::get('insurance_id');
+				$ins_plan->save();
+
+				return Redirect::to('admin/insurancePlan')
+							->with('message', 'The insurance plan added successfully');
+			}
+			return Redirect::to('admin/insurancePlan')
+						->with('message', 'Following errors occurred')
+						->withErrors($validator);
+			}
+
+			return Redirect::to('admin/insurancePlan')
+						->with('message', 'Something went wrong. Please try again.');
+	}
+
+	//delete function
+	public function postDestroy(){
+		$plan = Plan::find(Input::get('id'));
+
+		if($plan){
+			$plan->delete();
+			return Redirect::to('admin/insurancePlan');
+		}
+		return Redirect::to('admin/insurancePlan')
+						->with('message', 'Something went wrong. Please try again.');
+		
+	}
 }

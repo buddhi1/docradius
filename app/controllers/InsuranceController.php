@@ -26,7 +26,8 @@ class InsuranceController extends BaseController{
 		}
 		return Redirect::to('admin/insurance/create')
 					->with('message', 'Following errors occured')
-					->withErrors($validator);
+					->withErrors($validator)
+					->withInput();
 	}
 
 	//displays all insurances
