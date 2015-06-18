@@ -4,6 +4,7 @@ class PlanController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('plan');
 	}
 
 	//displays the add page
