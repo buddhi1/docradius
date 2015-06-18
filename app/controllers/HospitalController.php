@@ -37,7 +37,7 @@ class HospitalController extends BaseController{
 		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
 		$validator2 = Validator::make(array('email'=>Input::get('email'), 'password'=>Input::get('password')), User::$rules);
 		$active = Input::get('active');
-		
+
 
 		if($validator2->passes()){
 			if($validator1->passes()){
@@ -78,5 +78,37 @@ class HospitalController extends BaseController{
 					->with('message', 'Following errors occurred')
 					->withErrors($validator2)
 					->withInput();
+	}
+
+	//dispplay index page
+	public function getIndex(){
+		$hospitals = DB::table('hospitals')
+						->leftJoin('users', 'users.id', '=', 'user_id')
+						->leftJoin('towns', 'towns.id', '=', 'town_id')
+						->select('hospitals.id as id', 'hospitals.name as name', 'address', 'towns.name as town', 'email', 'hospitals.active as active')
+						->paginate(10);
+
+		return  View::make('admin.hospital.index')
+					->with('hospitals', $hospitals);
+	}
+
+	//diplays the edit page
+	public function postEdit(){
+		$hospital = Hospital::find(Input::get('id'));
+		if($hospital){
+			$user = User::find($hospital->user_id);
+			if($user){
+				$town = Town::find($hospital->town_id);
+				$lga = Lga::find($town->lga_id);
+
+				return View::make('admin.hospital.edit')
+							->with('hospital', $hospital)
+							->with('state_sel', $lga->state_id)
+							->with('lga_sel', $lga->id)
+							->with('user', $user)
+							->with('states',['' => 'Select a State'] + State::lists('name', 'id'))
+							->with('insurances', Insurance::all());
+			}
+		}
 	}
 }
