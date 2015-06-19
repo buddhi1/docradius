@@ -15,6 +15,8 @@
 </div>	
 @endif
 
+<?php $days = ["sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; ?>
+
 @foreach($doctors as $doctor)
 <h2>{{$doctor->name}}</h2>
 	<table border="1">
@@ -25,7 +27,7 @@
 			<th>End time</th>
 			<th colspan="2">Edit/Delete</th>
 		</tr>
-		<?php $days = ["sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; ?>
+		
 		@foreach($schedules as $schedule)
 			@if($doctor->id == $schedule->doctor_id)
 				<tr>

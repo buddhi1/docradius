@@ -18,6 +18,7 @@
 {{ Form::open(array('url'=>'member/doctor/create', 'files'=>true)) }}
 
 <div>{{ Form::label('lblname', 'Doctor name') }}: {{ Form::text('name') }}</div>
+<div>{{ Form::label('reg_no', 'Registration No.') }}: {{ Form::text('reg_no') }}</div>
 <div>{{ Form::label('', 'Specialty') }}:</div>
 <div id="selected_sp"></div>
 <div>

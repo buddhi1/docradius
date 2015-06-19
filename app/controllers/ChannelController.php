@@ -148,10 +148,10 @@ class ChannelController extends BaseController {
 						->get();
 
 		}
-		return $days;
+		// return $days;
 		
-		// return View::make('channel.schedule')
-		// 	->with('days', $days);
+		return View::make('channel.schedule')
+			->with('days', $days);
 	}
 
 	public function create($id) {

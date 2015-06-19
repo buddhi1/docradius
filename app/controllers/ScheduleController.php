@@ -105,7 +105,9 @@ class ScheduleController extends BaseController{
 	}
 
 	//view schedule
-	public function postIndex(){
+
+	public function getIndex(){
+		//need to be logged in as a hospital
 		$user_id = Auth::id();
 		
 		$hosp = DB::table('hospitals')->where('user_id', '=', $user_id)->first();
@@ -117,23 +119,21 @@ class ScheduleController extends BaseController{
 
 	//views edit page
 	public function postEdit(){
-		$logged_doc = DB::table('doctors')->where('user_id', '=', Auth::id())->first();		
+
+		$logged_hos = DB::table('hospitals')->where('user_id', '=', Auth::id())->first();		
 		$schedule = DB::table('schedules')
-						->where('id', '=', Input::get('id'))
-						->where('doctor_id', '=', $logged_doc->id)
+						->join('doctors', 'doctors.id', '=', 'schedules.doctor_id')
+						->where('schedules.id', '=', Input::get('id'))
+						->where('schedules.hospital', '=', $logged_hos->id)
 						->first();
 		
 		if($schedule){			
-			$lga = DB::table('towns')->where('id', '=', $schedule->town_id)->pluck('lga_id');
-			$state = DB::table('lgas')->where('id', '=', $lga)->pluck('state_id');
-			$lga_sel = DB::table('lgas')->where('state_id', '=', $state)->lists('name', 'id');
-			$town_sel = DB::table('towns')->where('lga_id', '=', $lga)->lists('name', 'id');
-
+			
 			return View::make('member.schedule.edit')
 					->with('schedule', $schedule);
 		}
 
-		return Redirect::to('member/schedule/index')
+		return Redirect::to('member/schedule/searchbydoctor')
 				->with('message', 'Something went wrong. Please try again');
 	}
 
@@ -141,15 +141,14 @@ class ScheduleController extends BaseController{
 	public function postUpdate(){
 		$schedule = Schedule::find(Input::get('id'));
 		if($schedule){
-			$validator = Validator::make(Input::all(), Schedule::$rules);
+			$validator = Validator::make(Input::all(), Schedule::$rules2);
 			if($validator->passes()){
 				$start_time = Input::get('start_time');
 				$end_time = Input::get('end_time');
 				$day = Input::get('day');
 				
-				$user_id = Auth::id();
-				$logged_doc = DB::table('doctors')->where('user_id', '=', $user_id)->first();
-				$doctor_id = $logged_doc->id;
+				$doctor_id = Input::get('doctor_id');
+				// $doctor_id = $logged_doc->id;
 				
 				//$doctor_id = 1; //remove this after uncommenting above section
 				$rec1 = DB::table('schedules')
@@ -186,9 +185,6 @@ class ScheduleController extends BaseController{
 					$schedule->start_time = $start_time;
 					$schedule->end_time = $end_time;
 					$schedule->day = $day;
-					$schedule->doctor_id = $doctor_id;
-					$schedule->hospital = Input::get('hospital');
-					$schedule->town_id = Input::get('town_id');
 					$schedule->no_of_patients = Input::get('no_of_patients');
 					$schedule->save();
 
