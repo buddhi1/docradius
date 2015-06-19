@@ -14,5 +14,7 @@
 	</ul>
 </div>	
 @endif
-<div>{{ Form::text('keyword', '', array('placeholder'=>'Doctor name')) }} {{ Form::submit('') }}</div>
+{{ Form::open(array('url'=>'member/schedule/searchbydoctor')) }}
+<div>{{ Form::text('keyword', '', array('placeholder'=>'Doctor name')) }} {{ Form::submit('Search') }}</div>
+{{ Form::close() }}
 @stop
