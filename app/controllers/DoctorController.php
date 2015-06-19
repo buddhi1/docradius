@@ -39,7 +39,8 @@ class DoctorController extends BaseController{
 					$doctor->experience = Input::get('experience');
 					$doctor->tp = Input::get('tp');
 					$doctor->special_popup = Input::get('special_popup');	
-					$doctor->user_id = $user->id;	
+					$doctor->user_id = $user->id;
+					$doctor->reg_no = Input::get('reg_no');
 					$doctor->specialties = json_encode(explode(',', Input::get('specialties')));			
 					$image_data = Input::get('image_data');
 		 			if($image_data){
@@ -134,7 +135,8 @@ class DoctorController extends BaseController{
 				$doctor->description = Input::get('description');
 				$doctor->experience = Input::get('experience');
 				$doctor->tp = Input::get('tp');
-				$doctor->special_popup = Input::get('special_popup');	
+				$doctor->special_popup = Input::get('special_popup');
+				$doctor->reg_no = Input::get('reg_no');
 				$doctor->specialties = json_encode(explode(',', Input::get('specialties')));			
 				$image_data = Input::get('image_data');
 	 			if($image_data){
@@ -227,9 +229,24 @@ class DoctorController extends BaseController{
 
 	public function getAppointments() {
 		// List all the appointments
+		$apps = array();
+		return View::make('member.doctor.appointments')
+					->with('apps', $apps);;
+	}
 
-		$apps = Channel::where('doctor_id','=',Auth::user()->id)->get();
+	public function postAppointments() {
+		// List all the appointments
 
-		return $apps;
+		$doc = Doctor::where('user_id','=',Auth::user()->id)->pluck('id');
+
+		$apps =  DB::table('channels')
+						->select('channels.time', 'channels.hospital', 'channels.patient_tp', 'patients.name', 'patients.sex', 'users.email')
+						->join('patients', 'patients.id','=', 'channels.patient_id')
+						->join('users', 'users.id', '=', 'patients.user_id')
+						->where('doctor_id', $doc)
+						->where('chanelling_date', '=', Input::get('app_date'))
+						->get();
+		return View::make('member.doctor.appointments')
+					->with('apps', $apps);
 	}
 }
