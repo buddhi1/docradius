@@ -228,8 +228,9 @@ class DoctorController extends BaseController{
 	}
 
 	public function getAppointments() {
-		// List all the appointments
+		// show the appointments searching page
 		$apps = array();
+		
 		return View::make('member.doctor.appointments')
 					->with('apps', $apps);;
 	}
