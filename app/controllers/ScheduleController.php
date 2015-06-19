@@ -4,8 +4,7 @@ class ScheduleController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
-		//$this->beforeFilter('receptionist', array('except'=>array('')));
-		//$this->beforeFilter('doctor', array('only'=>array('')));
+		$this->beforeFilter('receptionist');
 	}
 
 	
@@ -78,10 +77,37 @@ class ScheduleController extends BaseController{
 				->withInput();
 	}
 
+	//displays search page
+	public function getSearchbydoctor(){
+		return View::make('member.schedule.search');
+	}
+
+	//search schedule by doctor function
+	public function postSearchbydoctor(){
+		$rec = DB::table('doctors')
+					->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+					->where('name', 'LIKE', '%'.Input::get('keyword').'%')
+					->select('schedules.id as id', 'doctor_id', 'name', 'day', 'start_time', 'end_time')
+					->get();
+		$doc_rec = DB::table('doctors')
+					->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+					->where('name', 'LIKE', '%'.Input::get('keyword').'%')
+					->select('doctors.id as id', 'name')
+					->groupBy('doctor_id')
+					->get();
+		if(sizeOf($rec) > 0){
+			return View::make('member.schedule.index')
+						->with('schedules', $rec)
+						->with('doctors', $doc_rec);
+		}
+		return Redirect::to('member/schedule/searchbydoctor')
+							->with('message', 'No match found');
+	}
+
 	//view schedule
+
 	public function getIndex(){
 		//need to be logged in as a hospital
-
 		$user_id = Auth::id();
 		
 		$hosp = DB::table('hospitals')->where('user_id', '=', $user_id)->first();
@@ -98,20 +124,16 @@ class ScheduleController extends BaseController{
 		$schedule = DB::table('schedules')
 						->join('doctors', 'doctors.id', '=', 'schedules.doctor_id')
 						->where('schedules.id', '=', Input::get('id'))
-						->where('schedules.doctor_id', '=', $logged_hos->id)
+						->where('schedules.hospital', '=', $logged_hos->id)
 						->first();
 		
 		if($schedule){			
-			// $lga = DB::table('towns')->where('id', '=', $schedule->town_id)->pluck('lga_id');
-			// $state = DB::table('lgas')->where('id', '=', $lga)->pluck('state_id');
-			// $lga_sel = DB::table('lgas')->where('state_id', '=', $state)->lists('name', 'id');
-			// $town_sel = DB::table('towns')->where('lga_id', '=', $lga)->lists('name', 'id');
-
+			
 			return View::make('member.schedule.edit')
 					->with('schedule', $schedule);
 		}
 
-		return Redirect::to('member/schedule/index')
+		return Redirect::to('member/schedule/searchbydoctor')
 				->with('message', 'Something went wrong. Please try again');
 	}
 
@@ -183,10 +205,10 @@ class ScheduleController extends BaseController{
 
 	//delete schedule
 	public function postDestroy(){
-		$doc = DB::table('doctors')->where('user_id', '=', Auth::id())->pluck('id');		
+		$hosp = DB::table('hospitals')->where('user_id', '=', Auth::id())->pluck('id');		
 		$schedule = DB::table('schedules')
 						->where('id', '=', Input::get('id'))
-						->where('doctor_id', '=', $doc)
+						->where('hospital', '=', $hosp)
 						->first();
 		if($schedule){
 			$channels = DB::table('channels')
@@ -201,7 +223,7 @@ class ScheduleController extends BaseController{
 				
 				$schedule->delete();
 
-				return Redirect::to('member/schedule/index')
+				return Redirect::to('member/schedule/searchbydoctor')
 					->with('message', 'Schedule deleted successfully');
 			}
 			
@@ -210,15 +232,18 @@ class ScheduleController extends BaseController{
 							->with('schedule', $schedule)
 							->with('channels', $channel);
 		}
+
+		return Redirect::to('member/schedule/searchbydoctor')
+					->with('message', 'Something went wrong. Please try again.');
 	}
 
 	//delete all function
 	public function postDeleteall(){
-		$doc  = DB::table('doctors')->where('user_id', '=', Auth::id())->first();
+		$hosp  = DB::table('hospitals')->where('user_id', '=', Auth::id())->first();
 		
 		$schedule = DB::table('schedules')
 						->where('id', Input::get('id'))
-						->where('doctor_id', '=', $doc->id)
+						->where('hospital', '=', $hosp->id)
 						->first();
 		$schedule = Schedule::find($schedule->id);
 						
@@ -240,11 +265,11 @@ class ScheduleController extends BaseController{
 			
 			$schedule->delete();
 
-			return Redirect::to('member/schedule/index')
+			return Redirect::to('member/schedule/searchbydoctor')
 					->with('message', 'Schedule has been deleted successfully');
 		}
 
-		return Redirect::to('member/schedule/index')
+		return Redirect::to('member/schedule/searchbydoctor')
 				->with('message', 'Something went wrong. Please try again');
 	}
 
