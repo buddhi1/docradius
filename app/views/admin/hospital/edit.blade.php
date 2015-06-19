@@ -15,7 +15,9 @@
 </div>	
 @endif
 
+
 {{ Form::open(array('url'=>'admin/hospital/update')) }}
+{{ Form::hidden('id', $hospital->id) }}
 	<div>{{ Form::label('', 'Account state') }}:
 		@if($hospital->active ==1)
 		 	{{ Form::checkbox('active', '', array('checked')) }} 
@@ -41,7 +43,7 @@
 	</div> 
 	<div>{{ Form::label('', 'Address') }}: {{ Form::text('address', explode(', ', $hospital->address)[0]) }}</div>
 	<div>{{ Form::label('', 'Street') }}: {{ Form::text('street', explode(', ', $hospital->address)[1]) }}</div>
-	<div>{{ Form::label('lbltown', 'Town') }}: {{ Form::select('state', $states, $state_sel, array('id' => 'state')) }}{{ Form::select('lga',  $lga_sel, array('id' => 'lga')) }}{{ Form::select('town_id',  $hospital->town_id, array('id' => 'town')) }}</div>
+	<div>{{ Form::label('lbltown', 'Town') }}: {{ Form::select('state', $states, $state, array('id' => 'state')) }}{{ Form::select('lga', $lga_sel, $lga, array('id' => 'lga')) }}{{ Form::select('town_id',  $town_sel, $hospital->town_id, array('id' => 'town')) }}</div>
 	<div>{{ Form::label('', 'Email') }}: {{Form::text('email', $user->email)}}</div>
 	<div>{{Form::label('', 'Password')}}: {{ Form::password('password') }}</div>
 	<div>{{ Form::submit('Save changes') }}</div>
