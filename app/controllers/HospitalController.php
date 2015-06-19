@@ -63,7 +63,7 @@ class HospitalController extends BaseController{
 					}
 					$hospital->save();
 
-					return Redirect::to('admin/hospital/create')
+					return Redirect::to('admin/hospital')
 								->with('message', 'The hospital has been added successfully');
 				}
 				return Redirect::to('admin/hospital/create')
@@ -103,12 +103,88 @@ class HospitalController extends BaseController{
 
 				return View::make('admin.hospital.edit')
 							->with('hospital', $hospital)
-							->with('state_sel', $lga->state_id)
-							->with('lga_sel', $lga->id)
+							->with('town_sel', Town::where('lga_id', '=', $lga->id)->lists('name', 'id'))
+							->with('lga_sel', Lga::where('state_id', '=', $lga->state_id)->lists('name', 'id'))
+							->with('state', $lga->state_id)
+							->with('lga', $lga->id)
 							->with('user', $user)
 							->with('states',['' => 'Select a State'] + State::lists('name', 'id'))
 							->with('insurances', Insurance::all());
 			}
 		}
+	}
+
+	//update function
+	public function postUpdate(){
+		$hospital = Hospital::find(Input::get('id'));
+
+		if($hospital){
+
+			$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
+			
+			$active = Input::get('active');
+
+
+			if(Input::get('email') !== ""){
+				if($validator1->passes()){
+					$user = User::find($hospital->user_id);
+					
+					$user->email = Input::get('email');
+					$pass = Hash::make(Input::get('password'));
+					if(!Hash::check($user->password, $pass) && Input::get('password') !== ""){
+						$user->password = $pass;
+					}
+					
+					$user->type = 4;
+					$user->active = 0;
+					if($active == 1){
+						$user->active =1;
+					}
+					$user->save();
+					if($user){
+						
+						$hospital->name = Input::get('name');
+						$hospital->insurances = json_encode(Input::get('insurance'));
+						$hospital->address = Input::get('address').', '.Input::get('street');
+						$hospital->town_id = Input::get('town_id');
+						$hospital->user_id = $user->id;
+						$hospital->active = 0;
+						if($active ==1){
+							$hospital->active = 1;
+						}
+						$hospital->save();
+
+						return Redirect::to('admin/hospital')
+									->with('message', 'The hospital has been successfully updated');
+					}
+					return Redirect::to('admin/hospital')
+								->with('message', 'Something went wrong. Please try again');
+				}
+				return Redirect::to('admin/hospital')
+						->with('message', 'Following errors occurred')
+						->withErrors($validator1)
+						->withInput();
+			}
+			return Redirect::to('admin/hospital')
+						->with('message', 'Email is required')
+						->withInput();
+		}
+		return Redirect::to('admin/hospital')
+							->with('message', 'Something went wrong. Please try again');
+	}
+
+	//delete function
+	public function postDestroy(){
+		$hospital = Hospital::find(Input::get('id'));
+		if($hospital){
+			$user = User::find($hospital->user_id);
+			$hospital->delete();
+			if($user){
+				$user->delete();
+			}			
+			return Redirect::to('admin/hospital');
+		}
+		return Redirect::to('admin/hospital')
+					->with('message', 'Something went wrong. Please try again.');
 	}
 }
