@@ -101,11 +101,10 @@ class CreateTables extends Migration {
 			$table->time('start_time');
 			$table->time('end_time');
 			$table->integer('no_of_patients');
-			$table->string('hospital');
+			$table->integer('hospital');
 			$table->string('day');
 			$table->integer('doctor_id')->unsigned();
 			$table->foreign('doctor_id')->references('id')->on('doctors');
-			$table->integer('town_id')->nullable();
 			$table->timestamps();
 		});
 
@@ -131,7 +130,33 @@ class CreateTables extends Migration {
 			$table->integer('schedule_id')->unsigned();
 			$table->foreign('schedule_id')->references('id')->on('schedules');
 			$table->timestamps();
-		});		
+		});	
+
+		Schema::create('hospitals', function($table){
+			$table->increments('id');
+			$table->string('name');
+			$table->text('insurances')->nullable();
+			$table->text('address');
+			$table->integer('town_id')->nullable();
+			$table->integer('user_id')->unsigned();
+			$table->foreign('user_id')->references('id')->on('users');
+			$table->boolean('active');
+			$table->timestamps();
+		});
+
+		Schema::create('insurances', function($table){
+			$table->increments('id');
+			$table->string('name');
+			$table->timestamps();
+		});
+
+		Schema::create('insurance_plans', function($table){
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('insurance_id')->unsigned();
+			$table->foreign('insurance_id')->references('id')->on('insurances');
+			$table->timestamps();
+		});
 	}
 
 	/**
@@ -154,6 +179,9 @@ class CreateTables extends Migration {
 		Schema::drop('channels');
 		Schema::drop('histories');
 		Schema::drop('inactives');
+		Schema::drop('hospitals');
+		Schema::drop('insurances');
+		Schema::drop('insurance_plans');
 	}
 
 }

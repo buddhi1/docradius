@@ -16,6 +16,15 @@ Route::controller('admin/specialty', 'SpecialtyController');
 //route to advertisement
 Route::controller('admin/advert', 'AdvertisementController');
 
+//routes to insurance controller
+Route::controller('admin/insurance', 'InsuranceController');
+
+//routes to insurance plans controller
+Route::controller('admin/insurancePlan', 'PlanController');
+
+//routes to hospital controller
+Route::controller('admin/hospital', 'HospitalController');
+
 Route::get('member/patient/activate/{code}', array(
 	'as' => 'account-activate',
 	'uses' => 'PatientController@getActivate'
