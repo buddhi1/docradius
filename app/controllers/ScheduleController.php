@@ -77,7 +77,7 @@ class ScheduleController extends BaseController{
 				$schedule->day = $day;
 				$schedule->doctor_id = $doctor_id;
 				$schedule->hospital = Input::get('hospital');
-				$schedule->town_id = Input::get('town_id');
+				// $schedule->town_id = Input::get('town_id');
 				$schedule->no_of_patients = Input::get('no_of_patients');
 				$schedule->save();
 

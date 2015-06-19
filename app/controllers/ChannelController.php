@@ -43,12 +43,12 @@ class ChannelController extends BaseController {
 		}
 		
 		$doctors = DB::table('doctors')
-			->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
-			->where('doctors.specialties', 'LIKE', '%'.$special.'%')
-			->where('active', 1)
-			->whereIn('schedules.town_id',$town_arr)
-			->groupBy('schedules.town_id', 'schedules.doctor_id')
-			->get();
+						->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+						->where('doctors.specialties', 'LIKE', '%'.$special.'%')
+						->where('active', 1)
+						->whereIn('schedules.town_id',$town_arr)
+						->groupBy('schedules.town_id', 'schedules.doctor_id')
+						->get();
 
 		if($doctors) {
 
@@ -60,18 +60,49 @@ class ChannelController extends BaseController {
 	}
 
 	public function getSearchbydoctor() {
-		// Search the database for the doctor and the location
+		// Search the database for the doctor
 
-		$doc = Input::get('doc');
+		$doc = Input::get('doc');	//doctor name
+		$location = Input::get('location'); // town name
+
+		$town_arr = array();
+		$schedules = array();
 
 		if($doc) {
 
-			$towns = DB::table('doctors')
-						->where('name', 'LIKE', '%'.$doc.'%')
+			$towns = DB::table('towns')
+						->select('id')
+						->where('name', 'LIKE', '%'.$location.'%')
 						->get();
-			$doc = Doctor::find($doc);
+
+			foreach ($towns as $town) {
+
+				$town_arr[] = $town->id;
+			}
+			
+			$doctors = DB::table('doctors')
+							->join('schedules', 'schedules.doctor_id', '=', 'doctors.id')
+							->where('doctors.name', 'LIKE', '%'.$doc.'%')
+							->where('active', 1)
+							->whereIn('schedules.town_id',$town_arr)
+							->groupBy('schedules.town_id', 'schedules.doctor_id')
+							->get();
+
+			//getting the schedules of the doctors
+			foreach ($doctors as $key => $value) {
+				
+				$schedules[] = $this->schedule($value->doctor_id);
+			}
+
+			if($doctors) {
+
+				return $schedules;
+			}
+
+			return 'No doctors found';
 		} else {
-			$special = null;
+
+			return null;
 		}
 	}
 
@@ -110,14 +141,17 @@ class ChannelController extends BaseController {
 		foreach ($week_arr as $week) {
 
 			$days[] = DB::table('schedules')
-						->select('id','start_time', 'end_time')
-						->where('doctor_id', $id)
-						->where('day', $week)
+						->leftJoin('inactives', 'inactives.schedule_id', '=', 'schedules.id')
+						->select('schedules.id','schedules.start_time', 'schedules.end_time', 'date')
+						->where('schedules.doctor_id', $id)
+						->where('schedules.day', $week)
 						->get();
+
 		}
+		return $days;
 		
-		return View::make('channel.schedule')
-			->with('days', $days);
+		// return View::make('channel.schedule')
+		// 	->with('days', $days);
 	}
 
 	public function create($id) {

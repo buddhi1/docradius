@@ -224,4 +224,12 @@ class DoctorController extends BaseController{
 		return Redirect::to('member/index')
 				->with('message', 'Something went wrong. Please try again');
 	}
+
+	public function getAppointments() {
+		// List all the appointments
+
+		$apps = Channel::where('doctor_id','=',Auth::user()->id)->get();
+
+		return $apps;
+	}
 }
