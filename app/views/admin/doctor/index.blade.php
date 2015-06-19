@@ -21,6 +21,7 @@
 		<th>Doctor name</th>
 		<th>Contact No.</th>
 		<th>Account state</th>
+		<th>Registration No.</th>
 		<th>Specialties</th>
 		<th colspan="2">Edit Profile/Edit Account</th>
 		<th>Delete</th>
@@ -35,6 +36,7 @@
 		@elseif($doctor->active == 0)
 		<td> Not verified </td>
 		@endif
+		<th>{{ $doctor->reg_no }}</th>
 		@if(json_decode($doctor->specialties) !== null)
 		<td> {{implode(',', json_decode($doctor->specialties))}} </td>
 		@endif
