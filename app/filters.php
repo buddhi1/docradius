@@ -130,3 +130,10 @@ Route::filter('user', function(){
 		return Redirect::to('/');
 	}
 });
+
+//admin filter to protect admin areas
+Route::filter('receptionist', function(){
+	if(!Auth::check() ||  Auth::user()->type != 4){
+		return Redirect::to('/');
+	}
+});

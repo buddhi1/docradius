@@ -35,6 +35,9 @@ class AuthController extends BaseController{
 				}else if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('3')]))
 				{
 				    return Redirect::to('/');
+				}else if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('4')]))
+				{
+				    return Redirect::to('/');
 				}
 
 				return Redirect::to('login')
