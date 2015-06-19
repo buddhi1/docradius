@@ -6,7 +6,7 @@ class Schedule extends Eloquent{
 			'start_time'=>'required',
 			'end_time'=>'required',
 			'no_of_patients'=>'required',
-			'hospital'=>'required',
 			'day'=>'required',
+			'doctor_id'=>'required',
 		);
 }

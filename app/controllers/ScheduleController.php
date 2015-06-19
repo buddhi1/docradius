@@ -4,31 +4,16 @@ class ScheduleController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
-		$this->beforeFilter('doctor');
+		//$this->beforeFilter('receptionist', array('except'=>array('')));
+		//$this->beforeFilter('doctor', array('only'=>array('')));
 	}
 
-	public function getDropdowns() {
-	// populate LGA dropdown
-		
-		$id = Input::get('state_id');
-		$lgas = Lga::where('state_id','=',$id)->get();
 	
-		return Response::json($lgas);
-	}
-
-	public function getTowndrop() {
-	// populate Town dropdown
-		
-		$id = Input::get('lga_id');
-		$towns = Town::where('lga_id','=',$id)->get();
-	
-		return Response::json($towns);
-	}
-
 	//views schedule create page
 	public function getCreate(){
+
 		return View::make('member.schedule.add')
-				->with('states',['' => 'Select a State'] + State::lists('name', 'id'));
+				->with('doctors', Doctor::lists('name', 'id'));
 	}
 
 	//create function
@@ -41,10 +26,9 @@ class ScheduleController extends BaseController{
 			$day = Input::get('day');
 			
 			$user_id = Auth::id();
-			$logged_doc = DB::table('doctors')->where('user_id', '=', $user_id)->first();
-			$doctor_id = $logged_doc->id;
-			
-			//$doctor_id = 1; //remove this after uncommenting above section
+			$hosp = DB::table('hospitals')->where('user_id', '=', $user_id)->first();
+			$doctor_id = Input::get('doctor_id');
+
 			$rec1 = DB::table('schedules')
 				->where('start_time', '<', $start_time)
 				->where('end_time', '>', $start_time)
@@ -75,9 +59,8 @@ class ScheduleController extends BaseController{
 				$schedule->start_time = $start_time;
 				$schedule->end_time = $end_time;
 				$schedule->day = $day;
+				$schedule->hospital = $hosp->id;
 				$schedule->doctor_id = $doctor_id;
-				$schedule->hospital = Input::get('hospital');
-				// $schedule->town_id = Input::get('town_id');
 				$schedule->no_of_patients = Input::get('no_of_patients');
 				$schedule->save();
 
@@ -99,9 +82,8 @@ class ScheduleController extends BaseController{
 	public function getIndex(){
 		$user_id = Auth::id();
 		
-		//$user_id = 1;
-		$doc = DB::table('doctors')->where('user_id', '=', $user_id)->first();
-		$schedule = DB::table('schedules')->where('doctor_id', '=', $doc->id)->get();
+		$hosp = DB::table('hospitals')->where('user_id', '=', $user_id)->first();
+		$schedule = DB::table('schedules')->where('hospital', '=', $hosp->id)->get();
 
 		return View::make('member.schedule.index')
 				->with('schedules', $schedule);
@@ -122,12 +104,7 @@ class ScheduleController extends BaseController{
 			$town_sel = DB::table('towns')->where('lga_id', '=', $lga)->lists('name', 'id');
 
 			return View::make('member.schedule.edit')
-					->with('schedule', $schedule)
-					->with('lga', $lga)
-					->with('state', $state)
-					->with('lga_sel', $lga_sel)
-					->with('town_sel', $town_sel)
-					->with('states',['' => 'Select a State'] + State::lists('name', 'id'));
+					->with('schedule', $schedule);
 		}
 
 		return Redirect::to('member/schedule/index')
