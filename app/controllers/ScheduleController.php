@@ -4,8 +4,7 @@ class ScheduleController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
-		//$this->beforeFilter('receptionist', array('except'=>array('')));
-		//$this->beforeFilter('doctor', array('only'=>array('')));
+		$this->beforeFilter('receptionist');
 	}
 
 	
