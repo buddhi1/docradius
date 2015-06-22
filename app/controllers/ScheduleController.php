@@ -98,7 +98,7 @@ class ScheduleController extends BaseController{
 		$schedule = DB::table('schedules')
 						->join('doctors', 'doctors.id', '=', 'schedules.doctor_id')
 						->where('schedules.id', '=', Input::get('id'))
-						->where('schedules.doctor_id', '=', $logged_hos->id)
+						->where('schedules.hospital_id', '=', $logged_hos->id)
 						->first();
 		
 		if($schedule){			
