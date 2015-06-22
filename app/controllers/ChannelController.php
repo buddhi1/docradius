@@ -260,7 +260,7 @@ class ChannelController extends BaseController {
 								->join('users', 'users.id', '=', 'patients.user_id')
 								->where('users.email', $email)
 								->pluck('patients.id');
-				$channelling_date = '2015-04-29';	//find the channelling date
+				$channelling_date = Input::get('channelling_date'); //Hardcoded value for testing purposes '2015-04-29'
 				$book_count = DB::table('channels')
 								->having('chanelling_date', '=', $channelling_date)
 								->having('schedule_id', '=', $id)
