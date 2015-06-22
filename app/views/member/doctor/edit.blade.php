@@ -29,7 +29,7 @@
 
 {{ Form::hidden('id', $doctor->id) }}
 <div>{{ Form::label('lblname', 'Doctor name') }}: {{ Form::text('name', $doctor->name) }}</div>
-<div>{{ Form::label('reg_no', 'Registration No.') }}: {{ Form::text('reg_no') }}</div>
+<div>{{ Form::label('reg_no', 'Registration No.') }}: {{ Form::text('reg_no', $doctor->reg_no) }}</div>
 <div>{{ Form::label('', 'Specialty') }}:</div>
 <div id="selected_sp"></div>
 <div>

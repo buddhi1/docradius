@@ -24,7 +24,7 @@ class DoctorController extends BaseController{
 			$rec = DB::table('users')->where('email', '=', $email)->get();
 			if(!$rec){
 
-				$validator = Validator::make(array('name'=> Input::get('name'), 'specialties'=> Input::get('specialties')), Doctor::$rules);
+				$validator = Validator::make(array('name'=> Input::get('name'), 'specialties'=> Input::get('specialties'), 'reg_no'=> Input::get('reg_no')), Doctor::$rules);
 				if($validator->passes()){
 					$user = new User;
 					$user->email = $email;
