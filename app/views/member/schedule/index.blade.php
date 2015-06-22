@@ -15,31 +15,37 @@
 </div>	
 @endif
 
-<table border="1">
-	<tr>
-		<th>Schedule ID</th>
-		<th>Day</th>
-		<th>Start time</th>
-		<th>End time</th>
-		<th colspan="2">Edit/Delete</th>
-	</tr>
-	<?php $days = ["sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; ?>
-	@foreach($schedules as $schedule)
-	<tr>
-		<td> {{ $schedule->id }} </td>
-		<td> {{ $days[$schedule->day] }} </td>
-		<td> {{ $schedule->start_time }} </td>
-		<td> {{ $schedule->end_time }} </td>
-		{{ Form::open(array('url'=>'member/schedule/edit')) }}
-		{{ Form::hidden('id', $schedule->id) }}
-		<td> {{ Form::submit('Edit') }} </td>
-		{{ Form::close() }}
-		{{ Form::open(array('url'=>'member/schedule/destroy')) }}
-		{{ Form::hidden('id', $schedule->id) }}
-		<td> {{ Form::submit('Delete') }} </td>
-		{{ Form::close() }}
-	</tr>
-	@endforeach
-</table>
+<?php $days = ["sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; ?>
 
+@foreach($doctors as $doctor)
+<h2>{{$doctor->name}}</h2>
+	<table border="1">
+		<tr>
+			<th>Schedule ID</th>
+			<th>Day</th>
+			<th>Start time</th>
+			<th>End time</th>
+			<th colspan="2">Edit/Delete</th>
+		</tr>
+		
+		@foreach($schedules as $schedule)
+			@if($doctor->id == $schedule->doctor_id)
+				<tr>
+					<td> {{ $schedule->id }} </td>
+					<td> {{ $days[$schedule->day] }} </td>
+					<td> {{ $schedule->start_time }} </td>
+					<td> {{ $schedule->end_time }} </td>
+					{{ Form::open(array('url'=>'member/schedule/edit')) }}
+					{{ Form::hidden('id', $schedule->id) }}
+					<td> {{ Form::submit('Edit') }} </td>
+					{{ Form::close() }}
+					{{ Form::open(array('url'=>'member/schedule/destroy')) }}
+					{{ Form::hidden('id', $schedule->id) }}
+					<td> {{ Form::submit('Delete') }} </td>
+					{{ Form::close() }}
+				</tr>
+			@endif
+		@endforeach
+	</table>
+@endforeach
 @stop
