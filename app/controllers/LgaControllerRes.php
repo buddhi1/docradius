@@ -18,12 +18,22 @@ class LgaControllerRes extends \BaseController {
 		// 	->with('lgas', Lga::all())
 		// 	->with('states', State::lists('name', 'id'));
 
-		$lgas = Lga::all();
+		$state_id  = Input::get('state_id');
+		
+		if( isset($state_id) ){
+			$lgas = Lga::where('state_id','=',$state_id)->get();
+		}else{
+			$lgas = Lga::all();
+		}
+
+
+		
 
 		return Response::json([
 			'status' => 400,
-			'message' => 'list of all lgas',
+			'message' => 'list of lgas',
 			'data' => [
+				'state_id' => $state_id,
 				'lgas' => $lgas,
 			],
 		]);

@@ -9,13 +9,20 @@ class TownControllerRes extends \BaseController {
 	 */
 	public function index()
 	{
+		$lga_id = Input::get('lga_id');
+
+		if(isset($lga_id)){
+			$towns = Town::where('lga_id','=',$lga_id)->get();
+		}else{
+			$towns = Town::all();
+		}
+
 		return Response::json([
 				'status' => 400,
 				'message' => 'state list',
 				'data' => [
-					'states' => State::all(),
-					'lgas'=> Lga::lists('name', 'id'),
-					'towns'=> Town::all(),
+					'lga'=> $lga_id,
+					'towns'=> $towns,
 				],
 			]);
 	}
