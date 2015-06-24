@@ -75,7 +75,7 @@ class AuthController extends BaseController{
 		}
 
 		//return Redirect::to('login')->with('message', 'Following errors occurred.')->withErrors($validator);	
-		return Response::json(array( 'status' => 555, 'message' => 'invalid login, validation failed', 'data' => array( 'route' => '/', 'validation' => $validator ) ));
+		return Response::json(array( 'status' => 555, 'message' => 'invalid login, validation failed', 'data' => array( 'route' => '/', 'validation' => $validator->errors() ) ));
 	}
 
 

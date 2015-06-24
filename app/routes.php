@@ -1,13 +1,21 @@
 <?php
 
-Route::Controller('admin/state', 'StateController');
+Route::Resource('admin/state', 'StateControllerRes');
+
+//Route::Controller('admin/state', 'StateController');
 
 Route::Controller('admin/lga', 'LgaController');
 
 Route::Controller('admin/town', 'TownController');
 
 //route to admin user controller -> list,show,add,update,delete
-Route::controller('admin/user', 'UserController');
+Route::get('admin/user/editaccount', 'UserController@editAccount');
+Route::get('admin/user/updateaccountsettings', 'UserController@updateaccountsettings');
+Route::get('admin/user/editaccountsettings', 'UserController@editaccountsettings');
+
+Route::Resource('admin/user', 'UserControllerRes');
+
+//Route::put('admin/user/{id}', 'UserController@update');
 
 
 //route to specilties controller
@@ -73,6 +81,7 @@ Route::controller('member', 'AuthController');
 
 //route to admin home
 Route::controller('admin', 'AuthController');
+
 
 
 Route::controller('/login', 'AuthController');
