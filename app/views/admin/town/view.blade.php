@@ -13,7 +13,7 @@
 		{{ Form::Select('state', $states, array('id' => 'state')) }}
 		<br>
 		{{ Form::label('lga', 'LGA') }}
-		{{ Form::Select('lga', $lgas, array('id' => 'lga')) }}
+		{{ Form::Select('lga_id', $lgas, array('id' => 'lga')) }}
 		<br>
 		{{ Form::submit('Submit') }}
 

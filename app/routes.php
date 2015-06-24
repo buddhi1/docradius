@@ -7,7 +7,9 @@ Route::Resource('admin/state', 'StateControllerRes');
 Route::Controller('admin/lga', 'LgaController');
 Route::Resource('admin/lga', 'LgaControllerRes');
 
-Route::Controller('admin/town', 'TownController');
+Route::Resource('admin/town', 'TownControllerRes');
+
+// Route::Controller('admin/town', 'TownController');
 
 //route to admin user controller -> list,show,add,update,delete
 Route::get('admin/user/editaccount', 'UserController@editAccount');
