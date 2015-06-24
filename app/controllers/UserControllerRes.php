@@ -193,10 +193,11 @@ class UserControllerRes extends \BaseController {
 		if($user){
 			$user->delete();
 
-			return Response::json([
-						'status' => 400,
-						'message' => 'user deleted successfully',
-					]);
+
+			// return Response::json([
+			// 			'status' => 400,
+			// 			'message' => 'user deleted successfully',
+			// 		]);
 		}
 
 		//if invalid user id is sent, then redirect to index page
