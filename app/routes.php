@@ -67,10 +67,22 @@ Route::get('member/index', function() {
 //route to admin controller for edit account
 Route::get('admin/editaccountsettings', 'UserController@editaccountsettings');
 
+
 //route to member home
 Route::controller('member', 'AuthController');
 
 //route to admin home
 Route::controller('admin', 'AuthController');
 
-Route::controller('/', 'AuthController');
+//member and adminpanel routes
+Route::get('member', function(){
+	return App::make('AuthController')->getIndex('member');
+});
+
+Route::get('admin', function(){
+	return App::make('AuthController')->getIndex('admin');
+});
+
+Route::get('/', function(){
+	return Response::json(array( 'data' => array( 'route' => '/kkk' ) ));
+});
