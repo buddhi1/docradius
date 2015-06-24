@@ -11,8 +11,14 @@ class StateControllerRes extends \BaseController {
 	 * @return Response
 	 */
 	public function index()
-	{
-		//
+	{		
+		return Response::json([
+				'status' => 400,
+				'message' => 'state list',
+				'data' => [
+					'states' => State::all(),
+				],
+			]);
 	}
 
 
@@ -34,7 +40,50 @@ class StateControllerRes extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		// ########################################## //
+		/*
+			function is used to create states
+			
+			creates state and sends created state as response
+			-	if validator fails, validation erros are send back
+		*/
+		// ########################################## //
+
+
+		$name = Input::get('name');
+
+			$validator = Validator::make(Input::all(), State::$rules);
+			if($validator->passes()) {
+
+				$state = new State();
+				$state->name = $name;
+				$state->save();
+
+				return Response::json([
+						'status' => 400,
+						'message' => 'new state created',
+						'data' => [
+								'admin' => $state,
+							],
+					]);
+
+				// return Redirect::To('admin/state')
+				// 	->with('states', State::all())
+				// 	->with('message', 'State Successfully Created');
+			}
+			
+			// return Redirect::To('admin/state')
+			// 		->with('states', State::all())
+			// 		->withErrors($validator)
+			// 		->withInput();
+
+			return Response::json([
+				'status' => 403,
+				'message' => 'request denied, validation failed',
+				'data' => [
+					'validation' => $validator->errors(),
+				],
+			]);
 	}
 
 
@@ -46,7 +95,15 @@ class StateControllerRes extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$state = State::find($id);
+
+		return Response::json([
+			'status' => 400,
+			'message' => 'state data',
+			'data' => [
+				'state' => $state,
+			],
+		]);	
 	}
 
 
@@ -82,7 +139,37 @@ class StateControllerRes extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$force = Input::get('force');
+		$state = State::find($id);
+
+		if($state){
+			$lgas = DB::table('lgas')->where('state_id', '=', $state->id)->get();
+
+			if(sizeof($lgas) > 0){
+				if($force){
+					DB::table('lgas')->where('state_id', '=', $state->id)->delete();
+					$state->delete();
+					return Response::json([
+						'status'=> 400,
+						'message' => 'state deleted successfully',
+					]);
+				}
+				return Response::json([
+						'status'=> 405,
+						'message' => 'cannot delete state has LGAs',
+					]);
+				
+			}
+			$state->delete();
+			return Response::json([
+				'status'=> 400,
+				'message' => 'state deleted successfully',
+			]);
+		}
+		return Response::json([
+			'status'=> 403,
+			'message' => 'state not found',
+		]);
 	}
 
 

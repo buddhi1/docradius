@@ -150,7 +150,7 @@ class UserController extends BaseController {
 	}
 
 	//display the account edit page for a admin
-	public function editaccountsettings(){
+	public function getEditaccountsettings(){
 
 		$admin = User::find(Auth::user()->id);
 		

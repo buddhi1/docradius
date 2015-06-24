@@ -1,7 +1,8 @@
 <?php
 
 Route::Resource('admin/state', 'StateControllerRes');
-Route::Controller('admin/state', 'StateController');
+
+//Route::Controller('admin/state', 'StateController');
 
 Route::Controller('admin/lga', 'LgaController');
 Route::Resource('admin/lga', 'LgaControllerRes');
@@ -84,8 +85,7 @@ Route::controller('admin', 'AuthController');
 
 
 
-
-
+Route::controller('/login', 'AuthController');
 
 //member and adminpanel routes
 Route::get('member', function(){
@@ -99,6 +99,7 @@ Route::get('admin', function(){
 Route::get('/', function(){
 	return Response::json(array( 'data' => array( 'route' => '/kkk' ) ));
 });
+
 
 Route::get('/dev/csrf', function(){
 	return csrf_token();
