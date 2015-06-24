@@ -6,28 +6,27 @@ class HospitalController extends BaseController{
 		$this->beforeFilter('csrf', array('on'=>'post'));
 	}
 
-	// public function getDropdowns() {
-	// // populate LGA dropdown
+	public function getDropdowns() {
+	// populate LGA dropdown
 		
-	// 	$id = Input::get('state_id');
-	// 	$lgas = Lga::where('state_id','=',$id)->get();
+		$id = Input::get('state_id');
+		$lgas = Lga::where('state_id','=',$id)->get();
 	
-	// 	return Response::json($lgas);
-	// }
+		return Response::json($lgas);
+	}
 
-	// public function getTowndrop() {
-	// // populate Town dropdown
+	public function getTowndrop() {
+	// populate Town dropdown
 		
-	// 	$id = Input::get('lga_id');
-	// 	$towns = Town::where('lga_id','=',$id)->get();
+		$id = Input::get('lga_id');
+		$towns = Town::where('lga_id','=',$id)->get();
 	
-	// 	return Response::json($towns);
-	// }
+		return Response::json($towns);
+	}
 
 
 	//displays the add page
 	public function getCreate(){
-		// front end route
 		return View::make('admin.hospital.add')
 					->with('states',['' => 'Select a State'] + State::lists('name', 'id'))
 					->with('insurances', Insurance::all());
@@ -35,17 +34,13 @@ class HospitalController extends BaseController{
 
 	//create function
 	public function postCreate(){
-		//insuarance should be passed as a json array
-		//hospital validator
 		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
-		//user validator
 		$validator2 = Validator::make(array('email'=>Input::get('email'), 'password'=>Input::get('password')), User::$rules);
 		$active = Input::get('active');
 
 
-		//first validate user and then hospital
 		if($validator2->passes()){
-			if($validator1->passes()){  
+			if($validator1->passes()){
 				$user = new User;
 				$user->email = Input::get('email');
 				$user->password = Hash::make(Input::get('password'));
