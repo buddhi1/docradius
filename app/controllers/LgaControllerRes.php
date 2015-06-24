@@ -105,7 +105,14 @@ class LgaControllerRes extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$lga = Lga::find($id);
+		return Response::json([
+					'status' => 400,
+					'message' => 'lga details',
+					'data' => [
+						'lga' => $lga,
+					],
+				]);
 	}
 
 
@@ -141,6 +148,7 @@ class LgaControllerRes extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+
 		// ############################################# //
 		/*
 			funcion deletes an lga if no towns are present under it
@@ -150,7 +158,6 @@ class LgaControllerRes extends \BaseController {
 		// ############################################# //
 		// delete a LGA
 		$force = Input::get('force');
-		$id = Input::get('id');
 
 		$lga = Lga::find($id);
 
@@ -185,8 +192,10 @@ class LgaControllerRes extends \BaseController {
 			]);
 		}
 
-		return Redirect::To('admin/lga')
-			->with('message', 'Cannot Delete the LGA');
+		return Response::json([
+				'status' => 400,
+				'message' => 'cannot delete lga',
+			]);
 	}
 
 

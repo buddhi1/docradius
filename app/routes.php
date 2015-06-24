@@ -4,7 +4,7 @@ Route::Resource('admin/state', 'StateControllerRes');
 
 //Route::Controller('admin/state', 'StateController');
 
-Route::Controller('admin/lga', 'LgaController');
+//Route::Controller('admin/lga', 'LgaController');
 Route::Resource('admin/lga', 'LgaControllerRes');
 
 Route::Controller('admin/town', 'TownController');
