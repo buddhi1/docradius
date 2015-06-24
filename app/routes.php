@@ -73,4 +73,4 @@ Route::controller('member', 'AuthController');
 //route to admin home
 Route::controller('admin', 'AuthController');
 
-Route::controller('/', 'AuthController');
+Route::controller('/login', 'AuthController');
