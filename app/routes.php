@@ -6,7 +6,7 @@ Route::Controller('admin/lga', 'LgaController');
 
 Route::Controller('admin/town', 'TownController');
 
-//route to user controller
+//route to admin user controller -> list,show,add,update,delete
 Route::controller('admin/user', 'UserController');
 
 
