@@ -34,7 +34,9 @@ Route::controller('admin/insurance', 'InsuranceController');
 Route::controller('admin/insurancePlan', 'PlanController');
 
 //routes to hospital controller
-Route::controller('admin/hospital', 'HospitalController');
+//Route::controller('admin/hospital', 'HospitalController');
+
+Route::Resource('admin/hospital', 'HospitalControllerRes');
 
 Route::get('member/patient/activate/{code}', array(
 	'as' => 'account-activate',
