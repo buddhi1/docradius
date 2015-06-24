@@ -4,6 +4,7 @@ Route::Resource('admin/state', 'StateControllerRes');
 Route::Controller('admin/state', 'StateController');
 
 Route::Controller('admin/lga', 'LgaController');
+Route::Resource('admin/lga', 'LgaControllerRes');
 
 Route::Controller('admin/town', 'TownController');
 
@@ -97,4 +98,8 @@ Route::get('admin', function(){
 
 Route::get('/', function(){
 	return Response::json(array( 'data' => array( 'route' => '/kkk' ) ));
+});
+
+Route::get('/dev/csrf', function(){
+	return csrf_token();
 });
