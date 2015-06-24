@@ -94,25 +94,41 @@ class AuthController extends BaseController{
 
 	//member home page
 
-	public function getIndex(){	
-		$segment = Request::segment(1);
+	public function getIndex($type){	
+		// ##################################################### //
+		/*
+			redirect function on authentication status of each member type
+			admin can access only admin panel
+			members can access only member panel
+			a permission denied status is thrown if an invalid member tries to access an invalid route
+		*/
+		// ##################################################### //
 
-		if($segment == ''){			
-			 return View::make('hello');
-		}else if($segment != '' && Auth::check()){
-			if($segment == 'admin'){	
-				if(Auth::user()->type == 1){
-					return View::make('admin.layouts.main');
-				}
+		if(Auth::check()){
+			if(Auth::user()->type == 1 && $type == 'admin'){
+				//return View::make('admin.layouts.main');
+				return Response::json(array(
+						'status' => 400,
+						'message' => '',
+						'route' => '/return admin pannel'
+					));
+			}
+				
+			else if( (Auth::user()->type == 2 || Auth::user()->type == 3) && $type == "member" ){
+				//return View::make('member.layouts.main');
+				return Response::json(array(
+						'status' => 400,
+						'message' => '',
+						'route' => '/return member panel'
+					));
+			}
 
-				return Redirect::to('/');
-				
-			}else if($segment == 'member'){
-				if(Auth::user()->type == 2 || Auth::user()->type == 3){
-					return View::make('member.layouts.main');
-				}
-				
-				return Redirect::to('/');
+			else{
+				return Response::json([
+						'status' => '401',
+						'message' => 'permission denied',
+						'route' => '/'
+					]);
 			}
 		}
 
