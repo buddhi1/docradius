@@ -7,6 +7,12 @@ class HospitalControllerRes extends \BaseController {
 	 *
 	 * @return Response
 	 */
+
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('admin');
+	}
+	
 	public function index()
 	{
 		$hospitals = DB::table('hospitals')
@@ -120,13 +126,20 @@ class HospitalControllerRes extends \BaseController {
 	{
 		$hospital = Hospital::find($id);
 
+		if($hospital){
+			return Response::json([
+				'status' => 200,
+				'message' => 'hospital data',
+				'data' => [
+					'hospital' => $hospital,
+				],
+			]);	
+		}
 		return Response::json([
-			'status' => 200,
-			'message' => 'hospital data',
-			'data' => [
-				'hospital' => $hospital,
-			],
+			'status' => 404,
+			'message' => 'hospital not found',
 		]);	
+		
 	}
 
 
@@ -197,8 +210,12 @@ class HospitalControllerRes extends \BaseController {
 								],
 						]);
 					}
-					return Redirect::to('admin/hospital')
-								->with('message', 'Something went wrong. Please try again');
+					return Response::json([
+						'status' => 403,
+						'message' => 'something went wrong',
+						'data' => [
+							],
+					]);
 				}
 				return Response::json([
 						'status' => 403,

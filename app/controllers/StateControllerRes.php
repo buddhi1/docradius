@@ -13,7 +13,7 @@ class StateControllerRes extends \BaseController {
 	public function index()
 	{		
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'state list',
 				'data' => [
 					'states' => State::all(),
@@ -60,7 +60,7 @@ class StateControllerRes extends \BaseController {
 				$state->save();
 
 				return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'new state created',
 						'data' => [
 								'admin' => $state,
