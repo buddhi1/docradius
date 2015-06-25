@@ -22,7 +22,7 @@ class HospitalControllerRes extends \BaseController {
 						->get();
 
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'hospitals',
 				'data' => [
 						'hospitals' => $hospitals,
@@ -83,7 +83,7 @@ class HospitalControllerRes extends \BaseController {
 					$hospital->save();
 
 					return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'new hospital created',
 						'data' => [
 								'hospital' => $hospital,

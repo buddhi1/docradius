@@ -22,7 +22,9 @@ Route::Resource('admin/user', 'UserControllerRes');
 
 
 //route to specilties controller
-Route::controller('admin/specialty', 'SpecialtyController');
+//Route::controller('admin/specialty', 'SpecialtyController');
+
+Route::Resource('admin/specialty', 'SpecialtyControllerRes');
 
 //route to advertisement
 Route::controller('admin/advert', 'AdvertisementController');
