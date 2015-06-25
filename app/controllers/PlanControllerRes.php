@@ -7,6 +7,12 @@ class PlanControllerRes extends \BaseController {
 	 *
 	 * @return Response
 	 */
+
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('admin');
+	}
+	
 	public function index()
 	{
 		$plan = DB::table('insurance_plans')
@@ -44,6 +50,15 @@ class PlanControllerRes extends \BaseController {
 	 */
 	public function store()
 	{
+		// ########################################## //
+		/*
+			function is used to create insurance plan
+			
+			creates insurance plan and sends created insurance plan as response
+			-	if validator fails, validation erros are send back
+		*/
+		// ########################################## //
+
 		$validator = Validator::make(Input::all(), Plan::$rules);
 
 		if($validator->passes()){
