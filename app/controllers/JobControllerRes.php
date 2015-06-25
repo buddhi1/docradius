@@ -11,7 +11,7 @@ class JobControllerRes extends \BaseController {
 
 		$this->beforeFilter('csrf', array('on' => 'post'));
 		//$this->beforeFilter('adm_doc', array('except'=>array('postMakejobactive')));
-		//$this->beforeFilter('doctor');
+		$this->beforeFilter('doctor');
 	}
 
 	public function index()
