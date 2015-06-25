@@ -33,7 +33,9 @@ Route::controller('admin/advert', 'AdvertisementController');
 Route::controller('admin/insurance', 'InsuranceController');
 
 //routes to insurance plans controller
-Route::controller('admin/insurancePlan', 'PlanController');
+//Route::controller('admin/insurancePlan', 'PlanController');
+
+Route::Resource('admin/insurancePlan', 'PlanControllerRes');
 
 //routes to hospital controller
 //Route::controller('admin/hospital', 'HospitalController');
