@@ -10,9 +10,9 @@ class DoctorControllerRes extends \BaseController {
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
-		// $this->beforeFilter('adm_doc', array('only'=>array('Update', 'edit')));	
-		// $this->beforeFilter('admin', array('only'=>array('index', 'destroy')));
-		// $this->beforeFilter('receptionist', array('only'=>array('create', 'store')));
+		$this->beforeFilter('adm_doc', array('only'=>array('Update', 'edit')));	
+		$this->beforeFilter('admin', array('only'=>array('index', 'destroy')));
+		$this->beforeFilter('receptionist', array('only'=>array('create', 'store')));
 	}
 
 	public function index()
