@@ -65,7 +65,9 @@ Route::Resource('admin/doctor', 'DoctorControllerRes');
 
 Route::Resource('member/schedule', 'ScheduleControllerRes');
 
-Route::controller('member/job', 'JobController');
+//Route::controller('member/job', 'JobController');
+
+Route::Resource('member/job', 'JobControllerRes');
 
 // action after a time slot is selected
 Route::get('channel/schedule/create/{id}', 'ChannelController@create');

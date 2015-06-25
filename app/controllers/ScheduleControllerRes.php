@@ -53,6 +53,15 @@ class ScheduleControllerRes extends \BaseController {
 	 */
 	public function store()
 	{
+		// ########################################## //
+		/*
+			function is used to create schedule record
+			
+			creates schedule record and sends created schedule record as response
+			-	if validator fails, validation erros are send back
+		*/
+		// ########################################## //
+
 		$validator = Validator::make(Input::all(), Schedule::$rules);
 		
 		if($validator->passes()){
