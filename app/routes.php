@@ -30,7 +30,9 @@ Route::Resource('admin/specialty', 'SpecialtyControllerRes');
 Route::controller('admin/advert', 'AdvertisementController');
 
 //routes to insurance controller
-Route::controller('admin/insurance', 'InsuranceController');
+//Route::controller('admin/insurance', 'InsuranceController');
+
+Route::Resource('admin/insurance', 'InsuranceControllerRes');
 
 //routes to insurance plans controller
 //Route::controller('admin/insurancePlan', 'PlanController');

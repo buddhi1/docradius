@@ -49,6 +49,16 @@ class HospitalControllerRes extends \BaseController {
 	 */
 	public function store()
 	{
+		// ########################################## //
+		/*
+			function is used to create hospital
+			
+			creates hospital and sends created hospital as response
+			-	if validator fails, validation erros are send back
+		*/
+		// ########################################## //
+
+
 		//insuarance should be passed as a json array
 		//hospital validator
 		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
