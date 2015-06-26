@@ -79,10 +79,10 @@ class DoctorController extends BaseController{
 	}
 
 	//view all doctors
-	public function getIndex(){
-		return View::make('admin.doctor.index')
-				->with('doctors', Doctor::all());
-	}
+	// public function getIndex(){
+	// 	return View::make('admin.doctor.index')
+	// 			->with('doctors', Doctor::all());
+	// }
 
 	//view edit page for admin
 	public function postEdit(){

@@ -24,10 +24,7 @@ class LgaControllerRes extends \BaseController {
 			$lgas = Lga::where('state_id','=',$state_id)->get();
 		}else{
 			$lgas = Lga::all();
-		}
-
-
-		
+		}		
 
 		return Response::json([
 			'status' => 200,

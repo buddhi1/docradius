@@ -22,16 +22,22 @@ Route::Resource('admin/user', 'UserControllerRes');
 
 
 //route to specilties controller
-Route::controller('admin/specialty', 'SpecialtyController');
+//Route::controller('admin/specialty', 'SpecialtyController');
+
+Route::Resource('admin/specialty', 'SpecialtyControllerRes');
 
 //route to advertisement
 Route::controller('admin/advert', 'AdvertisementController');
 
 //routes to insurance controller
-Route::controller('admin/insurance', 'InsuranceController');
+//Route::controller('admin/insurance', 'InsuranceController');
+
+Route::Resource('admin/insurance', 'InsuranceControllerRes');
 
 //routes to insurance plans controller
-Route::controller('admin/insurancePlan', 'PlanController');
+//Route::controller('admin/insurancePlan', 'PlanController');
+
+Route::Resource('admin/insurancePlan', 'PlanControllerRes');
 
 //routes to hospital controller
 //Route::controller('admin/hospital', 'HospitalController');
@@ -52,13 +58,18 @@ Route::controller('admin/patient', 'PatientController');
 Route::controller('member/doctor', 'DoctorController');
 
 //route to doctor controller to admin panel
-Route::controller('admin/doctor', 'DoctorController');
+//Route::controller('admin/doctor', 'DoctorController');-------------------------- create routes for extra methods
 
+Route::Resource('admin/doctor', 'DoctorControllerRes');
 
 //route to schedule controller
-Route::controller('member/schedule', 'ScheduleController');
+//Route::controller('member/schedule', 'ScheduleController');
 
-Route::controller('member/job', 'JobController');
+Route::Resource('member/schedule', 'ScheduleControllerRes');
+
+//Route::controller('member/job', 'JobController');
+
+Route::Resource('member/job', 'JobControllerRes');
 
 // action after a time slot is selected
 Route::get('channel/schedule/create/{id}', 'ChannelController@create');

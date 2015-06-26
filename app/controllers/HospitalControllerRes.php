@@ -7,6 +7,12 @@ class HospitalControllerRes extends \BaseController {
 	 *
 	 * @return Response
 	 */
+
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on'=>'post'));
+		$this->beforeFilter('admin');
+	}
+	
 	public function index()
 	{
 		$hospitals = DB::table('hospitals')
@@ -16,7 +22,7 @@ class HospitalControllerRes extends \BaseController {
 						->get();
 
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'hospitals',
 				'data' => [
 						'hospitals' => $hospitals,
@@ -43,6 +49,16 @@ class HospitalControllerRes extends \BaseController {
 	 */
 	public function store()
 	{
+		// ########################################## //
+		/*
+			function is used to create hospital
+			
+			creates hospital and sends created hospital as response
+			-	if validator fails, validation erros are send back
+		*/
+		// ########################################## //
+
+
 		//insuarance should be passed as a json array
 		//hospital validator
 		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
@@ -77,7 +93,7 @@ class HospitalControllerRes extends \BaseController {
 					$hospital->save();
 
 					return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'new hospital created',
 						'data' => [
 								'hospital' => $hospital,
@@ -120,13 +136,20 @@ class HospitalControllerRes extends \BaseController {
 	{
 		$hospital = Hospital::find($id);
 
+		if($hospital){
+			return Response::json([
+				'status' => 200,
+				'message' => 'hospital data',
+				'data' => [
+					'hospital' => $hospital,
+				],
+			]);	
+		}
 		return Response::json([
-			'status' => 200,
-			'message' => 'hospital data',
-			'data' => [
-				'hospital' => $hospital,
-			],
+			'status' => 404,
+			'message' => 'hospital not found',
 		]);	
+		
 	}
 
 
@@ -197,8 +220,12 @@ class HospitalControllerRes extends \BaseController {
 								],
 						]);
 					}
-					return Redirect::to('admin/hospital')
-								->with('message', 'Something went wrong. Please try again');
+					return Response::json([
+						'status' => 403,
+						'message' => 'something went wrong',
+						'data' => [
+							],
+					]);
 				}
 				return Response::json([
 						'status' => 403,
