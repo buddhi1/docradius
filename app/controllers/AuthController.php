@@ -87,7 +87,7 @@ class AuthController extends BaseController{
 		*/
 		// ##################################################### //
 		Auth::logout();
-		return Response::json(array( 'status' => 400, 'message' => 'logout successful', 'data' => array( 'route' => '/' ) ));
+		return Response::json(array( 'status' => 200, 'message' => 'logout successful', 'data' => array( 'route' => '/' ) ));
 
 	}
 
@@ -108,7 +108,7 @@ class AuthController extends BaseController{
 			if(Auth::user()->type == 1 && $type == 'admin'){
 				//return View::make('admin.layouts.main');
 				return Response::json(array(
-						'status' => 400,
+						'status' => 200,
 						'message' => '',
 						'route' => '/return admin pannel'
 					));
@@ -117,7 +117,7 @@ class AuthController extends BaseController{
 			else if( (Auth::user()->type == 2 || Auth::user()->type == 3) && $type == "member" ){
 				//return View::make('member.layouts.main');
 				return Response::json(array(
-						'status' => 400,
+						'status' => 200,
 						'message' => '',
 						'route' => '/return member panel'
 					));

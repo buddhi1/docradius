@@ -21,7 +21,7 @@ class UserControllerRes extends \BaseController {
 					->get();
 
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'admin list',
 				'data' => [
 					'users' => $users,
@@ -74,7 +74,7 @@ class UserControllerRes extends \BaseController {
 				//return Redirect::to('admin/user/index')
 				//			->with('message', 'New user has been created successfully');
 				return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'new admin created',
 						'data' => [
 								'admin' => $user,
@@ -110,7 +110,7 @@ class UserControllerRes extends \BaseController {
 		$user = User::find($id);
 
 		return Response::json([
-			'status' => 400,
+			'status' => 200,
 			'message' => 'admin user data',
 			'data' => [
 				'admin' => $user,
@@ -153,7 +153,7 @@ class UserControllerRes extends \BaseController {
 				//return Redirect::to('admin/user/index')
 				//		->with('message', 'The user has been edited successfully');
 				return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'user updated',
 						'data' => [
 							'admin' => $user,
@@ -195,7 +195,7 @@ class UserControllerRes extends \BaseController {
 
 
 			// return Response::json([
-			// 			'status' => 400,
+			// 			'status' => 200,
 			// 			'message' => 'user deleted successfully',
 			// 		]);
 		}

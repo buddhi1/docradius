@@ -13,7 +13,7 @@ class StateControllerRes extends \BaseController {
 	public function index()
 	{		
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'state list',
 				'data' => [
 					'states' => State::all(),
@@ -60,7 +60,7 @@ class StateControllerRes extends \BaseController {
 				$state->save();
 
 				return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'new state created',
 						'data' => [
 								'admin' => $state,
@@ -98,7 +98,7 @@ class StateControllerRes extends \BaseController {
 		$state = State::find($id);
 
 		return Response::json([
-			'status' => 400,
+			'status' => 200,
 			'message' => 'state data',
 			'data' => [
 				'state' => $state,
@@ -150,7 +150,7 @@ class StateControllerRes extends \BaseController {
 					DB::table('lgas')->where('state_id', '=', $state->id)->delete();
 					$state->delete();
 					return Response::json([
-						'status'=> 400,
+						'status'=> 200,
 						'message' => 'state deleted successfully',
 					]);
 				}
@@ -162,7 +162,7 @@ class StateControllerRes extends \BaseController {
 			}
 			$state->delete();
 			return Response::json([
-				'status'=> 400,
+				'status'=> 200,
 				'message' => 'state deleted successfully',
 			]);
 		}

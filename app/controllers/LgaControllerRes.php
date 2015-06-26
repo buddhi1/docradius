@@ -30,7 +30,7 @@ class LgaControllerRes extends \BaseController {
 		
 
 		return Response::json([
-			'status' => 400,
+			'status' => 200,
 			'message' => 'list of lgas',
 			'data' => [
 				'state_id' => $state_id,
@@ -79,7 +79,7 @@ class LgaControllerRes extends \BaseController {
 				// 	->with('lgas', Lga::all())
 				// 	->with('message', 'LGA Successfully Created');
 				return Response::json([
-					'status' => 400,
+					'status' => 200,
 					'message' => 'lga created Successfully',
 					'data' => [
 						'lga' => $lga,
@@ -101,7 +101,7 @@ class LgaControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-					'status' => 400,
+					'status' => 200,
 					'message' => 'lga already exist'
 				]);
 	}
@@ -117,7 +117,7 @@ class LgaControllerRes extends \BaseController {
 	{
 		$lga = Lga::find($id);
 		return Response::json([
-					'status' => 400,
+					'status' => 200,
 					'message' => 'lga details',
 					'data' => [
 						'lga' => $lga,
@@ -180,7 +180,7 @@ class LgaControllerRes extends \BaseController {
 					$towns->destroy();
 					$lga->delete();
 					return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'lga force deleted with towns',
 						'data' => [
 							'lga' => $lga,
@@ -197,13 +197,13 @@ class LgaControllerRes extends \BaseController {
 			$lga->delete();
 
 			return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'lga deleted, no towns',
 			]);
 		}
 
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'cannot delete lga',
 			]);
 	}

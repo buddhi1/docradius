@@ -18,7 +18,7 @@ class TownControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-				'status' => 400,
+				'status' => 200,
 				'message' => 'state list',
 				'data' => [
 					'lga'=> $lga_id,
@@ -69,7 +69,7 @@ class TownControllerRes extends \BaseController {
 			$town->save();
 
 			return Response::json([
-						'status' => 400,
+						'status' => 200,
 						'message' => 'new town created',
 						'data' => [
 								'admin' => $town,
@@ -107,7 +107,7 @@ class TownControllerRes extends \BaseController {
 		$town = Town::find($id);
 
 		return Response::json([
-			'status' => 400,
+			'status' => 200,
 			'message' => 'town data',
 			'data' => [
 				'town' => $town,
@@ -155,7 +155,7 @@ class TownControllerRes extends \BaseController {
 			$town->delete();
 		
 			return Response::json([
-				'status'=> 400,
+				'status'=> 200,
 				'message' => 'town deleted successfully',
 			]);
 		}
