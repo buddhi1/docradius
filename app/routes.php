@@ -16,7 +16,7 @@ Route::get('admin/user/editaccount', 'UserController@editAccount');
 Route::get('admin/user/updateaccountsettings', 'UserController@updateaccountsettings');
 Route::get('admin/user/editaccountsettings', 'UserController@editaccountsettings');
 
-Route::Resource('admin/user', 'UserControllerRes');
+Route::Resource('admin/user', 'UserControllerRes'); 
 
 //Route::put('admin/user/{id}', 'UserController@update');
 
@@ -55,7 +55,7 @@ Route::controller('member/patient', 'PatientController');
 Route::controller('admin/patient', 'PatientController'); 
 
 //route to doctor controller
-Route::controller('member/doctor', 'DoctorController');
+Route::get('member/doctor/search', 'DoctorController@searchDoctorById');
 
 //route to doctor controller to admin panel
 //Route::controller('admin/doctor', 'DoctorController');-------------------------- create routes for extra methods
@@ -63,7 +63,9 @@ Route::controller('member/doctor', 'DoctorController');
 Route::Resource('admin/doctor', 'DoctorControllerRes');
 
 //route to schedule controller
-//Route::controller('member/schedule', 'ScheduleController');
+// Route::controller('member/schedule', 'ScheduleController');
+
+Route::get('member/schedule/doctor/{id}', 'ScheduleController@scheduleSearchByDoctorId');
 
 Route::Resource('member/schedule', 'ScheduleControllerRes');
 
