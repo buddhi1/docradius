@@ -273,5 +273,29 @@ class ScheduleController extends BaseController{
 				->with('message', 'Something went wrong. Please try again');
 	}
 
+	//search schedule by doctor id
+	public function scheduleSearchByDoctorId($id){
+		$hospital = DB::table('hospitals')
+						->where('user_id', '=', Auth::id())
+						->first();
+
+		$schedules = Schedule::where('hospital', '=', $hospital->id)
+						->where('doctor_id', '=', $id)
+						->get();
+					
+		if(sizeOf($schedules) > 0){
+			return Response::json([
+				'status' => 200,
+				'message' => 'doctor schedule',
+				'data' => [
+					'doctor_schedule' => $schedules,
+				],
+			]);
+		}
+		return Response::json([
+				'status' => 404,
+				'message' => 'data not found',
+			]);
+	}
 
 }

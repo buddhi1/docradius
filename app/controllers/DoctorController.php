@@ -252,4 +252,27 @@ class DoctorController extends BaseController{
 					->with('apps', $apps);
 	}
 
+	//search doctor by name
+	public function searchDoctorById(){
+		$name = Input::get('name');
+		if(isset($name)){
+			$rec = DB::table('doctors')						
+						->where('name', 'LIKE', '%'.$name.'%')
+						->select('id', 'name')	
+						->get();		
+			
+				return Response::json([
+					'status' => 200,
+					'message' => 'doctors',
+					'data' => [
+						'doctors' => $rec,
+					],
+				]);
+		}
+		return Response::json([
+					'status' => 403,
+					'message' => 'no search key found',
+				]);
+	}
+
 }
