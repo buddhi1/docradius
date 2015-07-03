@@ -3,13 +3,49 @@
 class AuthController extends BaseController{
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on'=>'post'));
-		$this->beforeFilter('guest', array('only'=>array('getLogin', 'postLogin')));
+		$this->beforeFilter('guest', array('only'=>array('getLogin')));
 	}
 
 	//views login page
 	public function getLogin(){
 		// front end route ----------------------------- // 
 		return View::make('login');
+	}
+
+	public function getState(){
+		if( Auth::check() ){
+			$user = Auth::user();
+			if($user->active){
+				return Response::json( [ 
+					'status' => true,
+					'message' => 'user logged in',
+					'data' => [
+						'user' => [
+							'id' => $user->id,
+							'type' => $user->type,
+							'active' => $user->active,
+						],
+					], 
+				]);
+			}else{
+				return Response::json( [
+					'status' => false,
+					'message' => 'user inactive',
+					'data' => [
+						'user' => [
+							'id' => $user->id,
+							'type' => $user->type,
+							'active' => $user->active,
+						],
+					], 
+				]);
+			}
+		}else{
+			return Response::json([
+				'message' => 'not logged in',
+				'error' => 'not logged in',
+			], 401);
+		}
 	}
 
 	//login function
@@ -41,41 +77,41 @@ class AuthController extends BaseController{
 					// ------------ admin login sucess --------------- //
 					// tested
 				    //return Redirect::to('/');
-				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => array( 'route' => '/' ) ));
+				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => [ 'user' => Auth::user() ] ));
 				}
 
 				// ------------------- admin login faliure ------------ //
 				//return Redirect::to('admin/login')->with('message', 'Invalid credentials. Please try again');
-					return Response::json(array( 'status' => 555, 'message' => 'invalid admin login', 'data' => array( 'route' => '/' ) ));
+					return Response::json(array( 'status' => 555, 'error' => 'invalid admin login', 'data' => array( 'route' => '/' ) ), 401);
 			}elseif ($segment == 'login' || $segment == 'member') {
 				if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('2')]))
 				{
 					// ------------- doctor login 		-----------------/
 				    //return Redirect::to('/');
-				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => array( 'route' => '/' ) ));
+				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => [ 'user' => Auth::user() ] ));
 				}else if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('3')]))
 				{
 					// ------------- patient login 		-----------------/
 				    //return Redirect::to('/');
-				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => array( 'route' => '/' ) ));
+				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => [ 'user' => Auth::user() ] ));
 				}else if (Auth::attempt(['email' => $email, 'password' => $password, 'active'=>1, 'type'=>array('4')]))
 				{
 					// ------------- hospital login 		-----------------/
 				    //return Redirect::to('/');
-				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => array( 'route' => '/' ) ));
+				    return Response::json(array( 'status' => 444, 'message' => 'login sucess', 'data' => [ 'user' => Auth::user() ] ));
 				}
 
 				//return Redirect::to('login')->with('message', 'Invalid credentials. Please try again');
-				return Response::json(array( 'status' => 555, 'message' => 'invalid member login', 'data' => array( 'route' => '/' ) ));
+				return Response::json(array( 'status' => 555, 'error' => 'invalid member login', 'data' => array( 'route' => '/' ) ), 401);
 			}
  			
 
 			//return Redirect::to('login')->with('message', 'Something went wrong. Please try again');
-			return Response::json(array( 'status' => 555, 'message' => 'invalid login, type not defined', 'data' => array( 'route' => '/' ) ));
+			return Response::json(array( 'status' => 555, 'error' => 'invalid login, type not defined', 'data' => array( 'route' => '/' ) ),401);
 		}
 
 		//return Redirect::to('login')->with('message', 'Following errors occurred.')->withErrors($validator);	
-		return Response::json(array( 'status' => 555, 'message' => 'invalid login, validation failed', 'data' => array( 'route' => '/', 'validation' => $validator->errors() ) ));
+		return Response::json(array( 'status' => 555, 'error' => 'invalid login, validation failed', 'data' => array( 'route' => '/', 'validation' => $validator->errors() ) ),401);
 	}
 
 
