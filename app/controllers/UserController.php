@@ -4,8 +4,8 @@ class UserController extends BaseController {
 
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('user', array('only'=>array('postUpdateaccountsettings')));
-		$this->beforeFilter('admin', array('except'=>array('getEditaccountsettings', 'postUpdateaccountsettings')));
+		//$this->beforeFilter('user', array('only'=>array('postUpdateaccountsettings')));
+		//$this->beforeFilter('admin', array('except'=>array('getEditaccountsettings', 'postUpdateaccountsettings')));
 	}
 
 	//views the create user blade
@@ -150,7 +150,7 @@ class UserController extends BaseController {
 	}
 
 	//display the account edit page for a admin
-	public function getEditaccountsettings(){
+	public function editaccountsettings(){
 
 		$admin = User::find(Auth::user()->id);
 		
