@@ -16,7 +16,7 @@ class UserControllerRes extends \BaseController {
 		//views the index page with availabale user details
 		$users = DB::table('users')
 					->where('type', '=', 1)
-					->where('id', '<>', Auth::id())
+					//->where('id', '<>', Auth::id())
 					->select('id', 'email', 'active')
 					->get();
 

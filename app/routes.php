@@ -132,7 +132,7 @@ Route::get('/dev/csrf', function(){
 // ------------------------ frontend routes ---------------------------- //
 Route::group([ 'prefix' => 'admin' ], function(){
 	Route::any('{all?}',function(){
-		return View::make('frontend.login')->with('USER_TYPE', 'admin');
+		return View::make('frontend.admin')->with('USER_TYPE', 'admin');
 	});
 });
 

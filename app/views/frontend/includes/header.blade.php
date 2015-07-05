@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap-theme.min.css">
 	<script type="text/javascript">
-		angular.module('docradius',["ngRoute"])
+		angular.module('docradius',["ngRoute", "commonDirectives"])
 		.config(['$httpProvider', '$routeProvider' , 'CSRF_TOKEN', 'USER_TYPE',function($httpProvider, $routeProvider, CSRF_TOKEN, USER_TYPE) {
 			
 			//setting up Ajax http request parameters
@@ -41,6 +41,7 @@
 		.run([ '$rootScope', '$location', function( $rootScope, $location ){
 			$rootScope.$on( "$routeChangeStart", function(event, next, current) {
 				if( next.data.auth && !$rootScope.currentUser ){
+					$rootScope.initPath = next.originalPath;
 					$location.path('/login');
 				}else{
 
@@ -51,6 +52,7 @@
 		.constant("USER_TYPE", '{{ $USER_TYPE }}');
 	</script>
 	@yield('controllers')
+	<script type="text/javascript" src="/app/directives/commonDirectives.js"></script>
 	@yield('directives')
 </head>
 <body>
