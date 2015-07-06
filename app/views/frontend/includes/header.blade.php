@@ -41,7 +41,7 @@
 		.run([ '$rootScope', '$location', function( $rootScope, $location ){
 			$rootScope.$on( "$routeChangeStart", function(event, next, current) {
 				if( next.data.auth && !$rootScope.currentUser ){
-					$rootScope.initPath = next.originalPath;
+					$rootScope.initPath = $location.path();
 					$location.path('/login');
 				}else{
 

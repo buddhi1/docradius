@@ -49,4 +49,13 @@
 			auth: true,
 		}
 	});
+
+	$routeProvider.when('/administrators/:id/edit', {
+		templateUrl: '/app/components/admin/administrator/view.html',
+		controller: "adminController",
+		data: {
+			auth: true, 
+			view: 'edit'
+		}
+	})
 @stop
