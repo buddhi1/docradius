@@ -80,14 +80,14 @@ class TownControllerRes extends \BaseController {
 			// 	->with('towns', Town::all())
 			// 	->with('message', 'Town Successfully Created');
 		}
-		
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'town/create'
+			],401);
 		// return Redirect::To('admin/town')
 		// 		->with('towns', Town::all())
 		// 		->withErrors($validator)
@@ -106,13 +106,19 @@ class TownControllerRes extends \BaseController {
 	{
 		$town = Town::find($id);
 
+		if($town){
+			return Response::json([
+				'status' => 200,
+				'message' => 'town data',
+				'data' => [
+					'town' => $town,
+				],
+			]);	
+		}
 		return Response::json([
-			'status' => 200,
-			'message' => 'town data',
-			'data' => [
-				'town' => $town,
-			],
-		]);	
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
@@ -161,9 +167,9 @@ class TownControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-			'status'=> 403,
-			'message' => 'town not found',
-		]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 

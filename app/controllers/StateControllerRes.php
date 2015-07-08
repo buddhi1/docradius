@@ -76,14 +76,14 @@ class StateControllerRes extends \BaseController {
 			// 		->with('states', State::all())
 			// 		->withErrors($validator)
 			// 		->withInput();
-
 			return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'town/create'
+			],401);
 	}
 
 
@@ -97,13 +97,20 @@ class StateControllerRes extends \BaseController {
 	{
 		$state = State::find($id);
 
+		if ($state) {
+			return Response::json([
+				'status' => 200,
+				'message' => 'state data',
+				'data' => [
+					'state' => $state,
+				],
+			]);
+		}
 		return Response::json([
-			'status' => 200,
-			'message' => 'state data',
-			'data' => [
-				'state' => $state,
-			],
-		]);	
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
+			
 	}
 
 
@@ -167,9 +174,9 @@ class StateControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-			'status'=> 403,
-			'message' => 'state not found',
-		]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
