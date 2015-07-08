@@ -1,13 +1,13 @@
 <?php
 
-Route::Resource('drad/admin/state', 'StateControllerRes');
+Route::Resource('drad/state', 'StateControllerRes');
 
 //Route::Controller('admin/state', 'StateController');
 
 //Route::Controller('admin/lga', 'LgaController');
-Route::Resource('drad/admin/lga', 'LgaControllerRes');
+Route::Resource('drad/lga', 'LgaControllerRes');
 
-Route::Resource('drad/admin/town', 'TownControllerRes');
+Route::Resource('drad/town', 'TownControllerRes');
 
 // Route::Controller('admin/town', 'TownController');
 

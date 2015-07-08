@@ -1,3 +1,4 @@
+// admin management controller
 angular.module('docradius').controller('adminController',[ '$scope', '$http', '$state',  function($scope,$http,$state){
 	$scope.data = {};
 
@@ -74,15 +75,48 @@ angular.module('docradius').controller('adminController',[ '$scope', '$http', '$
 			});
 	}
 
+}]);
 
-	// $scope.$on("$routeChangeSuccess", function (event, next, current) {
-	// 	if(next.data.view == 'edit'){
-	// 		$scope.editAdmin.id = $routeParams.id;
-	// 		$http.get('drad/admin/user/'+$scope.editAdmin.id)
-	// 		.success(function(res){
-	// 			$editAdmin.email = res.data.admin.email;
-	// 			$editAdmin.password = '*sample*';
-	// 		});
-	// 	}
-	// });
+
+//location management controller
+angular.module('docradius').controller('locationController' ,[ '$scope', '$http', '$state', function($scope, $http, $state){
+
+	$scope.data = {};
+
+	$scope.stateEditIndex;
+
+	$scope.compareIndex = function(idx1, idx2){
+		if(idx1 == idx2){
+			return true;
+		}else{
+			return false;
+		}
+	};
+
+	$scope.getStates = function(){
+		$http.get('/drad/state/')
+			.success( function(res){
+				$scope.data.states = res.data.states;
+			})
+			.error( function(res){
+				console.log(res);
+				alert('error')
+			});
+	}
+
+	$scope.setStateEditIndex = function(index){
+		$scope.stateEditIndex = index;
+	}
+
+	$scope.updateStateName = function(state){
+		$http.put('/drad/state/'+state.id, state)
+			.success(function(res){
+				console.log(res);
+				$scope.getStates();
+			})
+			.error(function(res){
+				console.log(res);
+				alert('error');
+			});
+	}
 }]);

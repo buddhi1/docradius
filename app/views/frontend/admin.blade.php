@@ -24,6 +24,9 @@
 		templateUrl: "/app/components/admin/main.html",
 	});
 
+
+	// ***************** admin manage panel routes ******************* //
+
 	$stateProvider.state("panel.administrators",{
 		abstract: true,
 		url: '/administrators',
@@ -54,6 +57,23 @@
 		},
 		controller: ['$scope','editId', function($scope, editId){
 			$scope.editAdmin.id = editId;
+		}],
+	})
+
+	// ********************** locaction mage panel routes ************** //
+
+	$stateProvider.state('panel.locations', {
+		abstract: true,
+		url: '/locations',
+		templateUrl: '/app/components/admin/location/main.html',
+		controller: 'locationController',
+	})
+
+	$stateProvider.state('panel.locations.states', {
+		url: '',
+		templateUrl: '/app/components/admin/location/state.html',
+		controller: ['$scope', function($scope){
+			$scope.getStates();
 		}],
 	})
 
