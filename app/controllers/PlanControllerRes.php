@@ -76,12 +76,13 @@ class PlanControllerRes extends \BaseController {
 					]);
 		}
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'insurancePlan/create'
+			],401);
 	}
 
 
@@ -104,9 +105,9 @@ class PlanControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-				'status' => 400,
-				'message' => 'no data found',
-			]);
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
 	}
 
 
@@ -148,20 +149,19 @@ class PlanControllerRes extends \BaseController {
 					]);
 			}
 			return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
-				'data' => [
-					'validation' => $validator->errors(),
-				],
-			]);
+					'status' => 401,
+					'error' => 'request denied, validation failed',
+					'data' => [
+						'validation' => $validator->errors(),
+					],
+					'route' => 'insurancePlan/create'
+				],401);
 			}
 
 			return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
 	}
 
 
@@ -187,11 +187,9 @@ class PlanControllerRes extends \BaseController {
 					]);
 		}
 		return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
 	}
 
 

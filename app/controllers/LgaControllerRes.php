@@ -150,7 +150,24 @@ class LgaControllerRes extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$lga = Lga::find($id);
+		
+		if($lga){
+			$lga->name = Input::get('name');
+			$lga->save();
+
+			return Response::json([
+				'status' => 200,
+				'message' => 'lga data',
+				'data' => [
+					'lga' => $lga,
+				],
+			]);
+		}
+		return Response::json([
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 

@@ -142,7 +142,23 @@ class TownControllerRes extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$town = Town::find($id);
+		if($town){
+			$town->name = Input::get('name');
+			$town->save();
+
+			return Response::json([
+				'status' => 200,
+				'message' => 'town data',
+				'data' => [
+					'town' => $town,
+				],
+			]);
+		}
+		return Response::json([
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 

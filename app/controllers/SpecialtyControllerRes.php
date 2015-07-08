@@ -81,7 +81,7 @@ class SpecialtyControllerRes extends \BaseController {
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-				'route' => 'town/create'
+				'route' => 'specialty/create'
 			],401);
 	}
 
