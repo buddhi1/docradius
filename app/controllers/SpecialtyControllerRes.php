@@ -71,20 +71,18 @@ class SpecialtyControllerRes extends \BaseController {
 					]);
 			}
 			return Response::json([
-						'status' => 403,
-						'message' => 'specialty already exists',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, specialty already exists',
+			],401);
 		}
-
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'specialty/create'
+			],401);
 	}
 
 
@@ -107,9 +105,9 @@ class SpecialtyControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-			'status' => 404,
-			'message' => 'data not found',
-		]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
@@ -159,11 +157,9 @@ class SpecialtyControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 

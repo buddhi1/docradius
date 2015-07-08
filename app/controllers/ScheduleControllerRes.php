@@ -27,11 +27,10 @@ class ScheduleControllerRes extends \BaseController {
 				],
 			]);
 		}
-
 		return Response::json([
-				'status' => 404,
-				'message' => 'no data found',
-			]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
@@ -117,21 +116,19 @@ class ScheduleControllerRes extends \BaseController {
 					]);
 			}
 			return Response::json([
-						'status' => 403,
-						'message' => 'overlapping time slots',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, overlapping time slots',
+			],401);
 			
 		}
-
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'schedule/create'
+			],401);
 	}
 
 
@@ -155,9 +152,9 @@ class ScheduleControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-				'status' => 404,
-				'message' => 'data not found',
-			]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
@@ -239,19 +236,18 @@ class ScheduleControllerRes extends \BaseController {
 					]);
 				}
 			}
-
 			return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);
+			],401);
 		}
 		return Response::json([
-				'status' => 403,
-				'message' => 'something went wrong',
-			]);
+				'status' => 401,
+				'error' => 'request denied, something went wrong',
+			],401);
 	}
 
 
@@ -318,20 +314,19 @@ class ScheduleControllerRes extends \BaseController {
 			$schedule->delete();
 			}
 			return Response::json([
-					'status' => 405,
-					'message' => 'cannot delete schedule. has channels'
-				]);
+				'status' => 401,
+				'error' => 'request denied, schedule has channels',
+			],401);
 			
 			$channel = DB::table('channels')->where('schedule_id', '=', $schedule->id)->where('state', '=', 0)->count();
 			return View::make('member.schedule.forcedelete')
 							->with('schedule', $schedule)
 							->with('channels', $channel);
 		}
-
 		return Response::json([
-				'status' => 403,
-				'message' => 'something went wrong',
-			]);
+				'status' => 401,
+				'error' => 'request denied, something went wrong',
+			],401);
 	}
 
 
