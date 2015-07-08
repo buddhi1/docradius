@@ -94,7 +94,7 @@ class LgaControllerRes extends \BaseController {
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-				'route' => 'town/create'
+				'route' => 'lga/create'
 			],401);
 		}
 		return Response::json([
@@ -153,16 +153,29 @@ class LgaControllerRes extends \BaseController {
 		$lga = Lga::find($id);
 		
 		if($lga){
-			$lga->name = Input::get('name');
-			$lga->save();
+			$name = Input::get('name');
+			
+			$validator = Validator::make(Input::all(), Lga::$rules);
+			if($validator->passes()) {
+					$lga->name = Input::get('name');
+				$lga->save();
 
+				return Response::json([
+					'status' => 200,
+					'message' => 'lga data',
+					'data' => [
+						'lga' => $lga,
+					],
+				]);
+			}
 			return Response::json([
-				'status' => 200,
-				'message' => 'lga data',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
-					'lga' => $lga,
+					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'lga'
+			],401);
 		}
 		return Response::json([
 				'status' => 401,

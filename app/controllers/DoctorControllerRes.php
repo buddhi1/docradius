@@ -104,31 +104,29 @@ class DoctorControllerRes extends \BaseController {
 							],
 					]);
 				}
-
 				return Response::json([
-					'status' => 403,
-					'message' => 'request denied, validation failed',
+					'status' => 401,
+					'error' => 'request denied, validation failed',
 					'data' => [
 						'validation' => $validator->errors(),
 					],
-				]);
-			}			
+					'route' => 'doctor/create'
+				],401);	
+				
+			}	
 			return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
-				'data' => [
-					'validation' => 'The eamil already exists',
-				],
-			]);
-			
+				'status' => 401,
+				'error' => 'request denied, eamil already exists',
+			],401);				
 		}
 		return Response::json([
-					'status' => 403,
-					'message' => 'request denied, validation failed',
+					'status' => 401,
+					'error' => 'request denied, validation failed',
 					'data' => [
 						'validation' => $validator_user->errors(),
 					],
-				]);
+					'route' => 'doctor/create'
+				],401);	
 	}
 
 
@@ -152,9 +150,9 @@ class DoctorControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-				'status'=> 404,
-				'message' => 'doctor not found',
-			]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
@@ -226,22 +224,20 @@ class DoctorControllerRes extends \BaseController {
 							],
 					]);
 			}
-
 			return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, something went wrong',
+			],401);
 		}
 
 		return Response::json([
-					'status' => 403,
-					'message' => 'request denied, validation failed',
+					'status' => 401,
+					'error' => 'request denied, validation failed',
 					'data' => [
 						'validation' => $validator->errors(),
 					],
-				]);
+					'route' => 'doctor/create'
+				],401);	
 	}
 
 
@@ -284,11 +280,9 @@ class DoctorControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 

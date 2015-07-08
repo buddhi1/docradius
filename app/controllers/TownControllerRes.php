@@ -144,16 +144,30 @@ class TownControllerRes extends \BaseController {
 	{
 		$town = Town::find($id);
 		if($town){
-			$town->name = Input::get('name');
-			$town->save();
+			$name = Input::get('name');
+			$lga_id = Input::get('lga_id');
+			
+			$validator = Validator::make(Input::all(), Town::$rules);
+			if($validator->passes()) {
+				$town->name = Input::get('name');
+				$town->save();
 
+				return Response::json([
+					'status' => 200,
+					'message' => 'town data',
+					'data' => [
+						'town' => $town,
+					],
+				]);
+			}
 			return Response::json([
-				'status' => 200,
-				'message' => 'town data',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
-					'town' => $town,
+					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'town'
+			],401);			
 		}
 		return Response::json([
 				'status' => 401,
