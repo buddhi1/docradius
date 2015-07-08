@@ -4,9 +4,9 @@
 		<form name="forms.adminEdit" ng-submit="updateAdmin(editAdmin)" novalidate>
 			<input style="display:none">
 			<input type="password" style="display:none">
-			<inputgroup  ng-model="editAdmin.email" label="email" name="email" type="email" required></inputgroup>
+			<inputgroup  ng-model="editAdmin.email" label="email" name="edit_email" type="email" required></inputgroup>
 			<br />
-			<inputgroup  ng-model="editAdmin.password" label="password" name="password" type="password"></inputgroup>
+			<inputgroup  ng-model="editAdmin.password" label="password" name="edit_password" type="password"></inputgroup>
 			<br />
 			<button type="submit" class="btn btn-primary center-block" ng-disabled="forms.adminEdit.$invalid">Edit Administrator</button>
 		</form>
