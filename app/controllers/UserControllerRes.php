@@ -148,11 +148,15 @@ class UserControllerRes extends \BaseController {
 	{
 		$user = User::find($id);
 		if($user){
+			//response message
+			$message = 'user email updated';
+
 			$email = Input::get('email');
 			if($email){			
 				$password = Input::get('password');
-				if($user->password != $password){
+				if($password && $password != ''){
 					$user->password = Hash::make($password);
+					$message = 'user email and password updated';
 				}
 				$user->email = $email;
 				$user->save();
@@ -161,7 +165,7 @@ class UserControllerRes extends \BaseController {
 				//		->with('message', 'The user has been edited successfully');
 				return Response::json([
 						'status' => 200,
-						'message' => 'user updated',
+						'message' => $message,
 						'data' => [
 							'admin' => $user,
 						],
