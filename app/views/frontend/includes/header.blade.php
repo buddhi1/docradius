@@ -13,6 +13,7 @@
 			
 			//setting up Ajax http request parameters
 			$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+			$httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 			$httpProvider.defaults.transformRequest = function(data){
 		        if (data === undefined || typeof(data) != 'object') {
 		            return data;

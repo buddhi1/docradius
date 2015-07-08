@@ -39,7 +39,10 @@ angular.module('docradius').controller('adminController',[ '$scope', '$http', '$
 	});
 
 	$scope.updateAdmin = function(editAdmin){
-		$http.put('drad/admin/user/'+editAdmin.id)
+		var updateVars = editAdmin;
+		if( editAdmin.password == '_filler' ) updateVars.password = undefined;
+		console.log(updateVars);
+		$http.put('drad/admin/user/'+editAdmin.id, updateVars)
 			.success( function(res){
 				console.log(res);
 				$state.go('panel.administrators.listAdmins');
