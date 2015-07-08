@@ -182,7 +182,7 @@ class HospitalControllerRes extends \BaseController {
 			$active = Input::get('active');
 
 
-			if(Input::get('email') !== ""){
+			if(Input::get('email')){
 				if($validator1->passes()){
 					$user = User::find($hospital->user_id);
 					
@@ -221,34 +221,30 @@ class HospitalControllerRes extends \BaseController {
 						]);
 					}
 					return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+						'status' => 401,
+						'error' => 'request denied, something went wrong',
+					],401);
 				}
 				return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+					'status' => 401,
+					'error' => 'request denied, validation failed',
+					'data' => [
+						'validation' => $validator1->errors(),
+					],
+				],401);
 			}
 			return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
-					'validation' => $validator1->errors(),
+					'validation' => 'email field is required',
 				],
-			]);
+			],401);
 		}
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
-				'data' => [
-					'validation' => $validator2->errors(),
-				],
-			]);
+					'status' => 401,
+					'error' => 'request denied, something went wrong',
+				],401);		
 	}
 
 
@@ -276,11 +272,9 @@ class HospitalControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-			'status' => 404,
-			'message' => 'hospital not found',
-			'data' => [
-				],
-		]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
