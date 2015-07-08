@@ -137,16 +137,29 @@ class StateControllerRes extends \BaseController {
 		$state = State::find($id);
 
 		if($state){
-			$state->name = Input::get('name');
-			$state->save();
+			$name = Input::get('name');
 
+			$validator = Validator::make(Input::all(), State::$rules);
+			if($validator->passes()) {
+				$state->name = Input::get('name');
+				$state->save();
+
+				return Response::json([
+					'status' => 200,
+					'message' => 'state data',
+					'data' => [
+						'state' => $state,
+					],
+				]);
+			}
 			return Response::json([
-				'status' => 200,
-				'message' => 'state data',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
-					'state' => $state,
+					'validation' => $validator->errors(),
 				],
-			]);
+				'route' => 'state'
+			],401);
 		}
 		return Response::json([
 				'status' => 401,

@@ -102,27 +102,27 @@ class HospitalControllerRes extends \BaseController {
 					]);
 				}
 				return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+					'status' => 401,
+					'error' => 'request denied, something went wrong',
+				],401);
 			}
 			return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator1->errors(),
 				],
-			]);
+				'route' => 'hospital'
+			],401);	
 		}
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator2->errors(),
 				],
-			]);
+				'route' => 'hospital'
+			],401);	
 	}
 
 
@@ -146,9 +146,9 @@ class HospitalControllerRes extends \BaseController {
 			]);	
 		}
 		return Response::json([
-			'status' => 404,
-			'message' => 'hospital not found',
-		]);	
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
 		
 	}
 
