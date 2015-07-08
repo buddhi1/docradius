@@ -13,6 +13,7 @@
 			<td>{{ user.active }}</td>
 			<td>
 				<a ng-href="#/administrators/{{ user.id }}/edit">edit</a>
+				<a href=""  ng-click="deleteAdmin( user.id )">Delete</a>
 			</td>
 		</tr>
 </table>

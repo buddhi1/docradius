@@ -34,6 +34,9 @@
 	$stateProvider.state('panel.administrators.listAdmins',{
 		url: '',
 		templateUrl: '/app/components/admin/administrator/list.html',
+		controller: ['$scope', function($scope){
+			$scope.getAdminList();
+		}],
 	});
 
 	$stateProvider.state('panel.administrators.addAdmins',{

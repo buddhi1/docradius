@@ -4,10 +4,17 @@ angular.module('docradius').controller('adminController',[ '$scope', '$http', '$
 	//explicitly defining form objects
 	$scope.forms = {};
 
-	$http.get('/drad/admin/user')
-	.success(function(res){
-		$scope.data.admins = res.data.users;
-	});
+
+	$scope.getAdminList = function(){
+		$http.get('/drad/admin/user')
+		.success(function(res){
+			$scope.data.admins = res.data.users;
+		})
+		.error(function(res){
+			console.log(res);
+			alert('error');
+		});
+	}
 
 	$scope.addAdmin = function(newAdmin){
 		if($scope.forms.adminAdd.$valid){
@@ -39,6 +46,8 @@ angular.module('docradius').controller('adminController',[ '$scope', '$http', '$
 	});
 
 	$scope.updateAdmin = function(editAdmin){
+		if($scope.forms.adminEdit.$invalid) return;
+
 		var updateVars = editAdmin;
 		if( editAdmin.password == '_filler' ) delete updateVars.password;
 		console.log(updateVars);
@@ -46,6 +55,18 @@ angular.module('docradius').controller('adminController',[ '$scope', '$http', '$
 			.success( function(res){
 				console.log(res);
 				$state.go('panel.administrators.listAdmins');
+			})
+			.error( function(res){
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.deleteAdmin = function(userId){
+		$http.delete('/drad/admin/user/' + userId)
+			.success( function(res){
+				console.log(res);
+				$scope.getAdminList();
 			})
 			.error( function(res){
 				console.log(res);
