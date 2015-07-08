@@ -89,13 +89,13 @@ class UserControllerRes extends \BaseController {
 		//			->withErrors($validator);
 
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
 				'route' => 'user/create'
-			]);
+			],401);
 	}
 
 

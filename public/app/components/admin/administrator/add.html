@@ -1,12 +1,12 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Add an administrator</div>
 	<div class="panel-body">
-		<form name="adminAdd" ng-submit="addAdmin(newAdmin)" novalidate>
+		<form name="forms.adminAdd" ng-submit="addAdmin(newAdmin)" novalidate>
 			<inputgroup ng-model="newAdmin.email" label="email" name="email" type="email" required></inputgroup>
 			<br />
 			<inputgroup ng-model="newAdmin.password" label="password" name="password" type="password" required></inputgroup>
 			<br />
-			<button type="submit" class="btn btn-primary center-block" ng-disabled="adminAdd.$invalid">Add Administrator</button>
+			<button type="submit" class="btn btn-primary center-block" ng-disabled="forms.adminAdd.$invalid">Add Administrator</button>
 		</form>
 	</div>
 </div>

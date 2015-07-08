@@ -1,0 +1,12 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Edit Administrator: id : {{ editAdmin }}//</div>
+	<div class="panel-body">
+		<form name="forms.adminEdit" ng-submit="updateAdmin(editAdmin)" novalidate>
+			<inputgroup  ng-model="editAdmin.email" label="email" name="email" type="email" required></inputgroup>
+			<br />
+			<inputgroup  ng-model="editAdmin.password" label="password" name="password" type="password" required></inputgroup>
+			<br />
+			<button type="submit" class="btn btn-primary center-block" ng-disabled="forms.adminEdit.$invalid">Edit Administrator</button>
+		</form>
+	</div>
+</div>

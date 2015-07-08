@@ -8,7 +8,12 @@ angular.module('docradius').controller('loginController', [ '$scope', '$http' , 
 		$http.get('/drad/auth/state')
 		.success(function(res){
 			$rootScope.currentUser = res.data.user;
-			$location.path($rootScope.initPath);
+			if($rootScope.initPath){
+				$location.path($rootScope.initPath);
+			}else{
+				$location.path('/');
+			}
+			
 		})
 		.error(function(res){
 

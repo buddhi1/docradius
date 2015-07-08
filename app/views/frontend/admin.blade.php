@@ -6,56 +6,72 @@
 @stop
 
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-4">
-			<div class="label label-default">Navigation</div>
-			<ul>
-				<li><a href="#administrators">administrators</a></li>
-				<li><a href="#hospitals">Hospitals</a></li>
-				<li><a href="#patients">Patients</a></li>
-			</ul>			
-		</div>
-		<div class="col-md-8">
-			<div ng-view></div>
-		</div>
-	</div>
-</div>
+<div ui-view></div>
 @stop
 
 @section('routes')
 	/*<script type="text/javascript">*/
-	$routeProvider.when("/", {
-		templateUrl: "/app/components/admin/main.html",
-		controller: "adminController",
-		data: {
-			auth: true,
-		}
+	$stateProvider.state("panel", {
+		abstract: true,
+		templateUrl: "/app/components/panel.html",
+		resolve: ['authService', function(authService){
+			authService.chackAuthState();
+		}],
 	});
+
+	$stateProvider.state('panel.main',{
+		url: '/',
+		templateUrl: "/app/components/admin/main.html",
+	});
+
+	$stateProvider.state("panel.administrators",{
+		abstract: true,
+		url: '/administrators',
+		templateUrl: '/app/components/admin/administrator/main.html',
+		controller: "adminController",
+	});
+
+	$stateProvider.state('panel.administrators.listAdmins',{
+		url: '',
+		templateUrl: '/app/components/admin/administrator/list.html',
+	});
+
+	$stateProvider.state('panel.administrators.addAdmins',{
+		url: '/add',
+		templateUrl: '/app/components/admin/administrator/add.html',
+	});
+
+	$stateProvider.state('panel.administrators.editAdmins',{
+		url: '/{id:int}/edit',
+		templateUrl: '/app/components/admin/administrator/edit.html',
+		resolve: {
+			editId: ['$stateParams', function($stateParams){
+          		return $stateParams.id;
+      		}]
+		},
+		controller: ['$scope','editId', function($scope, editId){
+			$scope.editAdmin.id = editId;
+		}],
+	})
 
 	//administrator management
-	$routeProvider.when("/administrators", {
-		templateUrl: '/app/components/admin/administrator/list.html',
-		controller: "adminController",
-		data: {
-			auth: true,
-		}
-	});
 
-	$routeProvider.when("/administrators/add", {
-		templateUrl: '/app/components/admin/administrator/add.html',
-		controller: "adminController",
-		data: {
-			auth: true,
-		}
-	});
+	// $stateProvider.state('administrator.add', {
+	// 	url: "/administrators/add",
+	// 	templateUrl: '/app/components/admin/administrator/add.html',
+	// 	controller: "adminController",
+	// 	data: {
+	// 		auth: true,
+	// 	}
+	// });
 
-	$routeProvider.when('/administrators/:id/edit', {
-		templateUrl: '/app/components/admin/administrator/view.html',
-		controller: "adminController",
-		data: {
-			auth: true, 
-			view: 'edit'
-		}
-	})
+	// $stateProvider.state('administrator.edit', {
+	// 	url: '/administrators/:id/edit',
+	// 	templateUrl: '/app/components/admin/administrator/view.html',
+	// 	controller: "adminController",
+	// 	data: {
+	// 		auth: true, 
+	// 		view: 'edit'
+	// 	}
+	// })
 @stop
