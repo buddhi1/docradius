@@ -89,18 +89,18 @@ class LgaControllerRes extends \BaseController {
 			// 		->withErrors($validator)
 			// 		->withInput();
 			return Response::json([
-					'status' => 403,
-					'message' => 'lga validation failed',
-					'data' => [
-						'validation' => $validator->errors(),
-					],
-				]);
+				'status' => 401,
+				'error' => 'request denied, validation failed',
+				'data' => [
+					'validation' => $validator->errors(),
+				],
+				'route' => 'lga/create'
+			],401);
 		}
-
 		return Response::json([
-					'status' => 200,
-					'message' => 'lga already exist'
-				]);
+				'status' => 401,
+				'error' => 'request denied, lga already exist',
+			],401);
 	}
 
 
@@ -113,13 +113,20 @@ class LgaControllerRes extends \BaseController {
 	public function show($id)
 	{
 		$lga = Lga::find($id);
-		return Response::json([
+		if($lga){
+			return Response::json([
 					'status' => 200,
 					'message' => 'lga details',
 					'data' => [
 						'lga' => $lga,
 					],
 				]);
+		}
+		return Response::json([
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
+		
 	}
 
 
@@ -143,7 +150,37 @@ class LgaControllerRes extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$lga = Lga::find($id);
+		
+		if($lga){
+			$name = Input::get('name');
+			
+			$validator = Validator::make(Input::all(), Lga::$rules);
+			if($validator->passes()) {
+					$lga->name = Input::get('name');
+				$lga->save();
+
+				return Response::json([
+					'status' => 200,
+					'message' => 'lga data',
+					'data' => [
+						'lga' => $lga,
+					],
+				]);
+			}
+			return Response::json([
+				'status' => 401,
+				'error' => 'request denied, validation failed',
+				'data' => [
+					'validation' => $validator->errors(),
+				],
+				'route' => 'lga'
+			],401);
+		}
+		return Response::json([
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 
@@ -186,9 +223,9 @@ class LgaControllerRes extends \BaseController {
 					]);
 				}
 				return Response::json([
-					'status' => 405,
-					'message' => 'cannot delete lga, has towns',
-				]);
+					'status' => 401,
+					'error' => 'request denied, cannot delete lga, has towns',
+				],401);
 			}
 
 			$lga->delete();
@@ -200,9 +237,9 @@ class LgaControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-				'status' => 200,
-				'message' => 'cannot delete lga',
-			]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 	}
 
 

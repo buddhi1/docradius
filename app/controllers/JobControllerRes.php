@@ -34,9 +34,9 @@ class JobControllerRes extends \BaseController {
 			]);
 		}
 		return Response::json([
-				'status' => 404,
-				'message' => 'no data found',
-			]);
+				'status' => 401,
+				'error' => 'request denied, data not found',
+			],401);
 		
 	}
 
@@ -104,19 +104,18 @@ class JobControllerRes extends \BaseController {
 					]);
 				}
 				return Response::json([
-							'status' => 403,
-							'message' => 'something went wrong',
-							'data' => [
-								],
-						]);
+					'status' => 401,
+					'error' => 'request denied, something went wrong',
+				],401);
 		}
 		return Response::json([
-				'status' => 403,
-				'message' => 'request denied, validation failed',
+				'status' => 401,
+				'error' => 'request denied, validation failed',
 				'data' => [
 					'validation' => $validator->errors(),
 				],
-			]);		
+				'route' => 'job'
+			],401);		
 		
 	}
 
@@ -180,11 +179,9 @@ class JobControllerRes extends \BaseController {
 		}
 
 		return Response::json([
-						'status' => 403,
-						'message' => 'something went wrong',
-						'data' => [
-							],
-					]);
+					'status' => 401,
+					'error' => 'request denied, something went wrong',
+				],401);
 	}
 
 
