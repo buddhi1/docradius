@@ -109,13 +109,20 @@ class UserControllerRes extends \BaseController {
 	{
 		$user = User::find($id);
 
+		if($user){
+			return Response::json([
+				'status' => 200,
+				'message' => 'admin user data',
+				'data' => [
+					'admin' => $user,
+				],
+			]);	
+		}
 		return Response::json([
-			'status' => 200,
-			'message' => 'admin user data',
-			'data' => [
-				'admin' => $user,
-			],
-		]);	
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
+		
 	}
 
 
@@ -175,9 +182,9 @@ class UserControllerRes extends \BaseController {
 		//return Redirect::to('admin/user/index')
 		//		->with('message', 'Something went wrong. Please try again');	
 		return Response::json([
-						'status' => 403,
-						'message' => 'user id not identified',
-					]);
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
 	}
 
 
@@ -202,9 +209,9 @@ class UserControllerRes extends \BaseController {
 
 		//if invalid user id is sent, then redirect to index page
 		return Response::json([
-						'status' => 403,
-						'message' => 'user not found',
-					]);	
+				'status' => 401,
+				'error' => 'request denied, no data found',
+			],401);
 	}
 
 
