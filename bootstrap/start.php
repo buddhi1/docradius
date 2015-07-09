@@ -29,7 +29,6 @@ $env = $app->detectEnvironment(array(
 	'local' => array('homestead'),
 	'pulasthi' => array('Pulasthi.local'),
 	'buddhi'=>array('Buddhi-PC')
-
 ));
 
 /*

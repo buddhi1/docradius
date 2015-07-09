@@ -1,0 +1,80 @@
+<label class="label label-default">double click to edit</label>
+<div class="row">
+	<div class="col-md-4">
+		<ul>
+			<li class="location-list">
+				<form name="forms.stateAddForm" ng-submit="createState(stateAddInput)">
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="stateAddInput" required/>
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default" ng-disabled="forms.stateAddForm.$invalid" >+</button>
+						</span>
+					</div>
+				</form>
+			</li>
+			<li ng-repeat="state in data.states" class="location-list">
+				<div class="input-group ">
+					<input toggle-input ng-click="setCurrentState(state.id)" type="text" ng-model="state.name" class="form-control" edit-state="{{ compareId(state.id, stateEditId) }}"  />
+					<span class="input-group-btn" ng-if="compareId(state.id, stateEditId)">
+						<button class="btn btn-default" ng-click="updateStateName(state)">sav</button>
+						<button class="btn btn-default" ng-click="deleteState(state.id)">del</button>
+						<button class="btn btn-default" ng-click="setStateEditId(undefined)">can</button>
+					</span>
+				</div>
+				<button class="next-btn btn btn-default" type="button" ng-click="setStateEditId(state.id)"> > </button>
+			</li>
+		</ul>
+	</div>
+
+	<div class="col-md-4">
+		<ul ng-if="currentState">
+			<li class="location-list">
+				<form name="forms.lgaAddForm" ng-submit="createLga(lgaAddInput)">
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="lgaAddInput" required/>
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default" ng-disabled="forms.lgaAddForm.$invalid" >+</button>
+						</span>
+					</div>
+				</form>
+			</li>
+			<li ng-repeat="lga in data.lgas" class="location-list">
+				<div class="input-group">
+					<input toggle-input ng-click="setCurrentLga(lga.id)" type="text" ng-model="lga.name" class="form-control" edit-state="{{ compareId(lga.id, lgaEditId) }}"  />
+					<span class="input-group-btn" ng-if="compareId(lga.id, lgaEditId)">
+						<button class="btn btn-default" ng-click="updateLgaName(lga)">save</button>
+						<button class="btn btn-default" ng-click="deleteLga(lga.id)">delete</button>
+						<button class="btn btn-default" ng-click="setLgaEditId(undefined)">cancel</button>
+					</span>
+					<button  class="next-btn btn btn-default" type="button" ng-click="setLgaEditId(lga.id)"> > </button>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="col-md-4">
+		<ul ng-if="currentLga">
+			<li class="location-list">
+				<form name="forms.townAddForm" ng-submit="createTown(townAddInput)">
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="townAddInput" required/>
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default" ng-disabled="forms.townAddForm.$invalid" >+</button>
+						</span>
+					</div>
+				</form>
+			</li>
+			<li ng-repeat="town in data.towns" class="location-list">
+				<div class="input-group">
+					<input toggle-input type="text" ng-model="town.name" class="form-control" edit-state="{{ compareId(town.id, townEditId) }}"  />
+					<span class="input-group-btn" ng-if="compareId(town.id, townEditId)">
+						<button class="btn btn-default" ng-click="updateTownName(town)">save</button>
+						<button class="btn btn-default" ng-click="deleteTown(town.id)">delete</button>
+						<button class="btn btn-default" ng-click="setTownEditId(undefined)">cancel</button>
+					</span>
+					<button  class="next-btn btn btn-default" type="button" ng-click="setTownEditId(town.id)"> > </button>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

@@ -32,12 +32,12 @@ Route::controller('drad/admin/advert', 'AdvertisementController');
 //routes to insurance controller
 //Route::controller('admin/insurance', 'InsuranceController');
 
-Route::Resource('drad/admin/insurance', 'InsuranceControllerRes');
+Route::Resource('drad/insurance', 'InsuranceControllerRes');
 
 //routes to insurance plans controller
 //Route::controller('admin/insurancePlan', 'PlanController');
 
-Route::Resource('drad/admin/insurancePlan', 'PlanControllerRes');
+Route::Resource('drad/insurancePlan', 'PlanControllerRes');
 
 //routes to hospital controller
 //Route::controller('admin/hospital', 'HospitalController');

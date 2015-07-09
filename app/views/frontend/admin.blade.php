@@ -60,41 +60,45 @@
 		}],
 	})
 
-	// ********************** locaction mage panel routes ************** //
+	// ********************** locaction manage panel routes ************** //
 
 	$stateProvider.state('panel.locations', {
 		abstract: true,
 		url: '/locations',
-		templateUrl: '/app/components/admin/location/main.html',
+		template: '<ui-view/>',
 		controller: 'locationController',
 	})
 
 	$stateProvider.state('panel.locations.states', {
-		url: '',
-		templateUrl: '/app/components/admin/location/state.html',
-		controller: ['$scope', function($scope){
+		url: '?state&lga',
+		templateUrl: '/app/components/admin/location/locations.html',
+		controller: ['$scope', '$stateParams', function($scope, $stateParams){
 			$scope.getStates();
+			$scope.data.lga = undefined;
+			if($stateParams.state !== undefined && !isNaN($stateParams.state)){
+				$scope.getLgaByState($stateParams.state);
+				$scope.data.towns = undefined
+				if($stateParams.lga !== undefined && !isNaN($stateParams.lga)){
+					$scope.getTownByLga($stateParams.lga);
+				}
+			}
 		}],
 	})
 
-	//administrator management
 
-	// $stateProvider.state('administrator.add', {
-	// 	url: "/administrators/add",
-	// 	templateUrl: '/app/components/admin/administrator/add.html',
-	// 	controller: "adminController",
-	// 	data: {
-	// 		auth: true,
-	// 	}
-	// });
+	// ********************** insurance manage panel routes ************** //
+	$stateProvider.state('panel.insurance', {
+		abstract: true,
+		template: '<ui-view/>',
+		url: '/insurance',
+		controller: 'insuranceController',
+	});
 
-	// $stateProvider.state('administrator.edit', {
-	// 	url: '/administrators/:id/edit',
-	// 	templateUrl: '/app/components/admin/administrator/view.html',
-	// 	controller: "adminController",
-	// 	data: {
-	// 		auth: true, 
-	// 		view: 'edit'
-	// 	}
-	// })
+	$stateProvider.state('panel.insurance.manageInsurance', {
+		url: '',
+		templateUrl: '/app/components/admin/insurance/manage.html',
+		controller: ['$scope', '$stateParams', function($scope, $stateParams){
+			$scope.getInsurance();
+		}],
+	});
 @stop
