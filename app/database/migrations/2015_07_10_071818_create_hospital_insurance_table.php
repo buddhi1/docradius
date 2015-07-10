@@ -15,8 +15,10 @@ class CreateHospitalInsuranceTable extends Migration {
 		Schema::create('hospitalinsurance', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('hospital_id')->nullable();
+			$table->integer('hospital_id')->unsigned();
 			$table->integer('insurance_id')->unsigned();
+			$table->foreign('hospital_id')->references('id')->on('hospitals');
+			$table->foreign('insurance_id')->references('id')->on('insurances');
 		});
 	}
 

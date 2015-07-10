@@ -109,5 +109,5 @@
 
 
 	// ********************** hospital manage panel routes ************** //
-	$stateProvider.state('panel.hospital');
+	//$stateProvider.state('panel.hospital');
 @stop
