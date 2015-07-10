@@ -288,8 +288,12 @@ angular.module('docradius').controller('insuranceController' ,[ '$scope', '$http
 
 	$scope.forms = {};
 
+	$scope.viewData = {};
+
 	$scope.insuranceEditId = undefined;
-	$scope.currentInsurance = undefined;
+	$scope.viewData.currentInsurance = undefined;
+
+	$scope.policyEditId = undefined;
 
 	$scope.compareId = function(id1, id2){
 		if(id1 == id2){
@@ -299,8 +303,14 @@ angular.module('docradius').controller('insuranceController' ,[ '$scope', '$http
 		}
 	}
 
+	//insurance
+
 	$scope.setInsuranceEditId = function (insuranceId) {
 		$scope.insuranceEditId = insuranceId;
+	}
+
+	$scope.setCurrentInsurance = function(insuranceId){
+		$state.go('panel.insurance.manageInsurance', { insurance: insuranceId });
 	}
 
 	$scope.getInsurance = function(){
@@ -348,5 +358,65 @@ angular.module('docradius').controller('insuranceController' ,[ '$scope', '$http
 				alert('error');
 			});
 	}
+
+	//insurance policies
+	$scope.setPolicyEditId = function (policyId) {
+		$scope.policyEditId = policyId;
+	}
+
+	$scope.getPolicyByInsurance = function(insuranceId){
+		$http.get('/drad/insurancePlan?insurance_id='+insuranceId)
+			.success(function (res) {
+				$scope.data.policy = res.data.insurance_plans;
+			})
+			.error(function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.createPolicy = function(newPolicy, insurance_id){
+		$http.post('/drad/insurancePlan', { name: newPolicy, insurance_id: insurance_id})
+			.success( function (res) {
+				$scope.getPolicyByInsurance($scope.viewData.currentInsurance);
+			})
+			.error( function (res) {
+				console.log(res);
+				alert('error');
+			})
+	}
+
+	$scope.updatePolicyName = function (policy) {
+		var updateVars = { name: policy.name, insurance_id: $scope.viewData.currentInsurance };
+		$http.put('/drad/insurancePlan/'+policy.id, updateVars)
+			.success( function (res) {
+				$scope.policyEditId = undefined;
+				$scope.getPolicy($scope.viewData.currentInsurance);
+			})
+			.error( function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.deletePolicy = function (policyId){
+		$http.delete('/drad/insurancePlan/' + policyId)
+			.success( function (res) {
+				$scope.policyEditId = undefined;
+				$scope.getPolicyByInsurance($scope.viewData.currentInsurance);
+			})
+			.error( function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.$watch('viewData.currentInsurance', function(newValue){
+		if(newValue === undefined || isNaN(newValue)){
+			$scope.data.policy = undefined;
+		}else{
+			$scope.getPolicyByInsurance(newValue);
+		}
+	});
 
 }]);

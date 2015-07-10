@@ -95,10 +95,19 @@
 	});
 
 	$stateProvider.state('panel.insurance.manageInsurance', {
-		url: '',
+		url: '?insurance',
 		templateUrl: '/app/components/admin/insurance/manage.html',
 		controller: ['$scope', '$stateParams', function($scope, $stateParams){
 			$scope.getInsurance();
+			if( $stateParams.insurance !== undefined && !isNaN($stateParams.insurance) ){
+				$scope.viewData.currentInsurance = $stateParams.insurance;
+			}else{
+				$scope.viewData.currentInsurance = undefined;
+			}
 		}],
 	});
+
+
+	// ********************** hospital manage panel routes ************** //
+	$stateProvider.state('panel.hospital');
 @stop

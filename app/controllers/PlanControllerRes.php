@@ -15,10 +15,17 @@ class PlanControllerRes extends \BaseController {
 	
 	public function index()
 	{
-		$plan = DB::table('insurance_plans')
-					->leftJoin('insurances', 'insurances.id', '=', 'insurance_plans.insurance_id')
-					->select('insurance_plans.id as id', 'insurance_plans.name as name', 'insurances.name as insurance')
-					->get();
+		// $plan = DB::table('insurance_plans')
+		// 			->leftJoin('insurances', 'insurances.id', '=', 'insurance_plans.insurance_id')
+		// 			->select('insurance_plans.id as id', 'insurance_plans.name as name', 'insurances.name as insurance')
+		// 			->get();
+		$insurance_id = Input::get('insurance_id');
+
+		if( !isset($insurance_id) ){
+			return Response::json(['status' => 401 ,'error'=> 'insurance_id not set', 'data' => []],401);
+		}
+
+		$plan = Plan::where('insurance_id', '=', $insurance_id)->get();
 
 
 			return Response::json([

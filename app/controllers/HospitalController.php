@@ -51,12 +51,14 @@ class HospitalController extends BaseController{
 					$user->active =1;
 				}
 				$user->save();
-				if($user){
+				if($user->id){
 					$hospital = new Hospital;
 					$hospital->name = Input::get('name');
-					$hospital->insurances = json_encode(Input::get('insurance'));
+					//$hospital->insurances = json_encode(Input::get('insurance'));
 					$hospital->address = Input::get('address').', '.Input::get('street');
 					$hospital->town_id = Input::get('town_id');
+					$hospital->state_id = Input::get('state_id');
+					$hospital->lga_id = Input::get('lga_id');
 					$hospital->user_id = $user->id;
 					$hospital->active = 0;
 					if($active ==1){
@@ -64,8 +66,17 @@ class HospitalController extends BaseController{
 					}
 					$hospital->save();
 
-					return Redirect::to('admin/hospital')
+					if($hospital->id){
+						$insurance_array = Input::get('insurance');
+						for($i = 0; $i< count($insurance_array); $i++){
+							$hospitalinsurance = new Hospitalinsurance;
+							$hospitalinsurance->hospital_id = $hospital->id;
+							$hospitalinsurance->insurance_id = $insurance_array[$i];
+							$hospitalinsurance->save(); 
+						}
+						return Redirect::to('admin/hospital')
 								->with('message', 'The hospital has been added successfully');
+					}
 				}
 				return Redirect::to('admin/hospital/create')
 							->with('message', 'Something went wrong. Please try again');

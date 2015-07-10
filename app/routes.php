@@ -40,9 +40,9 @@ Route::Resource('drad/insurance', 'InsuranceControllerRes');
 Route::Resource('drad/insurancePlan', 'PlanControllerRes');
 
 //routes to hospital controller
-//Route::controller('admin/hospital', 'HospitalController');
+Route::controller('admin/hospital', 'HospitalController');
 
-Route::Resource('drad/admin/hospital', 'HospitalControllerRes');
+Route::Resource('admin/hospital', 'HospitalControllerRes');
 
 Route::get('drad/member/patient/activate/{code}', array(
 	'as' => 'account-activate',
