@@ -1,5 +1,5 @@
 <?php
-//
+
 Route::Resource('drad/state', 'StateControllerRes');
 
 //Route::Controller('admin/state', 'StateController');
