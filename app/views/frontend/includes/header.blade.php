@@ -4,7 +4,6 @@
 	<link rel="stylesheet" type="text/css" href="">
 	<script type="text/javascript" src="/vendor/angular/angular.min.js"></script>
 	<script type="text/javascript" src="/vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script type="text/javascript" src="/vendor/angular-bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap-theme.min.css">
