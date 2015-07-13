@@ -16,9 +16,11 @@ class HospitalControllerRes extends \BaseController {
 	public function index()
 	{
 		$hospitals = DB::table('hospitals')
-						->leftJoin('users', 'users.id', '=', 'user_id')
-						->leftJoin('towns', 'towns.id', '=', 'town_id')
-						->select('hospitals.id as id', 'hospitals.name as name', 'address', 'towns.name as town', 'email', 'hospitals.active as active')
+						->leftJoin('users', 'users.id', '=', 'hospitals.user_id')
+						->leftJoin('towns', 'towns.id', '=', 'hospitals.town_id')
+						->leftJoin('states', 'states.id', '=', 'hospitals.state_id')
+						->leftJoin('lgas', 'lgas.id', '=', 'hospitals.lga_id')
+						->select('hospitals.id as id', 'hospitals.name as name', 'address', 'towns.name as town', 'states.name as state', 'lgas.name as lga', 'email', 'hospitals.active as active')
 						->get();
 
 		return Response::json([

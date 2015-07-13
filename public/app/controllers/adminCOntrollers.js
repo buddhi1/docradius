@@ -434,7 +434,7 @@ angular.module('docradius').controller('hospitalsController' ,[ '$scope', '$http
 
 	$scope.getHospitalList = function( searchParams ){
 		$http.get('/drad/hospital', function(res){
-			console.log(res);
+			data.hospitals = res.hospitals;
 		});
 	}
 
