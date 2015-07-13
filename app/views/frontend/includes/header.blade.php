@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap-theme.min.css">
 	<script type="text/javascript">
 		angular.module('docradius',["ui.router", "commonDirectives","commonServices"])
-		.config(['$httpProvider', '$stateProvider' , 'CSRF_TOKEN', 'USER_TYPE',function($httpProvider, $stateProvider, CSRF_TOKEN, USER_TYPE) {
+		.config(['$httpProvider', '$stateProvider', '$urlRouterProvider' , 'CSRF_TOKEN', 'USER_TYPE',function($httpProvider, $stateProvider, $urlRouterProvider, CSRF_TOKEN, USER_TYPE) {
 			
 			//setting up Ajax http request parameters
 			$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -39,6 +39,8 @@
 
 		    //yeilds routes according to user type
 		    @yield('routes')
+
+		    $urlRouterProvider.when('', '/');
 
 		}])
 		// .run([ '$rootScope', '$location', function( $rootScope, $location ){
