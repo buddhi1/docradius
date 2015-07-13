@@ -6,6 +6,8 @@ class Hospital extends Eloquent{
 			'name' => 'required',
 			'address'=>'required',
 			'street'=>'required',
-			'town_id'=>'required'
+			'town_id'=>'required',
+			'state_id'=>'required',
+			'lga_id'=>'required'
 		);
 }

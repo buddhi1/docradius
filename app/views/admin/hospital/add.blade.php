@@ -15,7 +15,7 @@
 </div>	
 @endif
 
-{{ Form::open(array('url'=>'admin/hospital/create')) }}
+{{ Form::open(array('url'=>'/drad/hospital/create')) }}
 	<div>{{ Form::label('', 'Account state') }}: {{ Form::checkbox('active') }} {{ Form::label('', 'Active') }}</div>
 	<div>{{ Form::label('', 'Hospital name') }}: {{ Form::text('name') }}</div>
 	<div>

@@ -1,0 +1,56 @@
+add hospital panel
+
+<form name="forms.addHospitalForm" ng-submit="addHospital(viewData.addHospitalForm)" novalidate>
+	<inputgroup ng-model="viewData.addHospitalForm.name" label="Hospital Name:" type="text"  name="hospitalname" required ></inputgroup>
+	<br />
+	<inputgroup ng-model="viewData.addHospitalForm.street" label="Address line1:" type="text"  name="hospitalAddress1" required ></inputgroup>
+	<br />
+	<inputgroup ng-model="viewData.addHospitalForm.address" label="Address line2:" type="text"  name="hospitalAddress2"></inputgroup>
+	<br />
+	<label>Location: </label>
+	<br />
+	<div class="row">
+		<div class="input-group col-md-4">
+			<span name="hospitalstate" class="input-group-addon">State</span>
+			<select class="selectpicker form-control" data-live-search="true" ng-model="viewData.addHospitalForm.state" required ng-disabled="data.states.length === undefined">
+				<option value="" disabled selected>Please select a state</option>
+				<option ng-repeat="state in data.states" value="{{ state.id }}">{{ state.name }}</option>
+			</select>
+		</div>
+		<br />
+		<div class="input-group col-md-4">
+			<span class="input-group-addon">LGA</span>
+			<select name="hospitallga" class="selectpicker form-control" data-live-search="true" ng-model="viewData.addHospitalForm.lga" required ng-disabled="data.lgas.length === undefined">
+				<option value="" disabled selected>Please select an LGA</option>
+				<option ng-repeat="lga in data.lgas" value="{{ lga.id }}">{{ lga.name }}</option>
+			</select>
+		</div>
+		<br />
+		<div class="input-group col-md-4">
+			<span class="input-group-addon">Town</span>
+			<select name="hospitaltown" class="selectpicker form-control" data-live-search="true" ng-model="viewData.addHospitalForm.town" required ng-disabled="data.towns.length === undefined">
+				<option value="" disabled selected>Please select a Town</option>
+				<option ng-repeat="town in data.towns" value="{{ town.id }}">{{ town.name }}</option>
+			</select>
+		</div>
+	</div>
+	<br />
+	<label>Available Insurences</label>
+	<div class="row well well-default">
+		<div ng-repeat="insurance in data.insurances" class="col-md-6">
+			<input type="checkbox" name="hospitalinsurance" ng-model="viewData.addHospitalForm.insurance[insurance.id]" />
+			<label>{{ insurance.name }}</label>
+		</div>
+	</div>
+	<label>Login Details</label>
+	<div class="well row">
+		<label>Active: </label> <input name="hospitalactive" type="checkbox" ng-model="viewData.addHospitalForm.active">
+		<br />
+		<div class="col-md-6">
+			<inputgroup ng-model="viewData.addHospitalForm.email" label="User email:" type="email" name="hospitalemail" required></inputgroup>
+			<br />
+			<inputgroup ng-model="viewData.addHospitalForm.password" label="User password:" type="password" name="hospitalpassword" required></inputgroup>
+		</div>
+	</div>
+	<button class="btn btn-default" ng-disabled="forms.addHospitalForm.$invalid">Submit!</button>
+</form>

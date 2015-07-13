@@ -420,3 +420,115 @@ angular.module('docradius').controller('insuranceController' ,[ '$scope', '$http
 	});
 
 }]);
+
+
+angular.module('docradius').controller('hospitalsController' ,[ '$scope', '$http', '$state', function($scope, $http, $state){
+	
+	$scope.forms = {};
+
+	$scope.data = {};
+
+	$scope.viewData = {};
+
+	$scope.viewData.addHospitalForm = {};
+
+	$scope.getHospitalList = function( searchParams ){
+		$http.get('/drad/hospital', function(res){
+			console.log(res);
+		});
+	}
+
+	//hospital add functions
+	$scope.getAllHospitalInsuranceList = function(){
+		$http.get('/drad/insurance')
+			.success(function(res){
+				$scope.data.insurances = res.data.insurances;
+			})
+			.error(function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.getAllHospitalStateList = function(){
+		$http.get('/drad/state')
+			.success(function(res){
+				$scope.data.states = res.data.states;
+			})
+			.error(function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.getHospitalLgasByStateId = function(state_id){
+		$http.get('/drad/lga?state_id='+state_id)
+			.success(function(res){
+				$scope.data.lgas = res.data.lgas;
+			})
+			.error(function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.getHospitalTownsByLgaId = function(lga_id){
+		$http.get('/drad/town?lga_id='+lga_id)
+			.success(function(res){
+				$scope.data.towns = res.data.towns;
+			})
+			.error(function (res) {
+				console.log(res);
+				alert('error');
+			});
+	}
+
+	$scope.$watch('viewData.addHospitalForm.state', function(newValue){
+		$scope.data.lgas = undefined;
+		$scope.data.towns = undefined;
+
+		if(newValue !== undefined && newValue !== ''){
+			$scope.getHospitalLgasByStateId(newValue);
+		}
+	});
+
+	$scope.$watch('viewData.addHospitalForm.lga', function(newValue){
+		$scope.data.towns = undefined;
+
+		if(newValue !== undefined && newValue !== ''){
+			$scope.getHospitalTownsByLgaId(newValue);
+		}
+	});
+
+
+	$scope.addHospital = function(addData){
+		var insurance_list = [];
+		for(var key in addData.insurance){
+			if(addData.insurance[key]) insurance_list.push(key);
+		}
+		
+		var addVars = {};
+		addVars.email = addData.email;
+		addVars.password = addData.password;
+		addVars.active = 0;
+		if(addData.active) addVars.active = 1;
+		addVars.name = addData.name;
+		addVars.street = addData.street;
+		addVars.address = addData.address;
+		addVars.state_id = addData.state;
+		addVars.lga_id = addData.lga;
+		addVars.town_id = addData.town;
+		addVars.insurance = insurance_list;
+
+		$http.post('/drad/hospital', addVars)
+			.success(function(res){
+				console.log(res);
+				$state.go('panel.hospital.listHosiptal');
+			})
+			.error(function(res){
+				console.log(res);
+				alert('error');
+			});
+	};
+
+}]);

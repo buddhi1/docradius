@@ -61,7 +61,7 @@ class HospitalControllerRes extends \BaseController {
 
 		//insuarance should be passed as a json array
 		//hospital validator
-		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
+		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'),'state_id'=>Input::get('state_id'),'lga_id'=>Input::get('lga_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
 		//user validator
 		$validator2 = Validator::make(array('email'=>Input::get('email'), 'password'=>Input::get('password')), User::$rules);
 		$active = Input::get('active');
@@ -82,9 +82,10 @@ class HospitalControllerRes extends \BaseController {
 				if($user){
 					$hospital = new Hospital;
 					$hospital->name = Input::get('name');
-					$hospital->insurances = json_encode(Input::get('insurance'));
-					$hospital->address = Input::get('address').', '.Input::get('street');
+					$hospital->address = Input::get('street').', '.Input::get('address');
 					$hospital->town_id = Input::get('town_id');
+					$hospital->state_id = Input::get('state_id');
+					$hospital->lga_id = Input::get('lga_id');
 					$hospital->user_id = $user->id;
 					$hospital->active = 0;
 					if($active ==1){
@@ -92,14 +93,23 @@ class HospitalControllerRes extends \BaseController {
 					}
 					$hospital->save();
 
-					return Response::json([
-						'status' => 200,
-						'message' => 'new hospital created',
-						'data' => [
-								'hospital' => $hospital,
-								'receptionist'=> $user,
-							],
-					]);
+					if($hospital->id){
+						$insurance_array = Input::get('insurance');
+						for($i = 0; $i< count($insurance_array); $i++){
+							$hospitalinsurance = new Hospitalinsurance;
+							$hospitalinsurance->hospital_id = $hospital->id;
+							$hospitalinsurance->insurance_id = $insurance_array[$i];
+							$hospitalinsurance->save(); 
+						}
+						return Response::json([
+							'status' => 200,
+							'message' => 'new hospital created',
+							'data' => [
+									'hospital' => $hospital,
+									'receptionist'=> $user,
+								],
+						]);
+					}
 				}
 				return Response::json([
 					'status' => 401,

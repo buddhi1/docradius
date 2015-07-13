@@ -109,5 +109,27 @@
 
 
 	// ********************** hospital manage panel routes ************** //
-	//$stateProvider.state('panel.hospital');
+	$stateProvider.state('panel.hospital', {
+		abstract: true,
+		url: '/hospitals',
+		templateUrl: '/app/components/admin/hospital/main.html',
+		controller: 'hospitalsController',
+	});
+
+	$stateProvider.state('panel.hospital.listHosiptal',{
+		url: '',
+		templateUrl: '/app/components/admin/hospital/list.html',
+		controller: ['$scope', '$stateParams', function( $scope, $stateParams){
+			$scope.getHospitalList($stateParams);
+		}],
+	});
+
+	$stateProvider.state('panel.hospital.addHospital',{
+		url: '/add',
+		templateUrl: '/app/components/admin/hospital/add.html',
+		controller: ['$scope', '$stateParams', function( $scope, $stateParams){
+			$scope.getAllHospitalInsuranceList();
+			$scope.getAllHospitalStateList();
+		}],
+	});
 @stop

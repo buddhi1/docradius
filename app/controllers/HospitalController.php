@@ -35,7 +35,7 @@ class HospitalController extends BaseController{
 
 	//create function
 	public function postCreate(){
-		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
+		$validator1 = Validator::make(array('name'=>Input::get('name'), 'address'=>Input::get('address'), 'street'=>Input::get('street'), 'town_id'=>Input::get('town_id'),'state_id'=>Input::get('state_id'),'lga_id'=>Input::get('lga_id'), 'insurances'=>Input::get('insurance')), Hospital::$rules);
 		$validator2 = Validator::make(array('email'=>Input::get('email'), 'password'=>Input::get('password')), User::$rules);
 		$active = Input::get('active');
 
@@ -74,19 +74,19 @@ class HospitalController extends BaseController{
 							$hospitalinsurance->insurance_id = $insurance_array[$i];
 							$hospitalinsurance->save(); 
 						}
-						return Redirect::to('admin/hospital')
+						return Redirect::to('drad/hospital')
 								->with('message', 'The hospital has been added successfully');
 					}
 				}
-				return Redirect::to('admin/hospital/create')
+				return Redirect::to('drad/hospital/create')
 							->with('message', 'Something went wrong. Please try again');
 			}
-			return Redirect::to('admin/hospital/create')
+			return Redirect::to('drad/hospital/create')
 					->with('message', 'Following errors occurred')
 					->withErrors($validator1)
 					->withInput();
 		}
-		return Redirect::to('admin/hospital/create')
+		return Redirect::to('drad/hospital/create')
 					->with('message', 'Following errors occurred')
 					->withErrors($validator2)
 					->withInput();
